@@ -1,0 +1,14 @@
+﻿
+
+Timestamp       : 2025-06-19_14-49-59
+ProjectPath     : D:\BNM\BUSSINES\Proyectos\apelaya-web
+NodeVersion     : v20.10.0
+NextInfo        : 
+Scripts         : {@{Name=dev; Value=next dev --turbopack}, @{Name=build; Value=next build}, @{Name=start; Value=next start}, @{Name=lint; Value=next lint}}
+Dependencies    : {@{Name=@heroicons/react; Value=^2.2.0}, @{Name=axios; Value=^1.9.0}, @{Name=class-variance-authority; Value=^0.7.1}, @{Name=firebase; Value=^11.8.1}...}
+DevDependencies : {@{Name=@eslint/eslintrc; Value=^3}, @{Name=@tailwindcss/postcss; Value=^4}, @{Name=@types/node; Value=^20}, @{Name=@types/react; Value=^19.1.2}...}
+EnvFiles        : {D:\BNM\BUSSINES\Proyectos\apelaya-web\.env, D:\BNM\BUSSINES\Proyectos\apelaya-web\.env.local}
+TreePreview     : {@{Path=\.env; SizeKB=0,03}, @{Path=\.env.local; SizeKB=0,15}, @{Path=\.eslintrc.js; SizeKB=0,33}, @{Path=\.gitignore; SizeKB=0,48}...}
+
+
+

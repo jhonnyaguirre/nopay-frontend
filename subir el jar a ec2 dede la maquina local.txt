@@ -1,0 +1,30 @@
+# Sé root y transfierelo a ssm-user
+sudo chown -R ssm-user:ssm-user /opt/nopay-backend
+
+cd /opt/nopay-backend
+
+# Baja el ZIP que subiste a S3
+aws s3 cp s3://nopay-multas/deploy/deploy.zip .
+
+# Sobrescribe todo (borra los viejos, descomprime los nuevos).
+unzip -o deploy.zip
+
+# Detén el JAR que estaba corriendo
+pkill -f ApiRestLegalImp.jar
+
+# Arranca tu aplicación en background y vuelca logs
+nohup java -jar ApiRestLegalImp.jar … > app.log 2>&1 &
+#nohup java -jar ApiRestLegalImp.jar \
+  --spring.datasource.url=jdbc:postgresql://nopay-postgres-public.ctwmg6qwcnfn.sa-east-1.rds.amazonaws.com:5432/nopay_prod \
+  --spring.datasource.username=nopayadmin \
+  --spring.datasource.password='01102009SeAc..*#Nopay' \
+  --s3.bucket=nopay-multas \
+  > app.log 2>&1 &
+
+
+curl http://localhost:8080/hello
+ 
+
+#log
+tail -f app.log
+sudo journalctl -u nopay-backend -f
