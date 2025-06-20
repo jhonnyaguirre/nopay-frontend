@@ -37,7 +37,7 @@ const ImpugnacionPhoneOverlay = () => {
       className={`z-50 ${
         isMobile
           ? 'fixed inset-0 flex items-center justify-center w-full min-h-screen p-4 bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B]'
-          : 'fixed bottom-8 right-6 lg:right-16 w-full max-w-xs'
+          : 'fixed bottom-1 right-6 lg:right-16 w-full max-w-xs'
       }`}
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -46,7 +46,7 @@ const ImpugnacionPhoneOverlay = () => {
       <motion.div
         className="relative w-full aspect-[9/18] bg-gradient-to-br from-gray-900 to-gray-800 rounded-[2rem] shadow-2xl overflow-hidden border-[8px] border-gray-700 flex flex-col"
         initial={{ scale: 0.92, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+        animate={{ scale: 0.9, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 120, damping: 16, delay: 0.3 }}
       >
         {/* Header */}
