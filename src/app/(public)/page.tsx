@@ -33,33 +33,33 @@ export default function HomePage() {
 
   return (
     <main
-  ref={ref}
-  className="min-h-screen bg-transparent overflow-x-hidden relative text-white"
- 
+      ref={ref}
+      className="min-h-screen bg-transparent overflow-x-hidden relative text-white"
+
 
     >
       {/* Navbar */}
       <Header />
-
+       
 
       <div className="container mx-auto p-4">
         <NoPayPreloader />
-         
+
       </div>
 
 
       {/* Process Timeline */}
       <section className="py-12">
         <HeroUndefined />
-          
-        <ProcessTimelineSection /> 
-        <ServicesCarousel />  
-        
+
+        <ProcessTimelineSection />
+        <ServicesCarousel />
+
         <Fusion />
         <NoPayChatLauncher />
         <Footer />
       </section>
- 
+
 
     </main>
   );

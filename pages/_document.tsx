@@ -9,6 +9,9 @@ export default function Document() {
         <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
         {/* Fallback para Safari y navegadores antiguos */}
         <link rel="alternate icon" href="/favicon.ico" type="image/x-icon" />
+
+        {/* Facebook Domain Verification */}
+        <meta name="facebook-domain-verification" content="n4qoqxcxl96qsxqydz417en6auf1fo" />
       </Head>
       <body>
         <Main />
