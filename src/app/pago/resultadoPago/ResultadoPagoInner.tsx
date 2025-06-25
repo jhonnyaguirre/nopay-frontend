@@ -118,14 +118,14 @@ export default function ResultadoPagoInner() {
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           {pagoExitoso && (
             <button
-              onClick={() => router.push("/mis-compras")}
+              onClick={() => router.push("/Usuario/ServiciosPorUsuario")}
               className="flex-1 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
               Ver mi compra
             </button>
           )}
           <button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/Usuario/ServiciosPorUsuario")}
             className={`flex-1 ${pagoExitoso
                 ? "bg-white border border-gray-300 text-gray-800 hover:bg-gray-50"
                 : "bg-blue-600 hover:bg-blue-700 text-white"

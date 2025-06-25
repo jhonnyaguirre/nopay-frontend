@@ -486,7 +486,7 @@ const ImpugnacionWizard = () => {
     if (step === 6) {
       const timer = setTimeout(() => {
         handleFinalSubmit();
-      }, 1);
+      }, 100);
       return () => clearTimeout(timer);
     }
   }, [step]);
