@@ -245,7 +245,7 @@ export default function LoginPage() {
       <section className="hidden lg:flex flex-col items-start justify-between px-16 py-10 min-h-screen bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white">
         {/* Membrete superior con logo */}
         <div className="w-full flex justify-start items-center mb-6">
-          <Link href="/servicios">
+          <Link href="/Servicios">
             <Image
               src="/images/logo.png"
               alt="Logo NoPay"
