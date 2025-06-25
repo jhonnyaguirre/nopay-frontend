@@ -39,7 +39,7 @@ import {
 import { Badge } from "components/Badge";
 import React from "react";
 import { getColorCode } from "utils/ColorUtils";
-import { API_BASE_URL } from "config/apiConfig";
+import { API_BASE_URL, valorImpugnacionGl } from "config/apiConfig";
 
 interface Servicio {
     usuario: number;
@@ -447,22 +447,21 @@ export default function ServiciosDashboard() {
                             {!isSucceeded && (
                                 <button
                                     onClick={() => {
-                                        // 1. Guardar en SessionPaymentManager:
-                                        SessionPaymentManager.guardar({
-
-                                            citacion: detalle![0].citacion, // o bien toma directamente d.citacion si iteras en detalle.map
-                                            item: String(servicio.modelo) + ' - ' + String(servicio.placa) + ' ', // podrías usar el ID de la multa como "ítem"
+                                        SessionPaymentManager.guardarParcial({
+                                            citacion: detalle![0].citacion,
+                                            item: `${servicio.modelo} - ${servicio.placa}`,
                                             servicio: detalle![0].citacion,
-                                            valor: String(19.99), // asegúrate de pasar el monto correcto
-                                            cedula: detalle![0].cedula      // cédula obtenida del detalle
+                                            valor: String(valorImpugnacionGl),
+                                            cedula: detalle![0].cedula
                                         });
-                                        // 2. Redirigir
+
                                         router.push("/resumenPago");
                                     }}
                                     className="ml-2 inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-md transition"
                                 >
                                     Procesar Pago
                                 </button>
+
 
                             )}
                         </>
@@ -1263,17 +1262,24 @@ export default function ServiciosDashboard() {
                                                                                                 {d.estadoPago !== "Transaction succeeded" && (
                                                                                                     <button
                                                                                                         onClick={() => {
-                                                                                                            // 1. Guardar en SessionPaymentManager:
+                                                                                                            // 1. Obtener datos existentes si hay
+                                                                                                            const prevData = SessionPaymentManager.obtener() || {};
+
+                                                                                                            // 2. Guardar combinando los datos nuevos y los anteriores
                                                                                                             SessionPaymentManager.guardar({
+                                                                                                                ...prevData, // conserva los existentes
                                                                                                                 citacion: "0",
-                                                                                                                item: String(servicio.modelo) + ' - ' + String(servicio.placa) + ' ', // podrías usar el ID de la multa como "ítem"
+                                                                                                                item: `${servicio.modelo} - ${servicio.placa}`,
                                                                                                                 servicio: String(servicio.secuencImpu),
-                                                                                                                valor: String(19.99),
-                                                                                                                cedula: d.cedula                // cédula del usuario
+                                                                                                                valor: String(valorImpugnacionGl),
+                                                                                                                cedula: d.cedula
+                                                                                                                // los campos nombres, apellidos, telefono, email seguirán siendo los anteriores si existen
                                                                                                             });
-                                                                                                            // 2. Redirigir a /ResumenPago
+
+                                                                                                            // 3. Redirigir
                                                                                                             router.push("/resumenPago");
                                                                                                         }}
+
                                                                                                         className="ml-4 inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium px-3 py-1 rounded-md transition"
                                                                                                     >
                                                                                                         Procesar Pago

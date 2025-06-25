@@ -1,5 +1,7 @@
 ﻿'use client';
 
+import Head from 'next/head';
+
 import { useRef } from 'react';
 import { motion, useScroll } from 'framer-motion';
 import { Header } from 'app/resources/Header';

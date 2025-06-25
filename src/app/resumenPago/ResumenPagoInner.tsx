@@ -17,6 +17,7 @@ import { SessionJWTManager } from "lib/seguridad/SessionJWTManager";
 import { SessionPaymentManager } from "lib/seguridad/SessionPaymentManager";
 import { Header } from "app/resources/Header";
 import { API_BASE_URL } from "config/apiConfig";
+import { SessionWizardData } from "lib/seguridad/SessionWizardData";
 
 type ErrorWithMessage = {
     message: string;
@@ -34,7 +35,9 @@ export default function ResumenPago() {
 
             // Obtener parámetros seguros
             const sessionData = SessionPaymentManager.obtener();
-            if (!sessionData) {
+            const sessionWizard = SessionWizardData.obtener();
+
+            if (!sessionData || !sessionWizard) {
                 alert("Datos de pago no disponibles. Serás redirigido.");
                 window.location.href = "/";
                 return;
@@ -46,6 +49,9 @@ export default function ResumenPago() {
             setServicio(sessionData.servicio);
             setValor(sessionData.valor);
             setCedula(sessionData.cedula);
+            setNombres(sessionWizard.nombres);
+            setApellidos(sessionData.apellido);
+            setEmail(sessionData.displayName);
 
             setIsValidating(false);
         };
@@ -60,7 +66,10 @@ export default function ResumenPago() {
     const [servicio, setServicio] = useState("");
     const [valor, setValor] = useState("");
     const [cedula, setCedula] = useState("");
-
+    const [nombres, setNombres] = useState("");
+    const [apellidos, setApellidos] = useState("");
+    const [email, setEmail] = useState("");
+    const [primerNombre, segundoNombre] = nombres?.split(" ") ?? [];
     const [loading, setLoading] = useState(false);
     const [tipoCredito, setTipoCredito] = useState("00");
     const [cuotas, setCuotas] = useState(1);
@@ -102,13 +111,13 @@ export default function ResumenPago() {
                     cuotas: cuotas,
                     cantidad: 1,
 
-                    nombre: "Juan",
-                    segundoNombre: "Carlos",
-                    apellido: "Pérez 8",
-                    correo: "juanperez8@email.com",
-                    telefono: "0999999999",
+                    nombre: primerNombre,
+                    segundoNombre: segundoNombre,
+                    apellido: apellidos,
+                    correo: email,
+                    telefono: "",
                     cedula: cedula,
-                    ip: "190.12.48.178",
+                    ip: "",
 
                     direccionEntrega: "N/A",
                     direccionCliente: "N/A",
@@ -392,7 +401,7 @@ export default function ResumenPago() {
                     </div>
                 </div>
             </div>
-             
+
             <div className="max-w-2xl mx-auto mt-10 flex flex-col items-center text-center">
                 <Lock className="w-10 h-10 text-[#7F1D1D] mb-2" />
                 <p className="text-gray-700 text-sm">
