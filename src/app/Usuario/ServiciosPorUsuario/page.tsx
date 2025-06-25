@@ -447,21 +447,21 @@ export default function ServiciosDashboard() {
                             {!isSucceeded && (
                                 <button
                                     onClick={() => {
-                                        // 1. Guardar en SessionPaymentManager:
                                         SessionPaymentManager.guardar({
-
-                                            citacion: detalle![0].citacion, // o bien toma directamente d.citacion si iteras en detalle.map
-                                            item: String(servicio.modelo) + ' - ' + String(servicio.placa) + ' ', // podrías usar el ID de la multa como "ítem"
+                                            citacion: detalle![0].citacion,
+                                            item: `${servicio.modelo} - ${servicio.placa}`,
                                             servicio: detalle![0].citacion,
-                                            valor: String(valorImpugnacionGl), // asegúrate de pasar el monto correcto
-                                            cedula: detalle![0].cedula      // cédula obtenida del detalle
+                                            valor: String(valorImpugnacionGl),
+                                            cedula: detalle![0].cedula
                                         });
-                                        // 2. Redirigir
                                         router.push("/resumenPago");
                                     }}
-                                    className="ml-2 inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-md transition"
+                                    className="ml-2 inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                                 >
-                                    Procesar Pago
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                    </svg>
+                                    Pagar Ahora
                                 </button>
 
                             )}
