@@ -486,7 +486,7 @@ const ImpugnacionWizard = () => {
     if (step === 6) {
       const timer = setTimeout(() => {
         handleFinalSubmit();
-      }, 1000);
+      }, 1);
       return () => clearTimeout(timer);
     }
   }, [step]);
@@ -1477,13 +1477,7 @@ const ImpugnacionWizard = () => {
                           </div>
                         </div>
                       </div>
-                      <button
-                        onClick={() => window.location.reload()}
-                        className="mt-10 inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold bg-cyan-400 text-gray-900 hover:bg-cyan-500 transition-all duration-300 shadow-md"
-                      >
-                        <Check className="w-4 h-4 mr-2" />
-                        Volver al inicio
-                      </button>
+                     
                     </motion.div>
                   </div>
 
