@@ -27,7 +27,8 @@ export default function RegistroPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Tu site key de reCAPTCHA v2 en .env.local:
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LfOasdasdFFgrAAAAAHdmuuGdHJegKB0wpA6KQf6AThJf";
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LenEFgrAAAAALsYEiNa3MvQUd92SA92u5t8TUGx";
+                
 
   // Para verificar en consola que esté correctamente cargada:
 
@@ -120,7 +121,9 @@ export default function RegistroPage() {
         <div>
           {/* Logo en la parte superior */}
           <div className="flex items-center mb-6">
-            <img src="/images/logo.png" alt="Logo NoPay" className="w-20 h-20 opacity-90" />
+            <Link href="/servicios">
+              <img src="/images/logo.png" alt="Logo NoPay" className="w-20 h-20 opacity-90" />
+            </Link>
           </div>
 
           {/* Bienvenida e información */}

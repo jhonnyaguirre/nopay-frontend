@@ -65,7 +65,7 @@ export default function LoginPage() {
     try {
       console.log("Se llama al servicio: " + `${API_BASE_URL}/creaUsuarios/login`);
       const res = await fetch(`${API_BASE_URL}/creaUsuarios/login`, {
-      //const res = await fetch(`http://localhost:8080/creaUsuarios/login`, {
+        //const res = await fetch(`http://localhost:8080/creaUsuarios/login`, {
         //const res = await fetch(`${API_BASE_URL}/creaUsuarios/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -85,7 +85,7 @@ export default function LoginPage() {
         const secuencialUsuario = secuencial || 0;
         console.log("se ha dado paso 5")
         // Paso opcional: crear sesión en backend local si tienes otro endpoint
-         await crearSesionJWT(email, "0", token); // si tu backend quiere cedula y secuencial, ajusta
+        await crearSesionJWT(email, "0", token); // si tu backend quiere cedula y secuencial, ajusta
         console.log("se ha dado paso 6")
         // Construir perfil mínimo a partir del email
         const nombres = email.split("@")[0];
@@ -245,13 +245,15 @@ export default function LoginPage() {
       <section className="hidden lg:flex flex-col items-start justify-between px-16 py-10 min-h-screen bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white">
         {/* Membrete superior con logo */}
         <div className="w-full flex justify-start items-center mb-6">
-          <Image
-            src="/images/logo.png"
-            alt="Logo NoPay"
-            width={80}
-            height={80}
-            className="opacity-90"
-          />
+          <Link href="/servicios">
+            <Image
+              src="/images/logo.png"
+              alt="Logo NoPay"
+              width={80}
+              height={80}
+              className="opacity-90 cursor-pointer"
+            />
+          </Link>
         </div>
 
         {/* Contenido principal centrado */}

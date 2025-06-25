@@ -12,10 +12,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+
 export const metadata: Metadata = {
   title: "NoPay - LegalTech",
   description: "La mejor plataforma para tus trámites legales en Ecuador.",
+  icons: {
+    icon: "/images/favicon.svg", // o "/nopay-favicon.png" si la colocas directo en /public
+  },
 };
+
 
 export default function RootLayout({
   children,
