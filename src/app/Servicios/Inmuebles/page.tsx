@@ -30,10 +30,9 @@ export default function RegularizacionPropiedadesPage() {
   }, [isMobile]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white relative overflow-hidden">
+    <main className="min-h-screen bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white relative overflow-hidden text-[90%]">
       <Header />
 
-      {/* Overlay inicial solo en móviles */}
       {isMobile && showOverlay && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B]">
           <div className="w-full h-full flex items-center justify-center">
@@ -42,10 +41,7 @@ export default function RegularizacionPropiedadesPage() {
         </div>
       )}
 
-      {/* Hero Section */}
-      <section className={`relative z-10 max-w-7xl mx-auto px-6 py-16 lg:py-24 flex flex-col-reverse lg:flex-row items-center gap-12 ${isMobile && showOverlay ? 'hidden' : ''}`}>
-        {/* Texto principal */}
-        <div className="w-full lg:w-1/2">
+      <section className={`relative z-10 max-w-7xl mx-auto px-6 py-16 lg:py-24 flex flex-col-reverse lg:flex-row items-center gap-12 ${isMobile && showOverlay ? 'hidden' : ''}`}>        <div className="w-full lg:w-1/2">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -53,14 +49,14 @@ export default function RegularizacionPropiedadesPage() {
             className="flex items-center gap-2 bg-white/20 px-4 py-1 rounded-full w-max mb-6"
           >
             <Landmark className="h-5 w-5" />
-            <span className="text-sm font-medium">Proceso respaldado por normativa ecuatoriana</span>
+            <span className="text-xs font-medium">Proceso respaldado por normativa ecuatoriana</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-5xl font-bold leading-tight mb-6"
+            className="text-3xl sm:text-4xl font-bold leading-tight mb-6"
           >
             <span className="bg-gradient-to-r from-white to-[#FDE68A] bg-clip-text text-transparent">
               Regularización de Propiedades
@@ -71,7 +67,7 @@ export default function RegularizacionPropiedadesPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-lg opacity-90 mb-8"
+            className="text-base opacity-90 mb-8"
           >
             Accede a la legalización y titulación de terrenos o viviendas informales con apoyo legal completo. Nos encargamos del proceso ante municipios y registro de la propiedad.
           </motion.p>
@@ -84,7 +80,7 @@ export default function RegularizacionPropiedadesPage() {
           >
             <Link
               href="/regularizacion-propiedades-form"
-              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-8 py-3 rounded-xl shadow-lg hover:bg-[#EC4899] hover:text-white transition-all group"
+              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-6 py-3 rounded-xl shadow-lg hover:bg-[#EC4899] hover:text-white transition-all group text-sm"
             >
               INICIAR REGULARIZACIÓN
               <Landmark className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -92,7 +88,7 @@ export default function RegularizacionPropiedadesPage() {
 
             <Link
               href="#como-funciona"
-              className="inline-flex items-center justify-center border-2 border-white/50 text-white font-medium px-6 py-3 rounded-xl hover:bg-white/10 transition-all"
+              className="inline-flex items-center justify-center border-2 border-white/50 text-white font-medium px-5 py-3 rounded-xl hover:bg-white/10 transition-all text-sm"
             >
               Cómo funciona
             </Link>
@@ -111,13 +107,12 @@ export default function RegularizacionPropiedadesPage() {
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
                 {item.icon}
-                <span className="text-sm font-medium">{item.text}</span>
+                <span className="text-xs font-medium">{item.text}</span>
               </div>
             ))}
           </motion.div>
         </div>
 
-        {/* Animación */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -130,11 +125,10 @@ export default function RegularizacionPropiedadesPage() {
         </motion.div>
       </section>
 
-      {/* Cómo Funciona */}
-      <section id="como-funciona" className="py-20 bg-white">
+      <section id="como-funciona" className="py-20 bg-white text-[90%]">
         <div className="max-w-7xl mx-auto px-6">
           <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center mb-16 text-[#7F1D1D]"
+            className="text-2xl md:text-3xl font-bold text-center mb-16 text-[#7F1D1D]"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -175,24 +169,23 @@ export default function RegularizacionPropiedadesPage() {
                 className="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-md transition-all"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="text-3xl font-bold text-[#7F1D1D]">{item.step}</div>
+                  <div className="text-2xl font-bold text-[#7F1D1D]">{item.step}</div>
                   <div className="p-3 rounded-full bg-white shadow-sm">
                     {item.icon}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
+                <h3 className="text-lg font-bold mb-3 text-gray-800">{item.title}</h3>
+                <p className="text-sm text-gray-600">{item.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA final */}
-      <section className="py-16 bg-gradient-to-r from-[#7F1D1D] to-[#EC4899]">
+      <section className="py-16 bg-gradient-to-r from-[#7F1D1D] to-[#EC4899] text-[90%]">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <motion.h3
-            className="text-2xl md:text-3xl font-bold mb-6"
+            className="text-xl md:text-2xl font-bold mb-6"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -208,7 +201,7 @@ export default function RegularizacionPropiedadesPage() {
           >
             <Link
               href="/regularizacion-propiedades-form"
-              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-gray-100 transition-all group text-lg"
+              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-6 py-3 rounded-xl shadow-lg hover:bg-gray-100 transition-all group text-sm"
             >
               REGULARIZAR AHORA
               <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

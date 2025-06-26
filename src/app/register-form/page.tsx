@@ -666,7 +666,7 @@ const AdvancedForm = () => {
           animate={{ scale: 1 }}
           className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 text-center max-w-md"
         >
-          <div className="text-5xl mb-4">⚠️</div>
+          <div className="text-4xl mb-4">⚠️</div>
           <h3 className="text-xl font-semibold text-white mb-2">Error</h3>
           <p className="text-white/90 mb-6">{authError}</p>
           <button
@@ -709,7 +709,7 @@ const AdvancedForm = () => {
                 <div className="inline-block bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20 mb-6">
                   <span className="text-sm font-medium text-white/90">Paso 1 de 3</span>
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                <h1 className="text-3xl md:text-3xl font-bold text-white mb-3">
                   <span className="bg-gradient-to-r from-white to-[#FDE68A] bg-clip-text text-transparent">
                     Completa tus datos
                   </span>
