@@ -42,23 +42,23 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-6 pt-8 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <Scale className="h-8 w-8 text-[#7F1D1D]" />
-              <div className="text-2xl font-bold text-[#7F1D1D]">NoPay</div>
+              <div className="text-xl font-bold text-[#7F1D1D]">NoPay</div>
             </div>
-            <p className="text-gray-600">
+            <p className="text-sm text-gray-600">
               Plataforma líder en apelaciones automatizadas con tecnología de punta y expertise legal.
             </p>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-6 text-[#EC4899] border-b border-[#EC4899]/30 pb-2">Enlaces Rápidos</h4>
+            <h4 className="text-base font-semibold mb-6 text-[#EC4899] border-b border-[#EC4899]/30 pb-2">Enlaces Rápidos</h4>
             <ul className="space-y-3">
               {quickLinks.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-gray-600 hover:text-[#EC4899] transition-colors flex items-center gap-2 group"
+                    className="text-sm text-gray-600 hover:text-[#EC4899] transition-colors flex items-center gap-2 group"
                   >
                     <ChevronRight className="h-4 w-4 text-[#EC4899]/50 group-hover:text-[#EC4899] transition-colors" />
                     {label}
@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-gray-600 hover:text-[#EC4899] transition-colors flex items-center gap-2 group"
+                    className="text-sm text-gray-600 hover:text-[#EC4899] transition-colors flex items-center gap-2 group"
                   >
                     <ChevronRight className="h-4 w-4 text-[#EC4899]/50 group-hover:text-[#EC4899] transition-colors" />
                     {label}
@@ -87,8 +87,9 @@ const Footer: React.FC = () => {
 
           <div>
             <h4 className="text-lg font-semibold mb-6 text-[#EC4899] border-b border-[#EC4899]/30 pb-2">Contacto</h4>
-            <ul className="space-y-4 text-gray-600">
-              <li className="flex items-start gap-3">
+            <ul className="space-y-4 text-sm text-gray-600">
+
+              <li className="flex items-start gap-2">
                 <PhoneCall className="h-5 w-5 text-green-600 mt-1" />
                 <a
                   href="https://wa.me/593979937186?text=Hola,%20quiero%20asistencia%20con%20un%20tema%20legal."
@@ -99,13 +100,13 @@ const Footer: React.FC = () => {
                   WhatsApp: +593 97 9937186
                 </a>
               </li>
-              <li className="flex items-start gap-3">
+              <li className="flex items-start gap-2">
                 <Mail className="h-5 w-5 text-blue-600 mt-1" />
                 <a href="mailto:info@nopay.ec" className="hover:text-blue-700">
                   softcorpecu@gmail.com
                 </a>
               </li>
-              <li className="flex items-start gap-3">
+              <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 text-yellow-600 mt-1" />
                 <span>Av. Ordoñes Lasso, Cuenca, Ecuador</span>
               </li>
@@ -116,7 +117,7 @@ const Footer: React.FC = () => {
         <div className="border-t border-gray-200 my-8"></div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-sm text-gray-500">
+          <p className="text-xs text-gray-500">
             © {currentYear} NoPay by Softcorp. Todos los derechos reservados.
           </p>
         </div>

@@ -1,3 +1,4 @@
+// EliteLegalHeroFusion.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -33,7 +34,6 @@ const EliteLegalHeroFusion = () => {
 
   return (
     <main className="relative w-full bg-gradient-to-br from-[#D82465] via-[#F46C1D] to-[#FFD76F] text-white overflow-hidden">
-      {/* SVG decorativo al lado derecho - Responsive */}
       <svg
         className="absolute right-0 top-0 w-full md:w-[55%] h-full object-cover z-0"
         viewBox="0 0 600 800"
@@ -53,7 +53,6 @@ const EliteLegalHeroFusion = () => {
         />
       </svg>
 
-      {/* Cierre inferior blanco - Responsive */}
       <div className="absolute bottom-0 left-0 w-full h-16 md:h-24 bg-white rounded-t-[100%] z-10" />
 
       <div className="relative z-20 max-w-6xl px-4 sm:px-6 py-16 md:py-28 mx-auto flex flex-col items-start justify-center md:pl-12 lg:pl-28 text-left">
@@ -63,7 +62,6 @@ const EliteLegalHeroFusion = () => {
           animate="visible"
           className="w-full"
         >
-          {/* Badge superior */}
           <motion.div
             className="inline-flex items-center gap-2 bg-gradient-to-r from-[#EC4899] to-[#F59E0B] px-4 py-1 md:px-6 md:py-2 rounded-full mb-4 md:mb-6 shadow-lg text-xs md:text-sm"
             custom={1}
@@ -74,22 +72,16 @@ const EliteLegalHeroFusion = () => {
             <ChevronRight className="h-3 w-3 md:h-4 md:w-4" />
           </motion.div>
 
-          {/* Título principal */}
           <motion.div
             initial="hidden"
             animate="visible"
             variants={{
               hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.15
-                }
-              }
+              visible: { transition: { staggerChildren: 0.15 } }
             }}
           >
-            {/* … */}
             <motion.h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-4 md:mb-6 drop-shadow-md"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight mb-4 md:mb-6 drop-shadow-md"
               custom={2}
               variants={textVariants}
             >
@@ -97,20 +89,16 @@ const EliteLegalHeroFusion = () => {
               <br />
               <span className="text-white">sin perder tiempo</span>
             </motion.h1>
-            {/* … */}
           </motion.div>
 
-
-          {/* Descripción */}
           <motion.p
-            className="text-base md:text-xl text-white/90 mb-6 md:mb-8 max-w-xl"
+            className="text-xs md:text-base text-white/90 mb-6 md:mb-8 max-w-xl"
             custom={3}
             variants={textVariants}
           >
             Apelaciones, reclamos y más en minutos. Nuestra <span className="text-[#F59E0B] font-bold">tecnología</span> acelera el proceso mientras nuestros <span className="text-[#F59E0B] font-extrabold">abogados expertos</span> garantizan los resultados.
           </motion.p>
 
-          {/* Formulario de email */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -120,27 +108,26 @@ const EliteLegalHeroFusion = () => {
             <input
               type="email"
               placeholder="Email or phone number"
-              className="flex-1 px-4 py-2 md:px-5 md:py-3 text-gray-800 placeholder-gray-400 bg-white focus:outline-none rounded-full sm:rounded-l-full sm:rounded-r-none text-sm md:text-base"
+              className="flex-1 px-4 py-2 md:px-5 md:py-3 text-gray-800 placeholder-gray-400 bg-white focus:outline-none rounded-full sm:rounded-l-full sm:rounded-r-none text-xs md:text-sm"
             />
             <Link href="/Servicios" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 transition-all rounded-full sm:rounded-r-full sm:rounded-l-none w-full text-sm md:text-base"
+                className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 transition-all rounded-full sm:rounded-r-full sm:rounded-l-none w-full text-xs md:text-sm"
               >
                 Ver Servicios
               </motion.button>
             </Link>
           </motion.div>
 
-          {/* Lista de características */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.6 }}
             className="mt-8 md:mt-10"
           >
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-white text-sm md:text-base font-medium">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-white text-xs md:text-sm font-medium">
               {[
                 "Procesos optimizados",
                 "Seguridad legal",
@@ -157,7 +144,6 @@ const EliteLegalHeroFusion = () => {
             </ul>
           </motion.div>
 
-          {/* Tarjetas de características */}
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-12 md:mt-24 w-full"
             initial={{ opacity: 0 }}
@@ -186,21 +172,17 @@ const EliteLegalHeroFusion = () => {
                   <div className={`bg-gradient-to-r ${item.color} p-2 md:p-3 rounded-full w-max text-white mb-3 md:mb-4`}>
                     {item.icon}
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold mb-1 md:mb-2 text-white">{item.title}</h3>
-                  <p className="text-white/80 leading-relaxed text-sm md:text-base">{item.desc}</p>
+                  <h3 className="text-sm md:text-base font-semibold mb-1 md:mb-2 text-white">{item.title}</h3>
+                  <p className="text-white/80 leading-relaxed text-xs md:text-sm">{item.desc}</p>
                 </div>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Sección Tecnología */}
           <section id="tecnologia" className="relative py-16 md:py-28 overflow-hidden w-full">
             <div className="absolute inset-0 bg-[url('/circuit-pattern.svg')] opacity-5"></div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-              
-
-              <ImpugnacionButton/>
-
+               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
                 {[
                   {
@@ -241,12 +223,12 @@ const EliteLegalHeroFusion = () => {
                       <div className={`bg-gradient-to-r ${item.color} p-2 md:p-3 rounded-full w-max mb-4 md:mb-6 mx-auto`}>
                         {item.icon}
                       </div>
-                      <h3 className="text-xl md:text-2xl font-bold text-center mb-3 md:mb-4">{item.title}</h3>
-                      <p className="text-white/80 text-center mb-4 md:mb-6 text-sm md:text-base">{item.description}</p>
+                      <h3 className="text-base md:text-lg font-bold text-center mb-3 md:mb-4">{item.title}</h3>
+                      <p className="text-white/80 text-center mb-4 md:mb-6 text-xs md:text-sm">{item.description}</p>
                       <div className="mt-auto">
                         <ul className="space-y-1 md:space-y-2">
                           {item.features.map((feature, j) => (
-                            <li key={j} className="flex items-center text-xs md:text-sm text-white/90">
+                            <li key={j} className="flex items-center text-[11px] md:text-xs text-white/90">
                               <Check className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 text-[#F59E0B]" />
                               {feature}
                             </li>

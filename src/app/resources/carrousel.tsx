@@ -248,7 +248,7 @@ export default function ServicesCarousel() {
           transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#EC4899] to-[#FBBF24] px-4 py-2 rounded-full mb-3 sm:mb-4 text-xs sm:text-sm font-medium text-white"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#EC4899] to-[#FBBF24] px-4 py-2 rounded-full mb-3 sm:mb-4 text-[11px] sm:text-xs font-medium text-white"
             initial={{ opacity: 0 }}
             animate={isMounted ? { opacity: 1 } : {}}
             transition={{ delay: 0.2 }}
@@ -258,7 +258,7 @@ export default function ServicesCarousel() {
           </motion.div>
 
           <motion.h2
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-3 sm:mb-4"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 sm:mb-4"
             initial={{ opacity: 0, y: 10 }}
             animate={isMounted ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.3 }}
@@ -270,7 +270,7 @@ export default function ServicesCarousel() {
           </motion.h2>
 
           <motion.p
-            className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4"
+            className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto px-4"
             initial={{ opacity: 0 }}
             animate={isMounted ? { opacity: 1 } : {}}
             transition={{ delay: 0.4 }}
@@ -350,10 +350,10 @@ export default function ServicesCarousel() {
                           {service.icon}
                         </div>
 
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2 sm:mb-3">
+                        <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-2 sm:mb-3">
                           {service.title}
                         </h3>
-                        <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
                           {service.description}
                         </p>
 
@@ -361,7 +361,7 @@ export default function ServicesCarousel() {
                           {service.features.map((feature, i) => (
                             <li
                               key={i}
-                              className="flex items-center text-xs sm:text-sm text-gray-600"
+                              className="flex items-center text-[11px] sm:text-xs text-gray-600"
                             >
                               <div
                                 className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-2 sm:mr-3 bg-gradient-to-r ${service.color}`}
@@ -373,7 +373,7 @@ export default function ServicesCarousel() {
 
                         <Link
                           href={service.href}
-                          className="mt-auto inline-flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base text-gray-800 hover:text-[#EC4899] transition-colors font-medium"
+                          className="mt-auto inline-flex items-center gap-1 sm:gap-2 text-[11px] sm:text-xs md:text-sm text-gray-800 hover:text-[#EC4899] transition-colors font-medium"
                         >
                           Ver detalles <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Link>
@@ -406,15 +406,15 @@ export default function ServicesCarousel() {
           transition={{ delay: 0.6 }}
           className="mt-8 sm:mt-12 md:mt-16 bg-gray-100 text-gray-800 rounded-xl sm:rounded-2xl shadow-sm sm:shadow-md p-6 sm:p-8 md:p-10 text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">
             ¿No encuentras lo que necesitas?
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-4 sm:mb-6">
+          <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 mb-4 sm:mb-6">
             Contáctanos para una asesoría legal personalizada y encuentra una
             solución a tu medida.
           </p>
           <motion.button
-            className="bg-gradient-to-r from-[#EC4899] to-[#FBBF24] text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-sm sm:text-base font-semibold"
+            className="bg-gradient-to-r from-[#EC4899] to-[#FBBF24] text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-xs sm:text-sm font-semibold"
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >

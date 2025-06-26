@@ -162,7 +162,7 @@ const ImpugnacionButton = () => {
 
               {/* Título con flicker continuo                        */}
               <motion.h2
-                className="text-4xl md:text-5xl font-extrabold text-center tracking-wide leading-tight text-white"
+                className="text-3xl md:text-4xl font-extrabold text-center tracking-wide leading-tight text-white"
                 variants={titleVariants}
                 initial="idle"
               >
@@ -174,7 +174,7 @@ const ImpugnacionButton = () => {
 
               {/* Subtítulo informativo                                */}
               <motion.p
-                className="mt-4 text-lg md:text-xl font-medium text-white/85 text-center max-w-lg"
+                className="mt-4 text-base md:text-lg font-medium text-white/85 text-center max-w-lg"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
@@ -193,7 +193,7 @@ const ImpugnacionButton = () => {
 
               {/* Botón CTA con “ripple” y gradiente animado            */}
               <motion.div
-                className="relative inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-lg text-white overflow-hidden"
+                className="relative inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-base text-white overflow-hidden"
                 style={{
                   background: 'linear-gradient(to right, #F59E0B, #EC4899)',
                   boxShadow:

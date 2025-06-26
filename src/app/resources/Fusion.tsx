@@ -59,11 +59,11 @@ export default function LegalCalculatorSection() {
         />
       </svg>
 
- 
+
       <div className="absolute bottom-0 left-0 w-full h-16 sm:h-20 md:h-24 bg-white rounded-t-[100%] z-10" />
 
 
- 
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-28">
 
         {/* Calculator Section */}
@@ -83,11 +83,11 @@ export default function LegalCalculatorSection() {
               transition={{ duration: 0.6 }}
             >
               <Calculator className="h-5 w-5" />
-              <span className="text-sm font-medium">Calculadora de Ahorro</span>
+              <span className="text-xs font-medium">Calculadora de Ahorro</span>
             </motion.div>
 
             <motion.h2
-              className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4"
+              className="text-2xl sm:text-2xl md:text-3xl font-bold leading-tight mb-4"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -99,7 +99,7 @@ export default function LegalCalculatorSection() {
             </motion.h2>
 
             <motion.p
-              className="text-lg text-white/90 max-w-2xl mx-auto"
+              className="text-base text-white/90 text-sm max-w-2xl mx-auto"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -128,15 +128,15 @@ export default function LegalCalculatorSection() {
                     onChange={handleFineChange}
                     className="w-full h-2 bg-white/30 rounded-full appearance-none outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md hover:[&::-webkit-slider-thumb]:scale-125 transition-all"
                   />
-                  <div className="flex justify-between text-sm text-white/60 mt-1">
-                    <span>$100</span>
-                    <span>$5,000</span>
+                  <div className="flex justify-between text-xs text-white/60 mt-1">
+                    <span className="text-sm">$100</span>
+                    <span className="text-sm">$5,000</span>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setShowDetails(!showDetails)}
-                  className="text-sm text-white/80 hover:text-white flex items-center gap-2 transition-colors"
+                  className="text-xs text-white/80 hover:text-white flex items-center gap-2 transition-colors"
                 >
                   {showDetails ? (
                     <>
@@ -158,19 +158,19 @@ export default function LegalCalculatorSection() {
                     animate={{ opacity: 1, height: 'auto' }}
                     transition={{ duration: 0.3 }}
                   >
-                    <p className="text-white/90 mb-2">Nuestro cálculo considera:</p>
+                    <p className="text-white/90 text-xs mb-2">Nuestro cálculo considera:</p>
                     <ul className="space-y-2">
-                      <li className="flex items-start gap-2 text-white/80">
+                      <li className="flex items-start gap-2 text-white/70 text-xs">
                         <Check className="h-4 w-4 text-[#F59E0B] mt-0.5 flex-shrink-0" />
-                        <span>85% de reducción promedio en multas</span>
+                        <span className="text-sm">85% de reducción promedio en multas</span>
                       </li>
-                      <li className="flex items-start gap-2 text-white/80">
+                      <li className="flex items-start gap-2 text-white/70 text-xs">
                         <Check className="h-4 w-4 text-[#F59E0B] mt-0.5 flex-shrink-0" />
-                        <span>15% de honorarios por servicio exitoso</span>
+                        <span className="text-sm">15% de honorarios por servicio exitoso</span>
                       </li>
-                      <li className="flex items-start gap-2 text-white/80">
+                      <li className="flex items-start gap-2 text-white/70 text-xs">
                         <Check className="h-4 w-4 text-[#F59E0B] mt-0.5 flex-shrink-0" />
-                        <span>92% de tasa de éxito en apelaciones</span>
+                        <span className="text-sm">92% de tasa de éxito en apelaciones</span>
                       </li>
                     </ul>
                   </motion.div>
@@ -181,22 +181,22 @@ export default function LegalCalculatorSection() {
               <div className="bg-gradient-to-br from-[#7F1D1D]/50 to-[#EC4899]/50 p-6 rounded-xl border border-white/10 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <PiggyBank className="h-6 w-6 text-[#FDE68A]" />
-                  <h3 className="text-xl font-bold">Tu ahorro estimado</h3>
+                  <h3 className="text-lg font-bold">Tu ahorro estimado</h3>
                 </div>
 
-                <div className="text-4xl md:text-5xl font-extrabold mb-4">
+                <div className="text-3xl md:text-4xl font-extrabold mb-4">
                   {formatCurrency(probableSavings)}
                 </div>
 
                 <div className="h-px bg-white/20 my-4"></div>
 
-                <p className="text-white/80 text-sm mb-6">
+                <p className="text-white/80 text-xs mb-6">
                   Basado en nuestro histórico de casos con 92% de éxito
                 </p>
 
                 <Link href="/Servicios" passHref>
                   <motion.button
-                    className="w-full bg-white text-[#7F1D1D] hover:bg-[#EC4899] hover:text-white py-3 px-6 rounded-lg font-bold shadow-md transition-all flex justify-center items-center gap-2"
+                    className="w-full bg-white text-[#7F1D1D] hover:bg-[#EC4899] hover:text-white py-3 px-6 rounded-lg font-semibold text-sm shadow-md transition-all flex justify-center items-center gap-2"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -209,53 +209,7 @@ export default function LegalCalculatorSection() {
         </motion.div>
 
         {/* Case Studies */}
-        <motion.div
-          className="mt-24"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="text-center mb-12">
-            <motion.h3
-              className="text-3xl md:text-4xl font-bold mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="inline-block bg-white text-[#7F1D1D] px-6 py-2 rounded-full shadow-lg">
-                Casos de éxito
-              </span>
-            </motion.h3>
-            <p className="text-white/90 max-w-2xl mx-auto">
-              Resultados reales obtenidos por nuestros clientes
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {[
-              { amount: 12450, description: 'Multa anulada en Guayaquil', delay: 0.2 },
-              { amount: 8720, description: 'Apelación exitosa en Quito', delay: 0.4 },
-              { amount: 15300, description: 'Recurso aceptado en Cuenca', delay: 0.6 },
-            ].map((caseStudy, i) => (
-              <motion.div
-                key={i}
-                className="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-[#EC4899]/50 transition-all"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: caseStudy.delay }}
-              >
-                <div className="text-3xl font-extrabold text-white mb-3">
-                  {formatCurrency(caseStudy.amount)}
-                </div>
-                <p className="text-white/90 mb-4">{caseStudy.description}</p>
-                <div className="h-1 bg-gradient-to-r from-[#EC4899] to-[#F59E0B] w-1/2 rounded-full"></div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        
 
         {/* Comparison Section */}
         <motion.div
@@ -267,7 +221,7 @@ export default function LegalCalculatorSection() {
         >
           <div className="text-center mb-12">
             <motion.h3
-              className="text-3xl md:text-4xl font-bold mb-6"
+              className="text-2xl md:text-3xl font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -277,65 +231,65 @@ export default function LegalCalculatorSection() {
                 Comparación
               </span>
             </motion.h3>
-            <p className="text-white/90 max-w-2xl mx-auto">
+            <p className="text-white/90 text-sm max-w-2xl mx-auto">
               Descubre la diferencia entre nuestro servicio y el método tradicional
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <motion.div
-              className="bg-white/5 p-6 rounded-xl border border-[#F59E0B]/30"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Zap className="h-6 w-6 text-[#F59E0B]" />
-                <h4 className="text-xl font-bold">Con nuestro servicio</h4>
-              </div>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-white/90">
-                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                  <span>Resolución en 48 horas promedio</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/90">
-                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                  <span>95% de éxito en apelaciones</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/90">
-                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                  <span>Proceso 100% digital sin papeleo</span>
-                </li>
-              </ul>
-            </motion.div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div
+                className="bg-white/5 p-6 rounded-xl border border-[#F59E0B]/30"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <Zap className="h-6 w-6 text-[#F59E0B]" />
+                  <h4 className="text-lg font-bold">Con nuestro servicio</h4>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2 text-white/90">
+                    <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
+                    <span className="text-sm">Resolución en 48 horas promedio</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-white/90">
+                    <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
+                    <span className="text-sm">95% de éxito en apelaciones</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-white/90">
+                    <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
+                    <span className="text-sm">Proceso 100% digital sin papeleo</span>
+                  </li>
+                </ul>
+              </motion.div>
 
-            <motion.div
-              className="bg-white/5 p-6 rounded-xl border border-white/10"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Gavel className="h-6 w-6 text-white/70" />
-                <h4 className="text-xl font-bold">Método tradicional</h4>
-              </div>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-white/70">
-                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                  <span>2-6 meses de espera</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/70">
-                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                  <span>Solo 30% de éxito</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/70">
-                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                  <span>Trámites presenciales y burocráticos</span>
-                </li>
-              </ul>
-            </motion.div>
+              <motion.div
+                className="bg-white/5 p-6 rounded-xl border border-white/10"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <Gavel className="h-6 w-6 text-white/70" />
+                  <h4 className="text-lg font-bold">Método tradicional</h4>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2 text-white/70">
+                    <X className="h-5 w-5 text-red-300 flex-shrink-0" />
+                    <span className="text-sm">2-6 meses de espera</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-white/70">
+                    <X className="h-5 w-5 text-red-300 flex-shrink-0" />
+                    <span className="text-sm">Solo 30% de éxito</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-white/70">
+                    <X className="h-5 w-5 text-red-300 flex-shrink-0" />
+                    <span className="text-sm">Trámites presenciales y burocráticos</span>
+                  </li>
+                </ul>
+              </motion.div>
           </div>
         </motion.div>
 
@@ -355,7 +309,7 @@ export default function LegalCalculatorSection() {
             transition={{ duration: 0.5 }}
           >
             <ShieldCheck className="h-5 w-5 text-white" />
-            <span className="font-medium">Conectado con instituciones oficiales</span>
+            <span className="font-medium text-sm">Conectado con instituciones oficiales</span>
           </motion.div>
 
           <div className="relative z-20 flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-10 max-w-6xl mx-auto">

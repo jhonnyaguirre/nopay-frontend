@@ -182,7 +182,7 @@ export const Header = () => {
           </motion.div>
           <div className="relative">
             <motion.span
-              className="text-2xl md:text-3xl font-bold tracking-tight relative z-10"
+              className="text-xl md:text-2xl font-bold tracking-tight relative z-10"
               whileHover={{ scale: 1.05 }}
             >
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -249,7 +249,7 @@ export const Header = () => {
                       <Link
                         key={subItem.name}
                         href={subItem.href}
-                        className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+                        className="flex items-center px-4 py-3 text-xs text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
                         onClick={closeAllMenus}
                       >
                         <span className="mr-3 text-indigo-500">{subItem.icon}</span>
@@ -276,7 +276,7 @@ export const Header = () => {
                   alt="Usuario"
                   className="w-8 h-8 rounded-full shadow-md"
                 />
-                <span className="text-sm font-medium text-gray-700">{userProfile.name}</span>
+                <span className="text-xs font-medium text-gray-700">{userProfile.name}</span>
                 <motion.span
                   animate={{ rotate: openSubMenu === 'user-menu' ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -299,7 +299,7 @@ export const Header = () => {
                         <Link
                           key={item.name}
                           href={item.href}
-                          className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+                          className="flex items-center px-4 py-3 text-xs text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
                           onClick={closeAllMenus}
                         >
                           <span className="mr-3 text-indigo-500">{item.icon}</span>
@@ -309,7 +309,7 @@ export const Header = () => {
                         <button
                           key={item.name}
                           onClick={item.action}
-                          className="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+                          className="w-full flex items-center px-4 py-3 text-xs text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
                         >
                           <span className="mr-3 text-indigo-500">{item.icon}</span>
                           {item.name}
@@ -368,8 +368,8 @@ export const Header = () => {
                       className="w-10 h-10 rounded-full shadow-md"
                     />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{userProfile.name}</p>
-                      <p className="text-xs text-gray-500">Mi cuenta</p>
+                      <p className="text-xs font-medium text-gray-900">{userProfile.name}</p>
+                      <p className="text-[10px] text-gray-500">Mi cuenta</p>
                     </div>
                   </div>
 
@@ -377,7 +377,7 @@ export const Header = () => {
                     onClick={() => toggleSubMenu('user-menu-mobile')}
                     className={`w-full text-left px-3 py-3 rounded-lg flex justify-between items-center ${openSubMenu === 'user-menu-mobile' ? 'text-indigo-600 bg-indigo-50' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
-                    <span className="font-medium">Mi Cuenta</span>
+                    <span className="text-xs font-medium">Mi Cuenta</span>
                     <motion.span
                       animate={{ rotate: openSubMenu === 'user-menu-mobile' ? 180 : 0 }}
                       transition={{ duration: 0.2 }}
@@ -400,7 +400,7 @@ export const Header = () => {
                             <Link
                               key={item.name}
                               href={item.href}
-                              className="flex items-center px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
+                              className="flex items-center px-3 py-2.5 text-xs text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
                               onClick={closeAllMenus}
                             >
                               <span className="mr-3 text-indigo-500">{item.icon}</span>
@@ -410,7 +410,7 @@ export const Header = () => {
                             <button
                               key={item.name}
                               onClick={item.action}
-                              className="w-full flex items-center px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
+                              className="w-full flex items-center px-3 py-2.5 text-xs text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
                             >
                               <span className="mr-3 text-indigo-500">{item.icon}</span>
                               {item.name}
@@ -450,7 +450,7 @@ export const Header = () => {
                           <Link
                             key={subItem.name}
                             href={subItem.href}
-                            className="flex items-center px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
+                            className="flex items-center px-3 py-2.5 text-xs text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
                             onClick={closeAllMenus}
                           >
                             <span className="mr-3 text-indigo-500">{subItem.icon}</span>
