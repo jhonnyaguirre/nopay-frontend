@@ -10,8 +10,8 @@ import NoPayChatLauncher from 'app/resources/NoPayChatLauncher';
 import {
   createSessionNonce,
   getSessionNonce,
-   
-  
+
+
   setWizardToken,
   getWizardToken
 } from '../../lib/seguridad/sessionUtils';
@@ -155,6 +155,16 @@ const AdvancedForm = () => {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState('');
   const [fetchingUserData, setFetchingUserData] = useState(false);
+
+
+  useEffect(() => {
+    // Aquí cambiamos la lógica para permitir mostrar el formulario vacío cuando se quiere ingresar un nuevo vehículo
+    if (mostrarNuevoVehiculo) {
+      setShowVehicleForm(true);
+    } else {
+      setShowVehicleForm(placaValida);
+    }
+  }, [placa, placaValida, mostrarNuevoVehiculo]);
 
   useEffect(() => {
     const token = getWizardToken();
@@ -343,7 +353,7 @@ const AdvancedForm = () => {
             //console.log('Se manda a setear los valores')
             setCedula(data.cedula);
             const secuencialFinal = wizardData?.secuencial?.toString() ?? data.secuencial?.toString() ?? '';
- 
+
 
             setUserData({
 
@@ -360,7 +370,7 @@ const AdvancedForm = () => {
 
             const profile = getUserProfile();
             setUserProfile({ name: data.nombres, photoUrl: profile.photoUrl ? profile.photoUrl : "/images/avatar.png" });
- 
+
 
             setShowUserForm(true);
           }
@@ -1051,7 +1061,16 @@ const AdvancedForm = () => {
                                   cilindraje: '',
                                 });
                                 setPlaca('');
+                                setTimeout(() => {
+                                  const formElement = document.getElementById('nuevo-vehiculo-form');
+                                  if (formElement) formElement.scrollIntoView({ behavior: 'smooth' });
+                                }, 100); // da tiempo a que se renderice
                               }}
+                              disabled={
+                                !showUserForm ||
+                                (!showVehicleForm && !vehiculoSeleccionado)
+                              }
+
                               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-tr from-cyan-400 to-blue-500 text-white rounded-full hover:shadow-lg transition-all text-sm font-medium"
                             >
                               <PlusCircle className="h-4 w-4" />
@@ -1111,6 +1130,7 @@ const AdvancedForm = () => {
                               <AnimatePresence>
                                 {showVehicleForm && (
                                   <motion.div
+                                    id="nuevo-vehiculo-form"
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: 'auto', opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}

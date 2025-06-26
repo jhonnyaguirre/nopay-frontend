@@ -28,3 +28,11 @@ curl http://localhost:8080/hello
 #log
 tail -f app.log
 sudo journalctl -u nopay-backend -f
+
+
+PARA SUBIR LOS CAMBIOS A GIT Y DE MANERA AUTOMATICA SE HAGA DEPLOY EL FRONTEND 
+
+
+git add .
+ .git commit -m "Control de Cambios 25062025"
+git push origin main
