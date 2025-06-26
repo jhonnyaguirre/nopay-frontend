@@ -163,97 +163,97 @@ export default function ServiciosPage() {
   return (
 
     <>
-    <main className="relative min-h-screen w-full bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white overflow-hidden">
-      <svg
-        className="absolute right-0 top-0 w-0 sm:w-1/3 md:w-[45%] lg:w-[55%] h-full object-cover z-0 pointer-events-none"
-        viewBox="0 0 600 800"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="shapeGradient" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#F59E0B" />
-            <stop offset="50%" stopColor="#EC4899" />
-            <stop offset="100%" stopColor="#7F1D1D" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M600,0 C520,120 580,240 480,320 C370,400 440,540 340,640 C240,740 360,840 200,900 C100,940 0,960 0,1080 L600,1080 Z"
-          fill="url(#shapeGradient)"
-        />
-      </svg>
-      <div className="absolute bottom-0 left-0 w-full h-20 sm:h-24 bg-white rounded-t-[100%] z-10"></div>
-
-      <Header />
-      <section className="relative z-10 pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={isMounted ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+      <main className="relative min-h-screen w-full bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white overflow-hidden">
+        <svg
+          className="absolute right-0 top-0 w-0 sm:w-1/3 md:w-[45%] lg:w-[55%] h-full object-cover z-0 pointer-events-none"
+          viewBox="0 0 600 800"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
         >
-          <motion.span 
-            className="inline-block bg-white/10 text-white px-4 py-1 rounded-full text-sm font-medium tracking-wide mb-4"
-            initial={{ opacity: 0 }}
-            animate={isMounted ? { opacity: 1 } : {}}
-            transition={{ delay: 0.2 }}
-          >
-            Servicios Legales
-          </motion.span>
-          <motion.h1 
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4"
-            initial={{ opacity: 0, y: 10 }}
+          <defs>
+            <linearGradient id="shapeGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#F59E0B" />
+              <stop offset="50%" stopColor="#EC4899" />
+              <stop offset="100%" stopColor="#7F1D1D" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M600,0 C520,120 580,240 480,320 C370,400 440,540 340,640 C240,740 360,840 200,900 C100,940 0,960 0,1080 L600,1080 Z"
+            fill="url(#shapeGradient)"
+          />
+        </svg>
+        <div className="absolute bottom-0 left-0 w-full h-20 sm:h-24 bg-white rounded-t-[100%] z-10"></div>
+
+        <Header />
+        <section className="relative z-10 pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
             animate={isMounted ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
           >
-            Conoce todo lo que puedes automatizar
-          </motion.h1>
-          <motion.p 
-            className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto"
+            <motion.span
+              className="inline-block bg-white/10 text-white px-4 py-1 rounded-full text-sm font-medium tracking-wide mb-4"
+              initial={{ opacity: 0 }}
+              animate={isMounted ? { opacity: 1 } : {}}
+              transition={{ delay: 0.2 }}
+            >
+              Servicios Legales
+            </motion.span>
+            <motion.h1
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={isMounted ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.3 }}
+            >
+              Conoce todo lo que puedes automatizar
+            </motion.h1>
+            <motion.p
+              className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={isMounted ? { opacity: 1 } : {}}
+              transition={{ delay: 0.4 }}
+            >
+              Elige entre nuestras soluciones legales inteligentes y comienza a resolver tu caso hoy mismo.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8"
             initial={{ opacity: 0 }}
             animate={isMounted ? { opacity: 1 } : {}}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.5 }}
           >
-            Elige entre nuestras soluciones legales inteligentes y comienza a resolver tu caso hoy mismo.
-          </motion.p>
-        </motion.div>
+            {services.map((service, idx) => (
+              <ServiceCard key={idx} service={service} />
+            ))}
+          </motion.div>
 
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8"
-          initial={{ opacity: 0 }}
-          animate={isMounted ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
-        >
-          {services.map((service, idx) => (
-            <ServiceCard key={idx} service={service} />
-          ))}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isMounted ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.6 }}
-          className="mt-20 bg-white text-[#7F1D1D] rounded-2xl shadow-2xl p-8 sm:p-10 text-center max-w-3xl mx-auto"
-        >
-          <h2 className="text-xl sm:text-2xl font-bold mb-4">¿No encuentras lo que necesitas?</h2>
-          <p className="text-[#7F1D1D]/70 mb-6 text-sm sm:text-base">
-            Contáctanos para una asesoría legal personalizada y encuentra una solución a tu medida.
-          </p>
-          <motion.button 
-            className="bg-gradient-to-r from-[#EC4899] to-[#F59E0B] text-white px-6 py-3 rounded-lg font-semibold"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isMounted ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.6 }}
+            className="mt-20 bg-white text-[#7F1D1D] rounded-2xl shadow-2xl p-8 sm:p-10 text-center max-w-3xl mx-auto"
           >
-            Solicitar Consulta
-          </motion.button>
-        </motion.div>
-      </section>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">¿No encuentras lo que necesitas?</h2>
+            <p className="text-[#7F1D1D]/70 mb-6 text-sm sm:text-base">
+              Contáctanos para una asesoría legal personalizada y encuentra una solución a tu medida.
+            </p>
+            <motion.button
+              className="bg-gradient-to-r from-[#EC4899] to-[#F59E0B] text-white px-6 py-3 rounded-lg font-semibold"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+            >
+              Solicitar Consulta
+            </motion.button>
+          </motion.div>
+        </section>
 
-      <NoPayChatLauncher />
-      
-    </main>
-    <Footer />
+        <NoPayChatLauncher />
+
+      </main>
+      <Footer />
     </>
-    
+
   );
 }

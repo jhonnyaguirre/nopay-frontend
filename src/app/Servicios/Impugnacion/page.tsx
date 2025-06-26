@@ -54,14 +54,14 @@ export default function ImpugnacionIntroPage() {
             className="flex items-center gap-2 bg-white/20 px-4 py-1 rounded-full w-max mb-6"
           >
             <ShieldCheck className="h-5 w-5" />
-            <span className="text-sm font-medium">Solución Legal Certificada</span>
+            <span className="text-xs font-medium">Solución Legal Certificada</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-5xl font-bold leading-tight mb-6"
+            className="text-3xl sm:text-4xl font-bold leading-tight mb-6"
           >
             <span className="bg-gradient-to-r from-white to-[#FDE68A] bg-clip-text text-transparent">
               Impugna tus Multas
@@ -72,7 +72,7 @@ export default function ImpugnacionIntroPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-lg opacity-90 mb-8"
+            className="text-base opacity-90 mb-8"
           >
             Nuestro agente inteligente analiza tu caso y te ayuda a presentar una impugnación efectiva en minutos. Evita pagos innecesarios con nuestra plataforma legal automatizada.
           </motion.p>
@@ -85,7 +85,7 @@ export default function ImpugnacionIntroPage() {
           >
             <Link
               href="/register-form"
-              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-8 py-3 rounded-xl shadow-lg hover:bg-[#EC4899] hover:text-white transition-all group"
+              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-6 py-2 rounded-xl shadow-lg hover:bg-[#EC4899] hover:text-white transition-all group"
             >
               IMPUGNAR AHORA
               <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -175,13 +175,13 @@ export default function ImpugnacionIntroPage() {
                 className="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-md transition-all"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="text-3xl font-bold text-[#7F1D1D]">{item.step}</div>
+                  <div className="text-2xl font-bold text-[#7F1D1D]">{item.step}</div>
                   <div className="p-3 rounded-full bg-white shadow-sm">
                     {item.icon}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
+                <h3 className="text-lg font-bold mb-3 text-gray-800">{item.title}</h3>
+                <p className="text-sm text-gray-600">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -192,7 +192,7 @@ export default function ImpugnacionIntroPage() {
       <section className="py-16 bg-gradient-to-r from-[#7F1D1D] to-[#EC4899]">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <motion.h3
-            className="text-2xl md:text-3xl font-bold mb-6"
+            className="text-xl md:text-2xl font-bold mb-6"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -208,7 +208,7 @@ export default function ImpugnacionIntroPage() {
           >
             <Link
               href="/register-form"
-              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-gray-100 transition-all group text-lg"
+              className="inline-flex items-center justify-center bg-white text-[#7F1D1D] font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-gray-100 transition-all group text-base"
             >
               COMENZAR AHORA
               <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
