@@ -103,7 +103,7 @@ export const Header = () => {
 
     // 🚪 Redirigir a la pantalla inicial
     closeAllMenus();
-    router.push('/');
+    //router.push('/');
   };
 
 

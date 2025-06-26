@@ -156,15 +156,13 @@ const AdvancedForm = () => {
   const [authError, setAuthError] = useState('');
   const [fetchingUserData, setFetchingUserData] = useState(false);
 
-
   useEffect(() => {
-    // Aquí cambiamos la lógica para permitir mostrar el formulario vacío cuando se quiere ingresar un nuevo vehículo
-    if (mostrarNuevoVehiculo) {
-      setShowVehicleForm(true);
-    } else {
+    // Solo actualizar showVehicleForm si NO estamos mostrando un nuevo vehículo
+    if (!mostrarNuevoVehiculo) {
       setShowVehicleForm(placaValida);
     }
   }, [placa, placaValida, mostrarNuevoVehiculo]);
+
 
   useEffect(() => {
     const token = getWizardToken();
@@ -530,7 +528,11 @@ const AdvancedForm = () => {
 
 
   const handleFormSubmit = async (e: React.FormEvent) => {
+
+
     e.preventDefault();
+
+    vehicleData.placa = placa;
 
     if (!userData.telefono) {
       setAuthError('El número de teléfono es obligatorio');
@@ -1043,10 +1045,10 @@ const AdvancedForm = () => {
                           {/* Botón para nuevo vehículo */}
                           <div className="mt-8 flex justify-center">
                             <motion.button
-                              whileHover={{ scale: 1.03 }}
-                              whileTap={{ scale: 0.97 }}
+                              type="button"
                               onClick={() => {
                                 setMostrarNuevoVehiculo(true);
+                                setShowVehicleForm(true); // Forzar mostrar el formulario
                                 setVehiculoSeleccionado('');
                                 setVehicleData({
                                   placa: '',
@@ -1064,18 +1066,16 @@ const AdvancedForm = () => {
                                 setTimeout(() => {
                                   const formElement = document.getElementById('nuevo-vehiculo-form');
                                   if (formElement) formElement.scrollIntoView({ behavior: 'smooth' });
-                                }, 100); // da tiempo a que se renderice
+                                }, 100);
                               }}
-                              disabled={
-                                !showUserForm ||
-                                (!showVehicleForm && !vehiculoSeleccionado)
-                              }
-
                               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-tr from-cyan-400 to-blue-500 text-white rounded-full hover:shadow-lg transition-all text-sm font-medium"
                             >
                               <PlusCircle className="h-4 w-4" />
                               Agregar nuevo vehículo
                             </motion.button>
+
+
+
                           </div>
                         </div>
                       )}
@@ -1127,88 +1127,90 @@ const AdvancedForm = () => {
                               </div>
 
                               {/* Subformulario de Vehículo */}
-                              <AnimatePresence>
-                                {showVehicleForm && (
-                                  <motion.div
-                                    id="nuevo-vehiculo-form"
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.4 }}
-                                    className="mt-8 overflow-hidden"
-                                  >
-                                    <div className="bg-gray-700/50 backdrop-blur-md border border-gray-600 rounded-xl p-6 space-y-6">
-                                      <h3 className="text-lg font-semibold text-white/90 mb-2">Detalles del Vehículo</h3>
+                              {(vehiculosUsuario.length === 0 || mostrarNuevoVehiculo) && (
+                                <AnimatePresence>
+                                  {showVehicleForm && (
+                                    <motion.div
+                                      id="nuevo-vehiculo-form"
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: 'auto', opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      transition={{ duration: 0.4 }}
+                                      className="mt-8 overflow-hidden"
+                                    >
+                                      <div className="bg-gray-700/50 backdrop-blur-md border border-gray-600 rounded-xl p-6 space-y-6">
+                                        <h3 className="text-lg font-semibold text-white/90 mb-2">Detalles del Vehículo</h3>
 
-                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <div>
-                                          <label className="block text-sm font-medium text-white/80 mb-2">Marca</label>
-                                          <input
-                                            type="text"
-                                            value={vehicleData.marca}
-                                            placeholder="Ej. Chevrolet"
-                                            onChange={(e) => setVehicleData({ ...vehicleData, marca: e.target.value })}
-                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                          />
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                          <div>
+                                            <label className="block text-sm font-medium text-white/80 mb-2">Marca</label>
+                                            <input
+                                              type="text"
+                                              value={vehicleData.marca}
+                                              placeholder="Ej. Chevrolet"
+                                              onChange={(e) => setVehicleData({ ...vehicleData, marca: e.target.value })}
+                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-white/80 mb-2">Modelo</label>
+                                            <input
+                                              type="text"
+                                              value={vehicleData.modelo}
+                                              placeholder="Ej: Aveo Emotion"
+                                              onChange={(e) => setVehicleData({ ...vehicleData, modelo: e.target.value })}
+                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                            />
+                                          </div>
                                         </div>
-                                        <div>
-                                          <label className="block text-sm font-medium text-white/80 mb-2">Modelo</label>
-                                          <input
-                                            type="text"
-                                            value={vehicleData.modelo}
-                                            placeholder="Ej: Aveo Emotion"
-                                            onChange={(e) => setVehicleData({ ...vehicleData, modelo: e.target.value })}
-                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                          />
+
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                          <div>
+                                            <label className="block text-sm font-medium text-white/80 mb-2">Año</label>
+                                            <input
+                                              type="number"
+                                              placeholder="Ej: 2020"
+                                              value={vehicleData.año}
+                                              onChange={(e) =>
+                                                setVehicleData({ ...vehicleData, año: e.target.value })
+                                              }
+                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-white/80 mb-2">Color</label>
+                                            <input
+                                              type="text"
+                                              placeholder="Ej. Rojo"
+                                              value={vehicleData.color}
+                                              onChange={(e) =>
+                                                setVehicleData({ ...vehicleData, color: e.target.value })
+                                              }
+                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                            />
+                                          </div>
+                                          <div>
+                                            <label className="block text-sm font-medium text-white/80 mb-2">Tipo</label>
+                                            <select
+                                              value={vehicleData.tipo}
+                                              onChange={(e) =>
+                                                setVehicleData({ ...vehicleData, tipo: e.target.value })
+                                              }
+                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                            >
+                                              <option value="">Seleccionar</option>
+                                              <option value="automovil">Automóvil</option>
+                                              <option value="camioneta">Camioneta</option>
+                                              <option value="motocicleta">Motocicleta</option>
+                                              <option value="comercial">Comercial</option>
+                                            </select>
+                                          </div>
                                         </div>
                                       </div>
-
-                                      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                        <div>
-                                          <label className="block text-sm font-medium text-white/80 mb-2">Año</label>
-                                          <input
-                                            type="number"
-                                            placeholder="Ej: 2020"
-                                            value={vehicleData.año}
-                                            onChange={(e) =>
-                                              setVehicleData({ ...vehicleData, año: e.target.value })
-                                            }
-                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                          />
-                                        </div>
-                                        <div>
-                                          <label className="block text-sm font-medium text-white/80 mb-2">Color</label>
-                                          <input
-                                            type="text"
-                                            placeholder="Ej. Rojo"
-                                            value={vehicleData.color}
-                                            onChange={(e) =>
-                                              setVehicleData({ ...vehicleData, color: e.target.value })
-                                            }
-                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                          />
-                                        </div>
-                                        <div>
-                                          <label className="block text-sm font-medium text-white/80 mb-2">Tipo</label>
-                                          <select
-                                            value={vehicleData.tipo}
-                                            onChange={(e) =>
-                                              setVehicleData({ ...vehicleData, tipo: e.target.value })
-                                            }
-                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                          >
-                                            <option value="">Seleccionar</option>
-                                            <option value="automovil">Automóvil</option>
-                                            <option value="camioneta">Camioneta</option>
-                                            <option value="motocicleta">Motocicleta</option>
-                                            <option value="comercial">Comercial</option>
-                                          </select>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              )}
                             </div>
                           </motion.div>
                         </AnimatePresence>
