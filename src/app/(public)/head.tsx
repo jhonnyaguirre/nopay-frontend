@@ -24,7 +24,7 @@ export default function RootHead() {
       <meta property="og:url" content="https://www.nopaylegal.com/" />
       <meta
         property="og:image"
-        content="https://www.nopaylegal.com/images/seo/home-og.jpg"
+        content="https://www.nopaylegal.com/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75"
       />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
@@ -39,7 +39,7 @@ export default function RootHead() {
       />
       <meta
         name="twitter:image"
-        content="https://www.nopaylegal.com/images/seo/home-og.jpg"
+        content="https://www.nopaylegal.com/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75"
       />
 
       {/* ─────  JSON-LD (Organization + WebSite + SearchAction + FAQ)  ───── */}
@@ -52,7 +52,7 @@ export default function RootHead() {
               "@type": "Organization",
               name: "NoPay",
               url: "https://www.nopaylegal.com",
-              logo: "https://www.nopaylegal.com/images/logo.png",
+              logo: "https://www.nopaylegal.com/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75",
               sameAs: [
                 "https://www.facebook.com/nopaylegal",
                 "https://www.instagram.com/nopaylegal",

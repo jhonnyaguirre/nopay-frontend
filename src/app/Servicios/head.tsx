@@ -22,7 +22,7 @@ export default function ServiciosHead() {
       <meta property="og:url" content="https://www.nopaylegal.com/Servicios" />
       <meta
         property="og:image"
-        content="https://www.nopaylegal.com/images/seo/servicios.jpg"
+        content="https://www.nopaylegal.com/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75"
       />
 
       {/* ─────────────────────  TWITTER CARD  ───────────────────── */}
@@ -34,7 +34,7 @@ export default function ServiciosHead() {
       />
       <meta
         name="twitter:image"
-        content="https://www.nopaylegal.com/images/seo/servicios.jpg"
+        content="https://www.nopaylegal.com/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75"
       />
 
       {/* ─────────────────────  JSON-LD (Organization + Service + Breadcrumb + FAQ)  ───────────────────── */}
@@ -47,7 +47,7 @@ export default function ServiciosHead() {
             "@type": "Organization",
             name: "NoPay",
             url: "https://www.nopaylegal.com",
-            logo: "https://www.nopaylegal.com/images/logo.png",
+            logo: "https://www.nopaylegal.com/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75",
             sameAs: [
               "https://www.facebook.com/nopaylegal",
               "https://www.instagram.com/nopaylegal",
