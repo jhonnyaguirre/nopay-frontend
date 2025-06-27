@@ -10,7 +10,7 @@ const PoliticasPrivacidad = () => {
   return (
      
     
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6 py-8 bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6 py-8 bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-[80%]">
     <Header />
       <motion.div
         initial={{ opacity: 0, y: 40 }}

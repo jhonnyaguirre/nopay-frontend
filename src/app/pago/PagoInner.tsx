@@ -66,7 +66,7 @@ export default function PagoInner() {
   }, [checkoutId]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-[#F0F4F8] to-[#E0E7ED] px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-[#F0F4F8] to-[#E0E7ED] px-4 py-10 text-[80%]">
       <Header />
       <div className="h-14" />   {/* ← espacio en blanco de 2rem */}
       {/* Barra superior de seguridad con gradiente de NoPay */}

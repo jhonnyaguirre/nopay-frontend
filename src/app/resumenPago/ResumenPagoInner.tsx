@@ -168,7 +168,7 @@ export default function ResumenPago() {
     return (
 
 
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-[#F0F4F8] to-[#E0E7ED] px-4 py-10">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-[#F0F4F8] to-[#E0E7ED] px-4 py-10 transform origin-top scale-[0.70]">
             <Header />
             <div className="h-14" />   {/* ← espacio en blanco de 2rem */}
             {/* Barra superior de seguridad */}

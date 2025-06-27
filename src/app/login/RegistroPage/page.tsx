@@ -28,8 +28,8 @@ export default function RegistroPage() {
 
   // Tu site key de reCAPTCHA v2 en .env.local:
   const siteKey = "6LenEFgrAAAAALsYEiNa3MvQUd92SA92u5t8TUGx";
-  
-                
+
+
 
   // Para verificar en consola que esté correctamente cargada:
 
@@ -116,7 +116,7 @@ export default function RegistroPage() {
   };
 
   return (
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 text-[80%]">
       {/* Panel izquierdo: Información (solo en pantallas ≥ lg) */}
       <section className="hidden lg:flex flex-col justify-between px-16 py-10 bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white">
         <div>
