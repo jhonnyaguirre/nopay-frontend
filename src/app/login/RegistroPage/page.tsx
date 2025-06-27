@@ -27,7 +27,7 @@ export default function RegistroPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Tu site key de reCAPTCHA v2 en .env.local:
-  const siteKey = "6LenEFgrAAAAALsYEiNa3MvQUd92SA92u5t8TUGx";
+  const siteKey = "6LfWeScrAAAAAA1_P74ST8cqqdeFfbiqIICOZCGD";
   
                 
 
