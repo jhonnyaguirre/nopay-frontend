@@ -40,7 +40,7 @@ export default function SeguridadDatosPage() {
     <>
       <Header />
 
-      <main className="min-h-screen bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] pt-20 pb-20 flex items-center justify-center px-4 transform origin-top scale-[0.80]">
+      <main className="min-h-screen bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] pt-20 pb-20 flex items-center justify-center px-4">
         {showCard && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}

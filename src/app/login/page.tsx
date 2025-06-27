@@ -240,9 +240,8 @@ export default function LoginPage() {
   };
 
   return (
-     
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white text-[80%]">
-
+    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white">
+      
       {/* Panel informativo */}
       <section className="hidden lg:flex flex-col items-start justify-between px-16 py-10 min-h-screen bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white">
         {/* Membrete superior con logo */}

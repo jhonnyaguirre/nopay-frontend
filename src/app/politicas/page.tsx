@@ -53,7 +53,7 @@ const TermsAndConditions = () => {
   };
 
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-br from-[#F8FAFC] to-[#EFF6FF] overflow-hidden text-[80%]">
+    <main className="min-h-screen flex flex-col bg-gradient-to-br from-[#F8FAFC] to-[#EFF6FF] overflow-hidden">
       <Header />
 
       <section className="flex-1 flex items-center justify-center px-4 py-16 relative">

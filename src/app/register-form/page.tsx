@@ -694,7 +694,7 @@ const AdvancedForm = () => {
   return (
     <>
       <BackgroundWithSideSvg>
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pb-28 transform origin-top scale-[0.70]">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pb-28">
           <Header />
 
           <main className="flex-grow py-8 px-4 sm:px-6 lg:px-8">

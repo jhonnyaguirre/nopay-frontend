@@ -51,8 +51,7 @@ export default function ResultadoPagoInner() {
   }, [resourcePath]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-[#F0F4F8] to-[#E0E7ED] px-4 py-10 text-[80%]">
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-[#F0F4F8] to-[#E0E7ED] px-4 py-10">
       <Header />
       <div className="h-14" />   {/* ← espacio en blanco de 2rem */}
       <div className="max-w-2xl mx-auto bg-gradient-to-r from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white text-sm font-medium py-2 px-4 rounded-t-xl flex items-center justify-center gap-2">
@@ -95,10 +94,10 @@ export default function ResultadoPagoInner() {
 
         <div
           className={`p-6 rounded-lg mb-8 text-center ${loading
-            ? "bg-blue-50"
-            : pagoExitoso
-              ? "bg-green-50"
-              : "bg-red-50"
+              ? "bg-blue-50"
+              : pagoExitoso
+                ? "bg-green-50"
+                : "bg-red-50"
             }`}
         >
           {loading ? (
@@ -128,8 +127,8 @@ export default function ResultadoPagoInner() {
           <button
             onClick={() => router.push("/Usuario/ServiciosPorUsuario")}
             className={`flex-1 ${pagoExitoso
-              ? "bg-white border border-gray-300 text-gray-800 hover:bg-gray-50"
-              : "bg-blue-600 hover:bg-blue-700 text-white"
+                ? "bg-white border border-gray-300 text-gray-800 hover:bg-gray-50"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
               } px-6 py-3 rounded-lg font-medium transition-colors`}
           >
             {pagoExitoso ? "Volver al inicio" : "Intentar nuevamente"}

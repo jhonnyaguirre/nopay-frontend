@@ -502,7 +502,7 @@ const ImpugnacionWizard = () => {
   return (
     <>
       <BackgroundWithSideSvg>
-        <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8 transform origin-top scale-[0.70]">
+        <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
           <Header />
           <div className="h-20" />
 

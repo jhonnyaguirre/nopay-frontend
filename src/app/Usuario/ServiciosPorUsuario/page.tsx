@@ -666,7 +666,7 @@ export default function ServiciosDashboard() {
             <Header />
             <div className="h-20" />
 
-            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 transform origin-top scale-[0.80]">
+            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* ───────────────────────────────────────────────────────────── Panel Principal ───────────────────────────────────────────────────────────── */}
                 <div className="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-6 mb-8">
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-[#EC4899] mb-4">
