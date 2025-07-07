@@ -1,40 +1,90 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SendHorizonal, Sparkles, X } from 'lucide-react';
+import { SendHorizonal, Sparkles, X, Bot, User, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { getWizardToken } from 'lib/seguridad/sessionUtils';
 import { API_BASE_URL } from 'config/apiConfig';
 
-export default function NoPayChat({ visible, onClose }: { visible: boolean; onClose: () => void }) {
-  const [pregunta, setPregunta] = useState('');
-  const [respuesta, setRespuesta] = useState('');
-  const [cargando, setCargando] = useState(false);
+type Message = {
+  id: string;
+  content: string;
+  isUser: boolean;
+  timestamp: Date;
+};
 
-  const enviarPregunta = async () => {
-    if (!pregunta.trim()) return;
-    setCargando(true);
+export default function NoPayChat({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  // Efecto para mensaje de bienvenida
+  useEffect(() => {
+    if (visible && messages.length === 0) {
+      const welcomeMessage = {
+        id: 'welcome',
+        content: '¡Hola! Soy tu asistente legal NoPay. ¿En qué puedo ayudarte hoy con tu multa de tránsito?',
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
+    }
+  }, [visible]);
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+
+    // Agregar mensaje del usuario
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: input,
+      isUser: true,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setLoading(true);
+    setIsTyping(true);
 
     try {
-      const token = getWizardToken(); // Obtener el token actual
-      console.log('Se manda a llamar');
+      const token = getWizardToken();
       const res = await fetch(`${API_BASE_URL}/nopaychat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ pregunta })
+        body: JSON.stringify({ pregunta: input })
       });
 
       const data = await res.json();
-      setRespuesta(data.respuesta || 'No se pudo obtener respuesta.');
+
+      // Simular typing effect
+      setTimeout(() => {
+        const botMessage: Message = {
+          id: Date.now().toString(),
+          content: data.respuesta || 'No se pudo obtener respuesta.',
+          isUser: false,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+      }, 1500);
+
     } catch (error) {
-      setRespuesta('Error al conectar con el asistente NoPay.');
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        content: 'Error al conectar con el asistente NoPay.',
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      setIsTyping(false);
     } finally {
-      setCargando(false);
-      setPregunta(''); // Limpiamos el texto de la pregunta después de enviar
+      setLoading(false);
     }
   };
 
@@ -45,87 +95,141 @@ export default function NoPayChat({ visible, onClose }: { visible: boolean; onCl
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
         >
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="bg-gradient-to-br from-[#7F1D1D] via-[#9F1D7F] to-[#B45309] text-white p-6 rounded-2xl shadow-2xl max-w-2xl w-full relative flex flex-col h-[80vh]"
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative flex flex-col h-[80vh] border border-gray-200 overflow-hidden"
           >
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 p-1 rounded-full bg-white/10 hover:bg-white/20 transition"
-              aria-label="Cerrar chat"
-            >
-              <X className="w-6 h-6 text-white" />
-            </button>
-
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="p-2 bg-white/10 rounded-full">
-                <Sparkles className="w-6 h-6 text-yellow-300" />
+            {/* Header */}
+            <div className="bg-gradient-to-r from-pink-600 to-pink-500 p-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <motion.div
+                  animate={{
+                    rotate: [0, 10, -10, 0],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ repeat: Infinity, repeatDelay: 5, duration: 1.5 }}
+                  className="p-2 bg-white/20 rounded-full"
+                >
+                  <Bot className="w-6 h-6 text-white" />
+                </motion.div>
+                <div>
+                  <h1 className="text-xl font-bold text-white">Asistente Legal NoPay</h1>
+                  <p className="text-xs text-white/80">
+                    {isTyping ? 'Escribiendo...' : 'En línea'}
+                  </p>
+                </div>
               </div>
-              <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-100">
-                Asistente Legal NoPay
-              </h1>
+              <button
+                onClick={onClose}
+                className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition"
+                aria-label="Cerrar chat"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2">
-              {respuesta && (
+            {/* Chat Container */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-50 to-gray-100">
+              {messages.map((message) => (
                 <motion.div
+                  key={message.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl"
+                  transition={{ duration: 0.3 }}
+                  className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 mt-1 w-8 h-8 rounded-full bg-yellow-400/10 flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-yellow-300" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-semibold text-yellow-300 mb-2">NOPAY Responde:</p>
-                      <div className="prose prose-invert prose-sm max-w-none text-white/90">
-                        <ReactMarkdown>{respuesta}</ReactMarkdown>
+                  <div
+                    className={`max-w-[80%] rounded-2xl p-4 ${message.isUser
+                      ? 'bg-pink-600 text-white rounded-br-none'
+                      : 'bg-white border border-gray-200 rounded-bl-none shadow-sm'
+                      }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      {!message.isUser && (
+                        <div className="flex-shrink-0 mt-1 p-1.5 bg-pink-100 rounded-full">
+                          <Bot className="w-4 h-4 text-pink-600" />
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        {!message.isUser && (
+                          <p className="text-xs font-semibold text-pink-600 mb-1">
+                            NOPAY Asistente
+                          </p>
+                        )}
+                        <div className={`prose text-black ${message.isUser ? 'prose-invert' : ''} prose-sm max-w-none`}>
+                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
+                        <p className="text-xs mt-1 opacity-70">
+                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
                       </div>
+                      {message.isUser && (
+                        <div className="flex-shrink-0 mt-1 p-1.5 bg-pink-700 rounded-full">
+                          <User className="w-4 h-4 text-white" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-none p-3 shadow-sm">
+                    <div className="flex space-x-2">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </motion.div>
               )}
             </div>
 
-            <div className="mt-auto space-y-4">
-              <textarea
-                rows={3}
-                className="w-full p-4 rounded-xl border-2 border-white/20 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:border-yellow-300 focus:ring-2 focus:ring-yellow-300/30 transition-all resize-none"
-                placeholder="Describe tu situación legal aquí..."
-                value={pregunta}
-                onChange={(e) => setPregunta(e.target.value)}
-                disabled={cargando}
-              />
-
-              <button
-                onClick={enviarPregunta}
-                disabled={cargando || !pregunta.trim()}
-                className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${cargando || !pregunta.trim()
-                  ? 'bg-gray-500/30 cursor-not-allowed'
-                  : 'bg-yellow-400 hover:bg-yellow-300 text-gray-900 shadow-lg hover:shadow-yellow-400/20'
-                  }`}
-              >
-                {cargando ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Consultando...
-                  </>
-                ) : (
-                  <>
+            {/* Input Area */}
+            <div className="border-t border-gray-200 bg-white p-4">
+              <div className="relative">
+                <textarea
+                  rows={2}
+                  className="w-full p-4 pr-12 rounded-xl border border-gray-200 bg-gray-50 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all resize-none"
+                  placeholder="Describe tu situación legal aquí..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={loading}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      sendMessage();
+                    }
+                  }}
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={loading || !input.trim()}
+                  className={`absolute right-3 bottom-3 p-2 rounded-full ${loading || !input.trim()
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-pink-600 text-white hover:bg-pink-700 shadow-md hover:shadow-lg transition-all'
+                    }`}
+                >
+                  {loading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
                     <SendHorizonal className="w-5 h-5" />
-                    Consultar a NoPay
-                  </>
-                )}
-              </button>
+                  )}
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                NoPay Legal protege tu privacidad. Las consultas son confidenciales.
+              </p>
             </div>
           </motion.div>
         </motion.div>

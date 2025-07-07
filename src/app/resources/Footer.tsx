@@ -9,11 +9,11 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { href: "/about", label: "Sobre Nosotros" },
-    { href: "/how-it-works", label: "Cómo Funciona" },
-    { href: "/success-cases", label: "Casos de Éxito" },
-    { href: "/pricing", label: "Precios" },
-    { href: "/blog", label: "Blog Legal" },
+    { href: "/Servicios/Impugnacion", label: "Apelación de Multas de Tránsito" },
+    { href: "/Servicios/Matriculacion", label: "Matriculación vehicular" },
+    { href: "/Servicios/Marcas", label: "Registra tu Marca" },
+    { href: "/Servicios/PermisoSalida", label: "Permisos de Salida para Menores" },
+    { href: "/Servicios", label: "Explora todos los servicios" },
   ];
 
   const legalLinks = [

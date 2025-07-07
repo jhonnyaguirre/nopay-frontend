@@ -156,12 +156,19 @@ const AdvancedForm = () => {
   const [authError, setAuthError] = useState('');
   const [fetchingUserData, setFetchingUserData] = useState(false);
 
+  //  useEffect(() => {
+  // Solo actualizar showVehicleForm si NO estamos mostrando un nuevo vehículo
+  //  if (!mostrarNuevoVehiculo) {
+  //  setShowVehicleForm(placaValida);
+  //}
+  //}, [placa, placaValida, mostrarNuevoVehiculo]);
+
+  // Reemplaza ambos useEffect por este:
   useEffect(() => {
-    // Solo actualizar showVehicleForm si NO estamos mostrando un nuevo vehículo
-    if (!mostrarNuevoVehiculo) {
-      setShowVehicleForm(placaValida);
-    }
-  }, [placa, placaValida, mostrarNuevoVehiculo]);
+    // Si estoy en "nuevo vehículo" o la placa es válida, muestro el form
+    setShowVehicleForm(mostrarNuevoVehiculo || placaValida);
+  }, [mostrarNuevoVehiculo, placaValida]);
+
 
 
   useEffect(() => {
@@ -290,6 +297,8 @@ const AdvancedForm = () => {
 
             const data = await response.json();
 
+
+
             // ✅ Sobrescribir cédula si viene desde backend (cuando se consultó por correo)
             if (data.cedula && data.cedula !== cedula) {
               //console.log("🆕 Cédula corregida desde backend yyyy:", data.cedula);
@@ -303,19 +312,28 @@ const AdvancedForm = () => {
 
               setCedulaBloqueada(true); // 🔒 Bloquear edición
 
-
             }
 
-
-
-
             const wizardData = SessionWizardData.obtener();
+            console.log("el email con el que hace login es : " + wizardData?.cedula);
+            console.log("el email que devuelve desde el backend es : " + data.email);
+
+            if (
+              data.email.length > 3 &&
+              (wizardData?.cedula ?? '').toUpperCase() !== data.email.toUpperCase()
+            ) {
+              setErrorMsg("La cédula consultada corresponde a otra cuenta.");
+              setCedula("");
+              return;
+            }
+
             if (wizardData?.cedula) {
               setCedula(wizardData.cedula.trim());
               //console.log("📥 Se cargó cédula desde wizardData: " + wizardData.cedula + " - " + cedula);
             }
 
             let emailFinall = "";
+
 
             if (data.email) {
               emailFinall = data.email;
@@ -522,9 +540,6 @@ const AdvancedForm = () => {
   
     */
 
-  useEffect(() => {
-    setShowVehicleForm(placaValida);
-  }, [placa, placaValida]);
 
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -586,6 +601,7 @@ const AdvancedForm = () => {
 
 
     try {
+      console.time('⏳ regusuarios POST');
       const response = await fetch(`${API_BASE_URL}/regusuarios`, {
         method: 'POST',
         headers: {
@@ -601,9 +617,9 @@ const AdvancedForm = () => {
       }
 
       const result = await response.json();
+      console.timeEnd('⏳ regusuarios POST');
 
-
-
+      console.time('⏳ crearSesionJWT');
 
       const nonce = createSessionNonce(); // 🔐 Genera y guarda la clave única de sesión
       //console.log("sessionNonce generado:", nonce);
@@ -619,7 +635,7 @@ const AdvancedForm = () => {
 
 
       setNotificationMessage(result.mensaje || 'El primer paso está listo');
-
+      console.timeEnd('⏳ crearSesionJWT');
 
       //setShowNotification(true);
 

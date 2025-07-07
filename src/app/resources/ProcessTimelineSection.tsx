@@ -41,7 +41,7 @@ export class ProcessTimelineSection extends React.Component<ProcessTimelineSecti
       {
         step: "2",
         title: "Carga Inteligente",
-        description: "Sube tu multa con nuestro sistema OCR avanzado",
+        description: "Selecciona el servicio y danos el contexto",
         icon: <UploadIcon />,
         color: "from-[#E63946] to-[#FF6B6B]",
         position: "right"

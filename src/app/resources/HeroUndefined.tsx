@@ -68,7 +68,7 @@ const EliteLegalHeroFusion = () => {
             variants={textVariants}
           >
             <BadgeCheck className="h-4 w-4 md:h-5 md:w-5" />
-            <span className="font-medium">Automatiza tu defensa, con estilo NoPay</span>
+            <span className="font-medium">¿Te detiene el papeleo? Dale “play” a tu defensa legal</span>
             <ChevronRight className="h-3 w-3 md:h-4 md:w-4" />
           </motion.div>
 
@@ -85,9 +85,9 @@ const EliteLegalHeroFusion = () => {
               custom={2}
               variants={textVariants}
             >
-              Resuelve tus trámites legales
+              Tu defensa legal en piloto automático, 
               <br />
-              <span className="text-white">sin perder tiempo</span>
+              <span className="text-white">lista en 5 minutos</span>
             </motion.h1>
           </motion.div>
 
@@ -96,7 +96,7 @@ const EliteLegalHeroFusion = () => {
             custom={3}
             variants={textVariants}
           >
-            Apelaciones, reclamos y más en minutos. Nuestra <span className="text-[#F59E0B] font-bold">tecnología</span> acelera el proceso mientras nuestros <span className="text-[#F59E0B] font-extrabold">abogados expertos</span> garantizan los resultados.
+            Desde multas y apelaciones hasta reclamos complejos: Nuestra <span className="text-[#F59E0B] font-bold">plataforma combina IA</span> con abogados de élite  <span className="text-[#F59E0B] font-extrabold">para que nunca </span> vuelvas a perder un día en trámites.
           </motion.p>
 
           <motion.div
@@ -129,12 +129,12 @@ const EliteLegalHeroFusion = () => {
           >
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-white text-xs md:text-sm font-medium">
               {[
-                "Procesos optimizados",
-                "Seguridad legal",
-                "Efectividad validada",
-                "Abogados especialistas",
-                "Transparencia absoluta",
-                "Asistencia en línea"
+                "🔍 Seguimiento 24/7",
+                "🤖 Automatización inteligente",
+                "💼 Abogados de élite",
+                "🔒 Transparencia total",
+                "🤝 Soporte ilimitado",
+                "💻 Asistencia en línea"
               ].map((b, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <Check className="h-4 w-4 md:h-5 md:w-5 text-[#F59E0B]" />
@@ -151,12 +151,12 @@ const EliteLegalHeroFusion = () => {
             transition={{ delay: 0.7, duration: 0.8 }}
           >
             {[
-              { icon: <BarChart2 className="h-6 w-6 md:h-8 md:w-8" />, title: "Procesos optimizados", desc: "Automatización guiada por datos reales", color: "from-[#F59E0B] to-[#EC4899]" },
-              { icon: <Shield className="h-6 w-6 md:h-8 md:w-8" />, title: "Seguridad Legal", desc: "Protección total y respaldo jurídico", color: "from-[#EC4899] to-[#7F1D1D]" },
-              { icon: <Check className="h-6 w-6 md:h-8 md:w-8" />, title: "Efectividad Validada", desc: "Trámites con resultados comprobables", color: "from-[#7F1D1D] to-[#F59E0B]" },
-              { icon: <Users className="h-6 w-6 md:h-8 md:w-8" />, title: "Abogados Especialistas", desc: "Supervisión profesional en cada caso", color: "from-[#EC4899] to-[#F59E0B]" },
-              { icon: <FileText className="h-6 w-6 md:h-8 md:w-8" />, title: "Transparencia Absoluta", desc: "Sigue tu proceso paso a paso", color: "from-[#7F1D1D] to-[#EC4899]" },
-              { icon: <Headphones className="h-6 w-6 md:h-8 md:w-8" />, title: "Asistencia en línea", desc: "Soporte sin burocracia, cuando lo necesitas", color: "from-[#F59E0B] to-[#7F1D1D]" }
+              { icon: <BarChart2 className="h-6 w-6 md:h-8 md:w-8" />, title: "Automatización inteligente", desc: "Acelera tus trámites con tecnología de punta.", color: "from-[#F59E0B] to-[#EC4899]" },
+              { icon: <Shield className="h-6 w-6 md:h-8 md:w-8" />, title: "Respaldo jurídico integral", desc: "Protección legal precisa en cada etapa.", color: "from-[#EC4899] to-[#7F1D1D]" },
+              { icon: <Check className="h-6 w-6 md:h-8 md:w-8" />, title: "Eficacia demostrada", desc: "Casos resueltos con resultados medibles.", color: "from-[#7F1D1D] to-[#F59E0B]" },
+              { icon: <Users className="h-6 w-6 md:h-8 md:w-8" />, title: "Abogados Especialistas", desc: "Abogados con experiencia específica en tu tipo de trámite.", color: "from-[#EC4899] to-[#F59E0B]" },
+              { icon: <FileText className="h-6 w-6 md:h-8 md:w-8" />, title: "Transparencia Absoluta", desc: "Visibilidad completa de tu expediente en tiempo real.", color: "from-[#7F1D1D] to-[#EC4899]" },
+              { icon: <Headphones className="h-6 w-6 md:h-8 md:w-8" />, title: "Soporte inmediato", desc: "Atención legal 24/7 sin demoras ni burocracia.", color: "from-[#F59E0B] to-[#7F1D1D]" }
             ].map((item, i) => (
               <motion.div
                 key={i}
