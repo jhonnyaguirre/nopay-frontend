@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Hash } from "lucide-react";
+
 import {
   ChevronRight,
   ChevronLeft,
@@ -14,6 +16,16 @@ import {
   X,
   Radar,
   UploadCloud,
+  AlertTriangle,
+  List,
+  Shield,
+  Calendar,
+  Paperclip,
+  Car,
+  Globe,
+  Building,
+  MapPin,
+  ClipboardList,
 } from "lucide-react";
 import { createWorker, RecognizeResult } from "tesseract.js";
 import { Header } from "app/resources/Header";
@@ -39,6 +51,7 @@ import TermsModal from "app/resources/TermsModal";
 import BackgroundWithSideSvg from "app/resources/BackgroundWithSideSvg";
 import CargaDocumentosServicio from "app/documentos/page";
 import { API_BASE_URL } from "config/apiConfig";
+import { getWizardToken } from "lib/seguridad/sessionUtils";
 
 // ** Importamos el componente de carga de documentos como un nuevo step **
 
@@ -135,9 +148,9 @@ const ImpugnacionWizard = () => {
   >([]);
 
   const [formData, setFormData] = useState({
-    direccion: "Av. Ordóñez Laso",
-    provincia: "Azuay",
-    ciudad: "Cuenca",
+    direccion: "",
+    provincia: "",
+    ciudad: "",
     tipoMulta: "",
     agencia: "",
     fechaCitacion: "",
@@ -148,6 +161,27 @@ const ImpugnacionWizard = () => {
     aceptaTerminos: false,
     ocrResults: [] as OCRResult[],
   });
+
+  type SummaryItemProps = {
+    label: string;
+    value?: React.ReactNode;
+  };
+
+  function SummaryItem({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
+    return (
+      <div className="bg-white p-3 rounded-lg border border-gray-200">
+        <div className="flex items-center gap-2 mb-1">
+          {icon && <div className="text-gray-400">{icon}</div>}
+          <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+            {label}
+          </span>
+        </div>
+        <p className="text-gray-800 font-medium">
+          {value || <span className="text-gray-400 italic">No especificado</span>}
+        </p>
+      </div>
+    );
+  }
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -192,12 +226,21 @@ const ImpugnacionWizard = () => {
     const fetchVehiculos = async () => {
       if (!secuencialUser) return;
       try {
-        const token = localStorage.getItem("authToken");
-        if (!token) return;
+        //const token = localStorage.getItem("authToken");
+        const token = getWizardToken();
+        if (!token) {
+
+          return;
+        }
+
+
         const res = await fetch(`${API_BASE_URL}/vehiculos/${secuencialUser}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!res.ok) throw new Error("Error al obtener vehículos");
+        if (!res.ok) console.log("NOOO HA PASADO CORRECTAMENTE TODO");
+        //throw new Error("Error al obtener vehículos");
+
+        console.log("HA PASADO CORRECTAMENTE TODO" + token);
         const data = await res.json();
         setVehiculosUsuario(data);
       } catch (err) {
@@ -411,7 +454,7 @@ const ImpugnacionWizard = () => {
   // —————————————————————————————
   const handleFinalSubmit = async () => {
     try {
-      const token = localStorage.getItem("authToken");
+      const token = getWizardToken();
       const formDataToSend = new FormData();
       formDataToSend.append("secuencial_usuario", secuencialUser);
       formDataToSend.append("secuencial_vehiculo", formData.vehiculo);
@@ -467,7 +510,7 @@ const ImpugnacionWizard = () => {
         item: descripcionVehiculo,
         cedula: cedula,
         //servicio: "Impugnación de Multas de Tránsito",
-         servicio: data.cabeceraId?.toString() || "",
+        servicio: data.cabeceraId?.toString() || "",
         valor: data.costo?.toString() || "20.00",
       });
       //console.log("se pasa a redirigir la multa par que sea pagado")
@@ -582,7 +625,10 @@ const ImpugnacionWizard = () => {
                         <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
                           <User className="w-7 h-7 text-white drop-shadow-sm" />
                         </div>
-                        <h2 className="text-3xl font-bold text-white drop-shadow-lg">Datos de Domicilio</h2>
+                        <h2 className="text-3xl font-bold text-white drop-shadow-lg">Ubicación de la infracción</h2>
+                        <p className="text-base text-gray-200 mt-2">
+                          Ingresa la dirección y ciudad donde ocurrió la infracción de tránsito.
+                        </p>
                       </div>
 
                       {/* ✦ Contenido del Formulario */}
@@ -599,7 +645,7 @@ const ImpugnacionWizard = () => {
                               onChange={(e) =>
                                 setFormData({ ...formData, direccion: e.target.value })
                               }
-                              placeholder="Av. Ordóñez Laso"
+                              placeholder="Está es la dirección de tú Domicilio"
                               className={`w-full px-5 py-3 bg-gray-800/70 text-white placeholder-gray-400 border ${errors.direccion ? "border-red-500" : "border-gray-600"
                                 } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition`}
                             />
@@ -779,6 +825,9 @@ const ImpugnacionWizard = () => {
                           <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
                             Detalles de la Multa
                           </h2>
+                          <p className="text-base text-gray-200 mt-2">
+                            Completa los datos principales de la multa que deseas impugnar. Utiliza la información de tu papeleta o notificación.
+                          </p>
                         </div>
 
                         {/* ✦ Contenido del Formulario */}
@@ -787,6 +836,7 @@ const ImpugnacionWizard = () => {
                           <div>
                             <label className="block text-sm font-medium text-gray-300 mb-2">
                               ¿Cómo fue multado?
+
                             </label>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                               {["Radar Móvil", "Radar Fijo", "Policía", "Otro"].map((tipo) => (
@@ -1007,7 +1057,7 @@ const ImpugnacionWizard = () => {
                           <FileText className="w-6 h-6 text-white drop-shadow-sm" />
                         </div>
                         <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
-                          Documentación Requerida
+                          Sube la foto de tu multa
                         </h2>
                         {/* -------- BOTÓN QUE ABRE EL MODAL DE /documentos ---------- */}
                         <Button
@@ -1289,78 +1339,130 @@ const ImpugnacionWizard = () => {
                         </h2>
                       </div>
 
-                      <div className="bg-gray-700/50 rounded-2xl p-6 sm:p-8 mb-8 border border-gray-600 shadow-xl backdrop-blur-md">
-                        <h3 className="text-base sm:text-lg font-semibold text-cyan-400 mb-6 uppercase tracking-wider">
-                          Resumen de la Impugnación
-                        </h3>
-                        <div className="space-y-8 text-white/90 text-sm">
-                          <section>
-                            <h4 className="text-white/70 font-bold uppercase mb-3 text-sm">
-                              Datos Personales
-                            </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                              <div>
-                                <p className="text-white/60 text-xs">Dirección</p>
-                                <p className="font-medium">{formData.direccion}</p>
-                              </div>
-                              <div>
-                                <p className="text-white/60 text-xs">Provincia</p>
-                                <p className="font-medium">{formData.provincia}</p>
-                              </div>
-                              <div>
-                                <p className="text-white/60 text-xs">Ciudad</p>
-                                <p className="font-medium">{formData.ciudad}</p>
-                              </div>
+                      <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
+                        {/* Efecto decorativo */}
+                        <div className="absolute -top-6 -left-6 w-16 h-16 bg-cyan-500 opacity-10 rounded-full blur-xl pointer-events-none" />
+
+                        {/* Header */}
+                        <div className="flex items-center gap-4 mb-8 pb-6 border-b border-cyan-600/20">
+                          <div className="p-3 bg-cyan-500/10 rounded-lg backdrop-blur-sm border border-cyan-400/20">
+                            <ClipboardList className="h-6 w-6 text-cyan-400" />
+                          </div>
+                          <h3 className="text-xl sm:text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-md">
+                            Resumen de la Impugnación
+                          </h3>
+                        </div>
+
+                        {/* Contenido */}
+                        <div className="space-y-8 text-white/90">
+
+                          {/* Datos Personales */}
+                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                            <div className="flex items-center gap-3 mb-4">
+                              <User className="h-5 w-5 text-cyan-400" />
+                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                Datos Personales
+                              </h4>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <SummaryItem
+                                label="Dirección"
+                                value={formData.direccion}
+                                icon={<MapPin className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Provincia"
+                                value={formData.provincia}
+                                icon={<Globe className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Ciudad"
+                                value={formData.ciudad}
+                                icon={<Building className="h-4 w-4 text-cyan-400/80" />}
+                              />
                             </div>
                           </section>
-                          <section>
-                            <h4 className="text-white/70 font-bold uppercase mb-3 text-sm">
-                              Detalles de la Multa
-                            </h4>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                              <div>
-                                <p className="text-white/60 text-xs">Tipo</p>
-                                <p className="font-medium">{formData.tipoMulta}</p>
-                              </div>
-                              <div>
-                                <p className="text-white/60 text-xs">Agencia</p>
-                                <p className="font-medium">{formData.agencia}</p>
-                              </div>
-                              <div>
-                                <p className="text-white/60 text-xs">Fecha</p>
-                                <p className="font-medium">{formData.fechaCitacion}</p>
-                              </div>
-                              <div>
-                                <p className="text-white/60 text-xs">N° Citación</p>
-                                <p className="font-medium">{formData.numeroCitacion}</p>
-                              </div>
+
+                          {/* Detalles de la Multa */}
+                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                            <div className="flex items-center gap-3 mb-4">
+                              <AlertTriangle className="h-5 w-5 text-cyan-400" />
+                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                Detalles de la Multa
+                              </h4>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                              <SummaryItem
+                                label="Tipo"
+                                value={formData.tipoMulta}
+                                icon={<List className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Agencia"
+                                value={formData.agencia}
+                                icon={<Shield className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Fecha"
+                                value={formData.fechaCitacion}
+                                icon={<Calendar className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="N° Citación"
+                                value={formData.numeroCitacion}
+                                icon={<Hash className="h-4 w-4 text-cyan-400/80" />}
+                              />
                             </div>
                           </section>
-                          <section>
-                            <h4 className="text-white/70 font-bold uppercase mb-3 text-sm">
-                              Documentación Adjunta
-                            </h4>
-                            <p className="text-white font-semibold text-sm mb-3">
-                              Vehículo:{" "}
-                              <span className="text-cyan-400">
-                                {vehiculosUsuario.find(
-                                  (v) => v.secuencial.toString() === formData.vehiculo
-                                )?.descripcion || "No seleccionado"}
-                              </span>
-                            </p>
-                            <div className="flex flex-wrap gap-3">
-                              {formData.archivos.map((file, index) => (
-                                <span
-                                  key={index}
-                                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-cyan-400/20 text-cyan-400 shadow-sm"
-                                >
-                                  {file.name}
+
+                          {/* Documentación Adjunta */}
+                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                            <div className="flex items-center gap-3 mb-4">
+                              <Paperclip className="h-5 w-5 text-cyan-400" />
+                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                Documentación Adjunta
+                              </h4>
+                            </div>
+
+                            <div className="mb-5">
+                              <div className="inline-flex items-center bg-[#1e293b]/70 px-4 py-2 rounded-lg border border-cyan-500/30 shadow-sm">
+                                <Car className="h-5 w-5 text-cyan-400 mr-2" />
+                                <span className="text-cyan-200 font-medium">Vehículo:</span>
+                                <span className="text-white ml-2 font-semibold">
+                                  {vehiculosUsuario.find((v) => v.secuencial.toString() === formData.vehiculo)?.descripcion || "No seleccionado"}
                                 </span>
-                              ))}
+                              </div>
+                            </div>
+
+                            <div className="space-y-3">
+                              <h5 className="text-sm font-medium text-cyan-300/80">Archivos adjuntos:</h5>
+                              {formData.archivos.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                  {formData.archivos.map((file, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-center bg-[#1e293b]/70 p-3 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
+                                    >
+                                      <FileText className="h-5 w-5 text-cyan-400/80 mr-3" />
+                                      <span className="text-sm font-medium text-white/90 truncate">
+                                        {file.name}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <div className="text-center py-4 bg-[#1e293b]/40 rounded-lg">
+                                  <span className="text-cyan-400/50 text-sm">No hay archivos adjuntos</span>
+                                </div>
+                              )}
                             </div>
                           </section>
                         </div>
                       </div>
+
+
+
+
 
                       <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
                         <input
@@ -1477,7 +1579,7 @@ const ImpugnacionWizard = () => {
                           </div>
                         </div>
                       </div>
-                     
+
                     </motion.div>
                   </div>
 

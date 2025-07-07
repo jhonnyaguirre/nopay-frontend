@@ -152,6 +152,8 @@ const AdvancedForm = () => {
     cmv: '',
     cilindraje: ''
   });
+
+
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState('');
   const [fetchingUserData, setFetchingUserData] = useState(false);
@@ -173,13 +175,14 @@ const AdvancedForm = () => {
 
   useEffect(() => {
     const token = getWizardToken();
-    //console.log("TOKEN ENVIADO para 1:", token); // <-- Asegúrate de que aquí hay un valor válido
+    console.log("TOKEN ENVIADO para 1:", token); // <-- Asegúrate de que aquí hay un valor válido
     try {
       if (!token) {
-        ////console.warn("⛔ No hay token. Redirigiendo a login...");
+        console.warn("⛔ No hay token. Redirigiendo a login...");
         setLoading(false); // 👈 Agrega esto
         router.replace('/login');
       } else {
+        console.log("TOKEN ENVIADO para 2:", token);
         setLoading(false); // 👈 Y si hay token, también termina el loading
       }
     } catch (error) {
@@ -236,7 +239,7 @@ const AdvancedForm = () => {
         try {
 
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+          const wizardData = SessionWizardData.obtener();
 
           //console.log('este valor es antes que llame a función de cedula: ' + cedula)
           const esCedulaValida = true;
@@ -260,10 +263,10 @@ const AdvancedForm = () => {
 
           if (esCedulaValida) {
 
-            const url = `${API_BASE_URL}/usuariosid/${cedula}`;
+            const url = `${API_BASE_URL}/usuariosid/${cedula ? cedula : wizardData?.cedula.trim()}`;
 
 
-            //console.log("🔍 Consultando URL:", url);
+            console.log("🔍 Consultando URL:", url);
 
             let response: Response;
             try {
@@ -314,7 +317,7 @@ const AdvancedForm = () => {
 
             }
 
-            const wizardData = SessionWizardData.obtener();
+
             console.log("el email con el que hace login es : " + wizardData?.cedula);
             console.log("el email que devuelve desde el backend es : " + data.email);
 
@@ -322,9 +325,9 @@ const AdvancedForm = () => {
               data.email.length > 3 &&
               (wizardData?.cedula ?? '').toUpperCase() !== data.email.toUpperCase()
             ) {
-              setErrorMsg("La cédula consultada corresponde a otra cuenta.");
-              setCedula("");
-              return;
+              // setErrorMsg("La cédula consultada corresponde a otra cuenta.");
+              // setCedula("");
+              //return;
             }
 
             if (wizardData?.cedula) {
@@ -369,6 +372,17 @@ const AdvancedForm = () => {
             //console.log('Se manda a setear los valores')
             setCedula(data.cedula);
             const secuencialFinal = wizardData?.secuencial?.toString() ?? data.secuencial?.toString() ?? '';
+
+            console.log("se ha guardado los datos de manera correcta nclutendo secuencial: " + data.secuencial);
+
+            SessionWizardData.guardar({
+              cedula,
+              secuencial: data.secuencial,
+              nombres: data.nombres,
+              apellidos: data.apellidos,
+            });
+
+            console.log("se ha guardado los datos de manera correcta nclutendo secuencial: " + data.secuencial);
 
 
             setUserData({

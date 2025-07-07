@@ -364,10 +364,10 @@ export default function CargaDocumentosServicio() {
           >
             <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
               <FileCheck2 className="text-cyan-400" />
-              Documentación Requerida
+              Documentación Requerida (Obligatoria)
             </h1>
             <p className="text-gray-300">
-              Sube los documentos necesarios para continuar con tu proceso
+              Sube los documentos solicitados para continuar con tu impugnación en línea
             </p>
 
             <div className="mt-6 bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
@@ -378,8 +378,8 @@ export default function CargaDocumentosServicio() {
                 <div>
                   <h3 className="font-medium text-white">Importante</h3>
                   <p className="text-sm text-gray-300 mt-1">
-                    Asegúrate de que los documentos sean claros y estén completos.
-                    Formatos aceptados: JPG, PNG, PDF (Máx. 5MB)
+                    Asegúrate de cargar imágenes o archivos claros, legibles y completos.
+                    Formatos permitidos: JPG, PNG, PDF  ·  Tamaño máximo: 5 MB por archivo
                   </p>
                 </div>
               </div>

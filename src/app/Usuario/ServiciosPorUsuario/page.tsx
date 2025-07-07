@@ -110,7 +110,10 @@ export default function ServiciosDashboard() {
 
     // Obtener secuencial del usuario
     useEffect(() => {
+        console.log("se ha mandado a consutlar los datos"); 
         const wizardData = SessionWizardData.obtener();
+        console.log("se ha mandado a consutlar los datos" + wizardData?.secuencial?.toString()); 
+        setSecuencialUser(wizardData?.secuencial?.toString() ?? "");
         if (wizardData) {
             setSecuencialUser(wizardData.secuencial?.toString() || "");
         } else {
@@ -120,20 +123,23 @@ export default function ServiciosDashboard() {
 
     // Fetch de servicios para llenar la lista principal
     useEffect(() => {
-        if (!secuencialUser) return;
+        //if (!secuencialUser) return;
 
+        
         const fetchServicios = async () => {
             try {
                 setLoading(true);
                 const token = getWizardToken();
+                const wizardData = SessionWizardData.obtener();
                 if (!token) {
                     setError("Token de autenticación no disponible");
                     setLoading(false);
                     return;
                 }
-
+                const url = `${API_BASE_URL}/servicios-requeridos/${secuencialUser?secuencialUser:wizardData?.secuencial?.toString()}`;
+                console.log("🔍 Consultando URL:", url + ", tken: " + token);
                 const res = await fetch(
-                    `${API_BASE_URL}/servicios-requeridos/${secuencialUser}`,
+                    `${API_BASE_URL}/servicios-requeridos/${secuencialUser?secuencialUser:wizardData?.secuencial?.toString()}`,
                     {
                         method: "GET",
                         headers: { Authorization: `Bearer ${token}` },
@@ -210,6 +216,9 @@ export default function ServiciosDashboard() {
             try {
                 const token = getWizardToken();
                 //console.log("EMPEZAMOS");
+                const url = `${API_BASE_URL}/servicios-requeridos/${expandedRow}/detalle`;
+                console.log("🔍 Consultando URL:", url + ", tken: " + token);
+
                 const res = await fetch(
                     `${API_BASE_URL}/servicios-requeridos/${expandedRow}/detalle`,
                     {
