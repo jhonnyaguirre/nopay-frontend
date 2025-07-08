@@ -22,6 +22,7 @@ import DoNotPayAnimation from 'app/resources/NotPayAnimation';
 import NoPayPreloader from 'app/resources/NoPayPreloader';
 import UnderConstructionPage from 'app/resources/build';
 import ServicesCarousel from 'app/resources/carrousel';
+import NoPayBackground from 'components/NoPayBackground';
 
 
 
@@ -40,6 +41,7 @@ export default function HomePage() {
 
 
     >
+       
       {/* Navbar */}
       <Header />
        

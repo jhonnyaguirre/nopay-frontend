@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import NoPayBackground from 'components/NoPayBackground';
 
 interface TimelineItem {
   step: string;
@@ -151,6 +152,7 @@ export class ProcessTimelineSection extends React.Component<ProcessTimelineSecti
 
     return (
       <section className={`py-16 sm:py-24 md:py-32 relative backdrop-blur-sm bg-white ${className}`}>
+         
         <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center mb-12 sm:mb-16 md:mb-20"

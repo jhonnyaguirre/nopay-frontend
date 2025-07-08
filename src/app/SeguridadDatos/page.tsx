@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Ca
 import { Button } from 'components/ui/Button';
 import { Header } from 'app/resources/Header';
 import Footer from 'app/resources/Footer';
+import NoPayBackground from 'components/NoPayBackground';
 
 export default function SeguridadDatosPage() {
   const { scrollYProgress } = useScroll();
@@ -16,23 +17,7 @@ export default function SeguridadDatosPage() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const router = useRouter();
-
-  // Partículas de fondo mejoradas
-  const particleCount = isMobile ? 15 : isTablet ? 25 : 40;
-  const particles = useMemo(
-    () =>
-      Array.from({ length: particleCount }).map(() => ({
-        size: Math.random() * (isMobile ? 4 : 8) + 3,
-        xPct: Math.random() * 100,
-        yPct: Math.random() * 100,
-        xOffset: Math.random() * (isMobile ? 40 : 120) - (isMobile ? 20 : 60),
-        yOffset: Math.random() * (isMobile ? 40 : 120) - (isMobile ? 20 : 60),
-        duration: Math.random() * 25 + 15,
-        delay: Math.random() * 5,
-        opacity: Math.random() * 0.3 + 0.1,
-      })),
-    [particleCount, isMobile]
-  );
+ 
 
   // Características premium para panel izquierdo
   const premiumFeatures = [
@@ -82,50 +67,11 @@ export default function SeguridadDatosPage() {
   return (
     <div className="relative flex flex-col min-h-screen bg-gradient-to-br from-[#f8f9fa] to-[#e9ecef] overflow-x-hidden">
       {/* Fondo de partículas */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {particles.map((p, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-pink-100"
-            style={{ width: p.size, height: p.size, left: `${p.xPct}%`, top: `${p.yPct}%`, opacity: p.opacity }}
-            initial={{ y: 0, x: 0 }}
-            animate={{ y: [0, p.yOffset, 0], x: [0, p.xOffset, 0], opacity: [p.opacity, p.opacity * 0.5, p.opacity] }}
-            transition={{ delay: p.delay, duration: p.duration, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
-          />
-        ))}
-      </div>
+      <NoPayBackground />
+    
 
       {/* Blobs SVG decorativos */}
-      {!isMobile && (
-        <>
-          <motion.div
-            className="absolute -left-20 top-1/4 w-48 h-48 opacity-20"
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 120, ease: 'linear' }}
-          >
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fill="#7F1D1D"
-                d="M45.2,-58.3C58.3,-48.1,68.5,-32.8,71.9,-15.8C75.3,1.2,71.9,20,60.6,35.2C49.3,50.4,30.2,62,8.9,68.3C-12.4,74.6,-35.9,75.6,-52.5,64.9C-69.1,54.2,-78.8,31.8,-78.9,9.9C-79,-12,-69.5,-33.6,-54.3,-44.6C-39.1,-55.6,-18.3,-56.1,0.5,-56.6C19.3,-57.1,38.6,-57.6,45.2,-58.3Z"
-                transform="translate(100 100)"
-              />
-            </svg>
-          </motion.div>
-          <motion.div
-            className="absolute -right-20 bottom-1/4 w-48 h-48 opacity-20"
-            animate={{ rotate: -360 }}
-            transition={{ repeat: Infinity, duration: 100, ease: 'linear' }}
-          >
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fill="#EC4899"
-                d="M42.5,-54.1C55.1,-45.5,65.3,-32.6,68.4,-17.8C71.5,-3,67.5,13.7,58.3,28.3C49.1,42.9,34.7,55.4,17.4,63.9C0,72.4,-20.3,76.9,-36.5,69.1C-52.7,61.3,-64.7,41.2,-68.8,20.5C-72.9,-0.2,-69.1,-21.5,-57.7,-36.3C-46.3,-51.1,-27.3,-59.4,-8.8,-55.1C9.7,-50.8,19.4,-33.9,42.5,-54.1Z"
-                transform="translate(100 100)"
-              />
-            </svg>
-          </motion.div>
-        </>
-      )}
+       
 
       <Header />
 

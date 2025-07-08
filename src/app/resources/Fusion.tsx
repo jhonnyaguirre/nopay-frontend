@@ -1,5 +1,6 @@
 'use client';
 
+import NoPayBackground from 'components/NoPayBackground';
 import { motion } from 'framer-motion';
 import { ChevronRight, ShieldCheck, Zap, Gavel, Check, X, PiggyBank, Calculator, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
@@ -37,7 +38,7 @@ export default function LegalCalculatorSection() {
 
   return (
     <section className="relative py-16 md:py-24 min-h-screen bg-gradient-to-br from-[#FFD76F] via-[#F46C1D] to-[#D82465] text-white overflow-hidden">
-
+      <NoPayBackground />
 
       <svg
         className="absolute right-0 top-0 w-0 sm:w-1/3 md:w-[45%] lg:w-[55%] h-full object-cover z-0 pointer-events-none"
@@ -209,7 +210,7 @@ export default function LegalCalculatorSection() {
         </motion.div>
 
         {/* Case Studies */}
-        
+
 
         {/* Comparison Section */}
         <motion.div
@@ -236,60 +237,60 @@ export default function LegalCalculatorSection() {
             </p>
           </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div
-                className="bg-white/5 p-6 rounded-xl border border-[#F59E0B]/30"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Zap className="h-6 w-6 text-[#F59E0B]" />
-                  <h4 className="text-lg font-bold">Con nuestro servicio</h4>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-2 text-white/90">
-                    <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                    <span className="text-sm">Resolución en 48 horas promedio</span>
-                  </li>
-                  <li className="flex items-start gap-2 text-white/90">
-                    <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                    <span className="text-sm">95% de éxito en apelaciones</span>
-                  </li>
-                  <li className="flex items-start gap-2 text-white/90">
-                    <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                    <span className="text-sm">Proceso 100% digital sin papeleo</span>
-                  </li>
-                </ul>
-              </motion.div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div
+              className="bg-white/5 p-6 rounded-xl border border-[#F59E0B]/30"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Zap className="h-6 w-6 text-[#F59E0B]" />
+                <h4 className="text-lg font-bold">Con nuestro servicio</h4>
+              </div>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2 text-white/90">
+                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
+                  <span className="text-sm">Resolución en 48 horas promedio</span>
+                </li>
+                <li className="flex items-start gap-2 text-white/90">
+                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
+                  <span className="text-sm">95% de éxito en apelaciones</span>
+                </li>
+                <li className="flex items-start gap-2 text-white/90">
+                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
+                  <span className="text-sm">Proceso 100% digital sin papeleo</span>
+                </li>
+              </ul>
+            </motion.div>
 
-              <motion.div
-                className="bg-white/5 p-6 rounded-xl border border-white/10"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Gavel className="h-6 w-6 text-white/70" />
-                  <h4 className="text-lg font-bold">Método tradicional</h4>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-2 text-white/70">
-                    <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                    <span className="text-sm">2-6 meses de espera</span>
-                  </li>
-                  <li className="flex items-start gap-2 text-white/70">
-                    <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                    <span className="text-sm">Solo 30% de éxito</span>
-                  </li>
-                  <li className="flex items-start gap-2 text-white/70">
-                    <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                    <span className="text-sm">Trámites presenciales y burocráticos</span>
-                  </li>
-                </ul>
-              </motion.div>
+            <motion.div
+              className="bg-white/5 p-6 rounded-xl border border-white/10"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Gavel className="h-6 w-6 text-white/70" />
+                <h4 className="text-lg font-bold">Método tradicional</h4>
+              </div>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2 text-white/70">
+                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
+                  <span className="text-sm">2-6 meses de espera</span>
+                </li>
+                <li className="flex items-start gap-2 text-white/70">
+                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
+                  <span className="text-sm">Solo 30% de éxito</span>
+                </li>
+                <li className="flex items-start gap-2 text-white/70">
+                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
+                  <span className="text-sm">Trámites presenciales y burocráticos</span>
+                </li>
+              </ul>
+            </motion.div>
           </div>
         </motion.div>
 
