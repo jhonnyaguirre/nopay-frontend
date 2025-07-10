@@ -25,7 +25,7 @@ export default function NoPayChat({ visible, onClose }: { visible: boolean; onCl
     if (visible && messages.length === 0) {
       const welcomeMessage = {
         id: 'welcome',
-        content: '¡Hola! Soy tu asistente legal NoPay. ¿En qué puedo ayudarte hoy con tu multa de tránsito?',
+        content: '¡Hola! Soy tu asistente legal NoPay. ¿En qué proceso legal te puedo asistir?',
         isUser: false,
         timestamp: new Date()
       };

@@ -1072,7 +1072,7 @@ const ImpugnacionWizard = () => {
                         {/* Campo Vehículo */}
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Vehículo
+                            Seleccionar Vehículo
                           </label>
                           <div className="flex gap-2 items-center">
                             <select

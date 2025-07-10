@@ -982,7 +982,7 @@ const AdvancedForm = () => {
                       {/* Sección de Vehículo - Diseño Mejorado */}
                       {vehiculosUsuario.length > 0 && (
                         <div>
-                          <h3 className="text-lg font-semibold text-white/90 mb-4">Mis Vehículos Registrados</h3>
+                          <h3 className="text-lg font-semibold text-white/90 mb-4">Selecciona uno de tus Vehículos Registrados</h3>
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
                             {vehiculosUsuario.map((vehiculo, index) => (
                               <motion.div

@@ -146,10 +146,10 @@ export default function ServiciosDashboard() {
                     }
                 );
 
-                //console.log(`SE LLAMA A CONSUMIR ${API_BASE_URL}/servicios-requeridos/${secuencialUser}`);
+                console.log(`SE LLAMó A CONSUMIR ${API_BASE_URL}/servicios-requeridos/${secuencialUser}`);
 
                 if (res.status === 401 || res.status === 403) {
-                    setError("El tiempo de sesión ha expirado. Serás redirigido al inicio.");
+                    setError("El tiempo de sesión ha expiradoasdasdas. Serás redirigido al inicio.");
                     setLoading(false);
                     setTimeout(() => router.replace("/"), 3000);
                     return;
