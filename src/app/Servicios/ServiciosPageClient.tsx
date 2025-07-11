@@ -16,9 +16,9 @@ interface Service {
   description: string;
   href: string;
   color: string;
-  icon: LucideIcon;
+  icon: React.ReactElement; // <--- CORRECTO
 }
-
+ 
 
 const services = [
   {
@@ -161,10 +161,8 @@ const TechCard: React.FC<TechCardProps> = ({ service, index }) => {
               }}
               transition={{ duration: 0.21 }}
             >
-              {React.cloneElement(service.icon as React.ReactElement, {
-                className: "h-5 w-5 md:h-6 md:w-6",
-                style: { color: service.color }
-              })}
+              {service.icon}
+            
             </motion.div>
 
             {/* Título */}
