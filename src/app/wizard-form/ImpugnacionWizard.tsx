@@ -1492,6 +1492,17 @@ const ImpugnacionWizard = () => {
                           )}
                         </div>
 
+
+                        <input
+                          id="terms2"
+                          name="terms2"
+                          type="checkbox"
+                          checked={formData.aceptaTerminos}
+                          onChange={(e) =>
+                            setFormData({ ...formData, aceptaTerminos: e.target.checked })
+                          }
+                          className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
+                        />
                         <div className="ml-4 text-white text-sm">
                           <label htmlFor="terms" className="font-medium leading-snug">
                             Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
