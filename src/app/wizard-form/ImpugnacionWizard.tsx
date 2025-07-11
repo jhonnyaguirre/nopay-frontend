@@ -1491,6 +1491,25 @@ const ImpugnacionWizard = () => {
                             </p>
                           )}
                         </div>
+
+                        <div className="ml-4 text-white text-sm">
+                          <label htmlFor="terms" className="font-medium leading-snug">
+                            Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
+                          </label>
+                          <p className="text-white/60 mt-1">
+                            Al enviar este formulario, acepto los términos, condiciones de
+                            impugnación y autorización de tratamiento de datos personales
+                            conforme a la normativa vigente.
+                          </p>
+                          {errors.aceptaTerminos && (
+                            <p className="mt-3 text-red-400 text-sm flex items-center">
+                              <AlertCircle className="mr-1 w-4 h-4" />
+                              {errors.aceptaTerminos}
+                            </p>
+                          )}
+                        </div>
+
+
                       </div>
                     </div>
                   </div>
