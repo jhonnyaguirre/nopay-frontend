@@ -186,7 +186,8 @@ const ImpugnacionWizard = () => {
   };
 
 
-  function generarPromptIA({
+
+  function generarPromptIAOptimista({
     nombre,
     cedula,
     direccion,
@@ -200,50 +201,77 @@ const ImpugnacionWizard = () => {
     archivos,
     ocrResults,
   }: GenerarPromptIAInput): string {
-    let prompt = `Analiza la siguiente impugnación de multa de tránsito y sugiere argumentos o inconsistencias:\n\n`;
-    prompt += `**Datos del usuario:**\n`;
-    prompt += `- Nombre: ${nombre}\n`;
-    prompt += `- Cédula: ${cedula}\n\n`;
-    prompt += `**Datos de la infracción:**\n`;
-    prompt += `- Dirección: ${direccion}\n`;
-    prompt += `- Provincia: ${provincia}\n`;
-    prompt += `- Ciudad: ${ciudad}\n`;
-    prompt += `- Tipo de Multa: ${tipoMulta}\n`;
-    prompt += `- Agencia: ${agencia}\n`;
-    prompt += `- Fecha de Citación: ${fechaCitacion}\n`;
-    prompt += `- Número de Citación: ${numeroCitacion}\n`;
-    prompt += `- Vehículo: ${vehiculoDescripcion}\n\n`;
+    const hoy = new Date().toISOString().split("T")[0];
 
-    prompt += `**Documentos adjuntos:**\n`;
+    let prompt = `Fecha de análisis: ${hoy}\n\n`;
+    prompt += `Estimada IA Analítica Jurídica:\n\n`;
+    prompt += `Por favor realiza un análisis exhaustivo, optimista y proactivo de esta impugnación de multa de tránsito en Ecuador, bajo los siguientes principios:\n`;
+    prompt += `1. ENFOQUE POSITIVO: Siempre buscar soluciones antes que obstáculos\n`;
+    prompt += `2. CREATIVIDAD JURÍDICA: Identificar todas las vías legales posibles\n`;
+    prompt += `3. RIGOR TÉCNICO: Basado estrictamente en el COIP y Ley de Tránsito ecuatoriana\n`;
+    prompt += `4. PERSPECTIVA HUMANA: Comunicar con empatía y esperanza fundada\n\n`;
+
+    prompt += `**DATOS DEL CIUDADANO**\n`;
+    prompt += `• Nombre: ${nombre}\n`;
+    prompt += `• Cédula: ${cedula}\n`;
+    prompt += `• Ubicación: ${direccion}, ${ciudad}, ${provincia}\n\n`;
+
+    prompt += `**DETALLES DE LA CITACIÓN**\n`;
+    prompt += `• Tipo de sanción: ${tipoMulta}\n`;
+    prompt += `• Agencia emisora: ${agencia}\n`;
+    prompt += `• Fecha citación: ${fechaCitacion} (Días transcurridos: ${Math.floor((new Date().getTime() - new Date(fechaCitacion).getTime()) / (1000 * 60 * 60 * 24))})\n`;
+    prompt += `• N° citación: ${numeroCitacion}\n`;
+    prompt += `• Vehículo implicado: ${vehiculoDescripcion}\n\n`;
+
+    prompt += `**DOCUMENTACIÓN ADJUNTA**\n`;
     archivos.forEach((file: FileWithPreview, idx: number) => {
-      prompt += `  - Archivo #${idx + 1}: ${file.name}\n`;
+      prompt += `▶ Documento ${idx + 1}: ${file.name}\n`;
       if (ocrResults[idx]) {
         const confidence = ocrResults[idx].confidence ?? 0;
-        prompt += `    OCR Reconocido (confianza ${confidence}%):\n`;
-        prompt += `    "${ocrResults[idx].text.trim().replace(/\n+/g, ' ')}"\n`;
+        prompt += `   ▸ Reconocimiento OCR (${confidence}% confianza):\n`;
+        prompt += `   "${ocrResults[idx].text.trim().replace(/\n+/g, ' ')}"\n`;
         if (confidence < 70) {
-          prompt += `    Nota: Aunque la imagen tiene baja confiabilidad, el abogado experto validará si es útil o no la imagen cargada.\n`;
+          prompt += `   ▸ Observación: La calidad de imagen sugiere revisión manual - ¡Oportunidad para complementar con mejor evidencia!\n`;
         }
-        if (ocrResults[idx].extractedData && Object.keys(ocrResults[idx].extractedData).length > 0) {
-          prompt += `    Datos estructurados extraídos: ${JSON.stringify(ocrResults[idx].extractedData)}\n`;
+        if (ocrResults[idx].extractedData) {
+          prompt += `   ▸ Datos estructurados: ${JSON.stringify(ocrResults[idx].extractedData)}\n`;
         }
       }
     });
 
-    // -------- INSTRUCCIÓN MEJORADA PARA LA IA --------
-    prompt += `
-**Notas importantes para el análisis:**
-- Da máxima prioridad a los datos tipeados o seleccionados por el usuario sobre los reconocidos por OCR.
-- Realiza un análisis exhaustivo del campo "fecha de citación". Calcula los días transcurridos desde esa fecha hasta hoy y determina si la impugnación es viable dentro del plazo legal. 
-- Si han pasado más días de los permitidos para una impugnación exitosa, informa en tu análisis que se deberán aplicar estrategias alternativas y que el porcentaje de éxito disminuye por este motivo.
-- Si el OCR de algún documento adjunto tiene baja confiabilidad, señala que la imagen podría ser poco útil y requiere revisión manual.
-- Basa tu análisis y recomendaciones principalmente en los valores aportados por el usuario y resume los hallazgos de manera clara, profesional y específica. 
-`;
+    prompt += `\n**INSTRUCCIONES ESPECÍFICAS PARA EL ANÁLISIS OPTIMISTA**\n`;
+    prompt += `1. VALIDEZ DE PLAZOS:\n`;
+    prompt += `   • Calcular exactamente los días desde ${fechaCitacion} hasta ${hoy}\n`;
+    prompt += `   • Si hubiera prescripción, sugerir estrategias excepcionales contempladas en el Art. 27 LOTTT\n\n`;
+
+    prompt += `2. ANÁLISIS DE FORMALIDADES:\n`;
+    prompt += `   • Verificar posibles nulidades por vicios de forma (Art. 139 COIP)\n`;
+    prompt += `   • Buscar inconsistencias en datos esenciales (placa, lugar, fecha)\n\n`;
+
+    prompt += `3. ESTRATEGIAS POSITIVAS:\n`;
+    prompt += `   • Proponer alternativas como:\n`;
+    prompt += `     - Recursos de reposición (Art. 266 COIP)\n`;
+    prompt += `     - Mediación previa (Art. 33 LOTTT)\n`;
+    prompt += `     - Convenios de pago diferenciado\n`;
+    prompt += `     - Beneficios por pronto pago\n\n`;
+
+    prompt += `4. COMUNICACIÓN:\n`;
+    prompt += `   • Usar lenguaje motivador ej: "Existen vías para..."\n`;
+    prompt += `   • Destacar oportunidades antes que limitaciones\n`;
+    prompt += `   • Incluir fundamentos legales específicos para cada sugerencia\n\n`;
+
+    prompt += `**FORMATO DE RESPUESTA IDEAL**\n`;
+    prompt += `1. Diagnóstico inicial (enfoque positivo)\n`;
+    prompt += `2. Puntos favorables detectados\n`;
+    prompt += `3. Posibles objeciones técnicas\n`;
+    prompt += `4. 3-5 estrategias viables ordenadas por probabilidad de éxito\n`;
+    prompt += `5. Fundamentación legal para cada opción\n`;
+    prompt += `6. Pasos siguientes recomendados\n\n`;
+
+    prompt += `Recuerda: ¡Ningún caso es imposible! Siempre existe al menos una alternativa jurídica válida.`;
 
     return prompt;
   }
-
-
 
 
   function SummaryItem({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
@@ -552,7 +580,7 @@ const ImpugnacionWizard = () => {
       const vehiculoDescripcion = vehiculoObj ? vehiculoObj.descripcion : "No seleccionado";
 
       // Llama a la función para construir el prompt
-      const promptIA = generarPromptIA({
+      const promptIA = generarPromptIAOptimista({
         nombre: usuarioSeleccionado,
         cedula: cedulaSeleccionada,
         direccion: formData.direccion,
@@ -566,7 +594,6 @@ const ImpugnacionWizard = () => {
         archivos: formData.archivos,
         ocrResults: formData.ocrResults,
       });
-
       // Imprime el prompt en consola
       console.log("----- PROMPT IA ARMADO -----\n", promptIA);
 
@@ -1595,8 +1622,8 @@ const ImpugnacionWizard = () => {
                           </section>
                         </div>
                       </div>
- 
- 
+
+
 
                       <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
                         <input
