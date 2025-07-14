@@ -266,10 +266,11 @@ const AdvancedForm = () => {
             const url = `${API_BASE_URL}/usuariosid/${cedula ? cedula : wizardData?.cedula.trim()}`;
 
 
-            console.log("🔍 Consultando URL:", url);
+            console.log("🔍 Consultando URL ACA:", url);
 
             let response: Response;
             try {
+              console.log("🔍 CONCHA 1");
               response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -278,7 +279,8 @@ const AdvancedForm = () => {
                 }
               });
             } catch (err: any) {
-              ////console.error("❌ Error de red o fetch fallido:", err.message || err);
+              console.log("🔍 CONCHA 2");
+              //console.error("❌ Error de red o fetch fallido:", err.message || err);
               if (!emailRegex.test(cedula))
                 setCedula("");
 
@@ -290,21 +292,33 @@ const AdvancedForm = () => {
 
             if (!response.ok) {
               if (response.status === 403) {
+                console.log("🔍 CONCHA 3");
                 //console.warn("🔐 Acceso denegado (403). Probablemente token inválido o expirado.");
                 return;
               } else {
+                console.log("🔍 CONCHA 4");
                 ////console.error(`⚠️ Error HTTP inesperado: ${response.status}`);
-                return;
+                //return;
               }
             }
 
-            const data = await response.json();
+            console.log('VAMOSSS');
+            let data: any = { cedula: '', email: '' }; // la declaras afuera
 
 
+            console.log("entra a cambiar 000");
+            data = await response.json();
+            console.log("🔍 Datos del response:", data);
+
+            if (!data.cedula) {
+              // Si ocurre error parseando JSON, data sigue como { cedula: '', email: '' }
+              console.log("entra a cambiar 111");
+              data = { cedula: '', email: '' };
+            }
 
             // ✅ Sobrescribir cédula si viene desde backend (cuando se consultó por correo)
             if (data.cedula && data.cedula !== cedula) {
-              //console.log("🆕 Cédula corregida desde backend yyyy:", data.cedula);
+              console.log("🆕 Cédula corregida desde backend yyyy:", data.cedula);
               //console.log("🆕 secuencial desde backend:", data.secuencial);
 
               //console.log(" usaurio cargados:", data);
@@ -319,33 +333,42 @@ const AdvancedForm = () => {
 
 
             console.log("el email con el que hace login es : " + wizardData?.cedula);
-            console.log("el email que devuelve desde el backend es : " + data.email);
+            // console.log("el email que devuelve desde el backend es : " + data.email?data.email:'');
 
-            if (
-              data.email.length > 3 &&
-              (wizardData?.cedula ?? '').toUpperCase() !== data.email.toUpperCase()
-            ) {
-              // setErrorMsg("La cédula consultada corresponde a otra cuenta.");
-              // setCedula("");
-              //return;
-            }
+            if (data.eamil)
+              if (
+
+                data.email.length > 3 &&
+                (wizardData?.cedula ?? '').toUpperCase() !== data.email.toUpperCase()
+              ) {
+
+                console.log("entra a7");
+                // setErrorMsg("La cédula consultada corresponde a otra cuenta.");
+                // setCedula("");
+                //return;
+              }
+
+            console.log("entra a8");
 
             if (wizardData?.cedula) {
               setCedula(wizardData.cedula.trim());
-              //console.log("📥 Se cargó cédula desde wizardData: " + wizardData.cedula + " - " + cedula);
+              console.log("📥 Se cargó cédula desde wizardData: " + wizardData.cedula + " - " + cedula);
             }
 
             let emailFinall = "";
-
+            console.log("entra a1");
 
             if (data.email) {
+              console.log("entra a2");
               emailFinall = data.email;
             } else if (wizardData?.cedula) {
+              console.log("entra a3");
               emailFinall = wizardData.cedula;
               //data.email =  wizardData.cedula;
             }
 
             if (wizardData && data.email != null) {
+              console.log("entra a4");
               //console.log("cadena de compa 1" + wizardData.cedula)
               //console.log("cadena de compa 2" + data.email)
 
@@ -371,6 +394,7 @@ const AdvancedForm = () => {
             }
             //console.log('Se manda a setear los valores')
             setCedula(data.cedula);
+            console.log("entra a5");
             const secuencialFinal = wizardData?.secuencial?.toString() ?? data.secuencial?.toString() ?? '';
 
             console.log("se ha guardado los datos de manera correcta nclutendo secuencial: " + data.secuencial);
@@ -632,6 +656,7 @@ const AdvancedForm = () => {
 
       const result = await response.json();
       console.timeEnd('⏳ regusuarios POST');
+      
 
       console.time('⏳ crearSesionJWT');
 
