@@ -146,6 +146,24 @@ const ImpugnacionWizard = () => {
   const [vehiculosUsuario, setVehiculosUsuario] = useState<
     { secuencial: number; descripcion: string }[]
   >([]);
+ 
+   
+  interface GenerarPromptIAInput {
+    nombre: string;
+    cedula: string;
+    direccion: string;
+    provincia: string;
+    ciudad: string;
+    tipoMulta: string;
+    agencia: string;
+    fechaCitacion: string;
+    numeroCitacion: string;
+    vehiculoDescripcion: string;
+    archivos: FileWithPreview[];
+    ocrResults: OCRResult[];
+  }
+
+
 
   const [formData, setFormData] = useState({
     direccion: "",
@@ -166,6 +184,51 @@ const ImpugnacionWizard = () => {
     label: string;
     value?: React.ReactNode;
   };
+  function generarPromptIA({
+    nombre,
+    cedula,
+    direccion,
+    provincia,
+    ciudad,
+    tipoMulta,
+    agencia,
+    fechaCitacion,
+    numeroCitacion,
+    vehiculoDescripcion,
+    archivos,
+    ocrResults,
+  }: GenerarPromptIAInput): string {
+    let prompt = `Analiza la siguiente impugnación de multa de tránsito y sugiere argumentos o inconsistencias:\n\n`;
+    prompt += `**Datos del usuario:**\n`;
+    prompt += `- Nombre: ${nombre}\n`;
+    prompt += `- Cédula: ${cedula}\n\n`;
+    prompt += `**Datos de la infracción:**\n`;
+    prompt += `- Dirección: ${direccion}\n`;
+    prompt += `- Provincia: ${provincia}\n`;
+    prompt += `- Ciudad: ${ciudad}\n`;
+    prompt += `- Tipo de Multa: ${tipoMulta}\n`;
+    prompt += `- Agencia: ${agencia}\n`;
+    prompt += `- Fecha de Citación: ${fechaCitacion}\n`;
+    prompt += `- Número de Citación: ${numeroCitacion}\n`;
+    prompt += `- Vehículo: ${vehiculoDescripcion}\n\n`;
+
+    prompt += `**Documentos adjuntos:**\n`;
+    archivos.forEach((file: FileWithPreview, idx: number) => {
+      prompt += `  - Archivo #${idx + 1}: ${file.name}\n`;
+      if (ocrResults[idx]) {
+        prompt += `    OCR Reconocido (confianza ${ocrResults[idx].confidence}%):\n`;
+        prompt += `    "${ocrResults[idx].text.trim().replace(/\n+/g, ' ')}"\n`;
+        if (ocrResults[idx].extractedData && Object.keys(ocrResults[idx].extractedData).length > 0) {
+          prompt += `    Datos estructurados extraídos: ${JSON.stringify(ocrResults[idx].extractedData)}\n`;
+        }
+      }
+    });
+    prompt += `\nPor favor analiza la información, busca inconsistencias, posibles errores en la citación o fundamentos para una defensa, y resume tus hallazgos de forma clara.`;
+
+    return prompt;
+  }
+
+
 
   function SummaryItem({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
     return (
@@ -452,103 +515,131 @@ const ImpugnacionWizard = () => {
   // —————————————————————————————
   // Enviar impugnación
   // —————————————————————————————
- const handleFinalSubmit = async () => {
-  try {
-    const token = getWizardToken();
-    if (!token) {
-      setNotificationMessage("No se encontró el token de sesión. Por favor inicia sesión nuevamente.");
-      setShowNotification(true);
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 4000);
-      return;
-    }
-
-    const formDataToSend = new FormData();
-    formDataToSend.append("secuencial_usuario", secuencialUser);
-    formDataToSend.append("secuencial_vehiculo", formData.vehiculo);
-    formDataToSend.append("fecha_citacion", formData.fechaCitacion);
-    formDataToSend.append("numero_citacion", formData.numeroCitacion);
-    formDataToSend.append("observacion", "Impugnación tránsito");
-    formDataToSend.append("secuencia_estado", "1");
-
-    const detalleJson = formData.archivos.map((file, index) => ({
-      secuencia_origen: 1,
-      secuencia_agencia: formData.agencia === "ANT" ? 2 : 1,
-      tipo_documento: "foto_citacion",
-      secuencia_estado: 1,
-    }));
-    formDataToSend.append("detalleJson", JSON.stringify(detalleJson));
-
-    formData.archivos.forEach((file) => {
-      const blob = new Blob([file], { type: file.type });
-      const namedFile = new File([blob], file.name, { type: file.type });
-      formDataToSend.append("file", namedFile);
-    });
-
-    const res = await fetch(`${API_BASE_URL}/regmultas`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formDataToSend,
-    });
-
-    let responseData = null;
+  const handleFinalSubmit = async () => {
     try {
-      responseData = await res.json();
-    } catch {
-      // Si no hay body JSON
-      responseData = null;
-    }
+      const token = getWizardToken();
+      if (!token) {
+        setNotificationMessage("No se encontró el token de sesión. Por favor inicia sesión nuevamente.");
+        setShowNotification(true);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 4000);
+        return;
+      }
 
-    if (res.status === 401 || res.status === 403) {
+      // Extrae los datos del usuario y vehículo seleccionado:
+      const usuarioSeleccionado = nombreParam || "";
+      const cedulaSeleccionada = cedula || "";
+      const vehiculoObj = vehiculosUsuario.find(
+        (v) => v.secuencial.toString() === formData.vehiculo
+      );
+      const vehiculoDescripcion = vehiculoObj ? vehiculoObj.descripcion : "No seleccionado";
+
+      // Llama a la función para construir el prompt
+      const promptIA = generarPromptIA({
+        nombre: usuarioSeleccionado,
+        cedula: cedulaSeleccionada,
+        direccion: formData.direccion,
+        provincia: formData.provincia,
+        ciudad: formData.ciudad,
+        tipoMulta: formData.tipoMulta,
+        agencia: formData.agencia,
+        fechaCitacion: formData.fechaCitacion,
+        numeroCitacion: formData.numeroCitacion,
+        vehiculoDescripcion,
+        archivos: formData.archivos,
+        ocrResults: formData.ocrResults,
+      });
+
+      // Imprime el prompt en consola
+      console.log("----- PROMPT IA ARMADO -----\n", promptIA);
+
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("secuencial_usuario", secuencialUser);
+      formDataToSend.append("secuencial_vehiculo", formData.vehiculo);
+      formDataToSend.append("fecha_citacion", formData.fechaCitacion);
+      formDataToSend.append("numero_citacion", formData.numeroCitacion);
+      formDataToSend.append("observacion", "Impugnación tránsito");
+      formDataToSend.append("secuencia_estado", "1");
+
+      const detalleJson = formData.archivos.map((file, index) => ({
+        secuencia_origen: 1,
+        secuencia_agencia: formData.agencia === "ANT" ? 2 : 1,
+        tipo_documento: "foto_citacion",
+        secuencia_estado: 1,
+      }));
+      formDataToSend.append("detalleJson", JSON.stringify(detalleJson));
+
+      formData.archivos.forEach((file) => {
+        const blob = new Blob([file], { type: file.type });
+        const namedFile = new File([blob], file.name, { type: file.type });
+        formDataToSend.append("file", namedFile);
+      });
+
+      const res = await fetch(`${API_BASE_URL}/regmultas`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formDataToSend,
+      });
+
+      let responseData = null;
+      try {
+        responseData = await res.json();
+      } catch {
+        // Si no hay body JSON
+        responseData = null;
+      }
+
+      if (res.status === 401 || res.status === 403) {
+        setNotificationMessage(
+          "El tiempo de espera seguro ha expirado. Te redirigiremos a la pantalla de inicio."
+        );
+        setShowNotification(true);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 4000);
+        return;
+      }
+
+      if (!res.ok) {
+        // Si el backend devuelve un error custom en JSON, úsalo; si no, mensaje genérico
+        const customError =
+          (responseData && (responseData.error || responseData.mensaje)) ||
+          "No se pudo enviar la impugnación. Intenta nuevamente.";
+        setNotificationMessage(customError);
+        setShowNotification(true);
+        return;
+      }
+
+      // Aquí res.ok === true (HTTP 201)
+      setStep(6);
+
+      const descripcionVehiculo =
+        vehiculosUsuario.find(
+          (v) => v.secuencial.toString() === formData.vehiculo
+        )?.descripcion || "";
+
+      SessionPaymentManager.guardar({
+        citacion: formData.numeroCitacion,
+        item: descripcionVehiculo,
+        cedula: cedula,
+        servicio: responseData.cabeceraId?.toString() || "",
+        valor: responseData.costo?.toString() || valorImpugnacionGl,
+      });
+
+      router.push("/resumenPago");
+    } catch (error: any) {
+      // Manejo de errores de red y excepciones no previstas
       setNotificationMessage(
-        "El tiempo de espera seguro ha expirado. Te redirigiremos a la pantalla de inicio."
+        error.message ||
+        "No se pudo conectar al servidor. Verifica tu conexión o intenta más tarde."
       );
       setShowNotification(true);
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 4000);
-      return;
     }
-
-    if (!res.ok) {
-      // Si el backend devuelve un error custom en JSON, úsalo; si no, mensaje genérico
-      const customError =
-        (responseData && (responseData.error || responseData.mensaje)) ||
-        "No se pudo enviar la impugnación. Intenta nuevamente.";
-      setNotificationMessage(customError);
-      setShowNotification(true);
-      return;
-    }
-
-    // Aquí res.ok === true (HTTP 201)
-    setStep(6);
-
-    const descripcionVehiculo =
-      vehiculosUsuario.find(
-        (v) => v.secuencial.toString() === formData.vehiculo
-      )?.descripcion || "";
-
-    SessionPaymentManager.guardar({
-      citacion: formData.numeroCitacion,
-      item: descripcionVehiculo,
-      cedula: cedula,
-      servicio: responseData.cabeceraId?.toString() || "",
-      valor: responseData.costo?.toString() || valorImpugnacionGl,
-    });
-
-    router.push("/resumenPago");
-  } catch (error: any) {
-    // Manejo de errores de red y excepciones no previstas
-    setNotificationMessage(
-      error.message ||
-        "No se pudo conectar al servidor. Verifica tu conexión o intenta más tarde."
-    );
-    setShowNotification(true);
-  }
-};
+  };
 
 
   // —————————————————————————————
