@@ -50,7 +50,7 @@ import { SessionWizardData } from "lib/seguridad/SessionWizardData";
 import TermsModal from "app/resources/TermsModal";
 import BackgroundWithSideSvg from "app/resources/BackgroundWithSideSvg";
 import CargaDocumentosServicio from "app/documentos/page";
-import { API_BASE_URL } from "config/apiConfig";
+import { API_BASE_URL, valorImpugnacionGl } from "config/apiConfig";
 import { getWizardToken } from "lib/seguridad/sessionUtils";
 
 // ** Importamos el componente de carga de documentos como un nuevo step **
@@ -452,75 +452,104 @@ const ImpugnacionWizard = () => {
   // —————————————————————————————
   // Enviar impugnación
   // —————————————————————————————
-  const handleFinalSubmit = async () => {
+ const handleFinalSubmit = async () => {
+  try {
+    const token = getWizardToken();
+    if (!token) {
+      setNotificationMessage("No se encontró el token de sesión. Por favor inicia sesión nuevamente.");
+      setShowNotification(true);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 4000);
+      return;
+    }
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("secuencial_usuario", secuencialUser);
+    formDataToSend.append("secuencial_vehiculo", formData.vehiculo);
+    formDataToSend.append("fecha_citacion", formData.fechaCitacion);
+    formDataToSend.append("numero_citacion", formData.numeroCitacion);
+    formDataToSend.append("observacion", "Impugnación tránsito");
+    formDataToSend.append("secuencia_estado", "1");
+
+    const detalleJson = formData.archivos.map((file, index) => ({
+      secuencia_origen: 1,
+      secuencia_agencia: formData.agencia === "ANT" ? 2 : 1,
+      tipo_documento: "foto_citacion",
+      secuencia_estado: 1,
+    }));
+    formDataToSend.append("detalleJson", JSON.stringify(detalleJson));
+
+    formData.archivos.forEach((file) => {
+      const blob = new Blob([file], { type: file.type });
+      const namedFile = new File([blob], file.name, { type: file.type });
+      formDataToSend.append("file", namedFile);
+    });
+
+    const res = await fetch(`${API_BASE_URL}/regmultas`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formDataToSend,
+    });
+
+    let responseData = null;
     try {
-      const token = getWizardToken();
-      const formDataToSend = new FormData();
-      formDataToSend.append("secuencial_usuario", secuencialUser);
-      formDataToSend.append("secuencial_vehiculo", formData.vehiculo);
-      formDataToSend.append("fecha_citacion", formData.fechaCitacion);
-      formDataToSend.append("numero_citacion", formData.numeroCitacion);
-      formDataToSend.append("observacion", "Impugnación tránsito");
-      formDataToSend.append("secuencia_estado", "1");
-      const detalleJson = formData.archivos.map((file, index) => {
-        return {
-          secuencia_origen: 1,
-          secuencia_agencia: formData.agencia === "ANT" ? 2 : 1,
-          tipo_documento: "foto_citacion",
-          secuencia_estado: 1,
-        };
-      });
-      formDataToSend.append("detalleJson", JSON.stringify(detalleJson));
-      formData.archivos.forEach((file) => {
-        const blob = new Blob([file], { type: file.type });
-        const namedFile = new File([blob], file.name, { type: file.type });
-        formDataToSend.append("file", namedFile);
-      });
-      const res = await fetch(`${API_BASE_URL}/regmultas`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formDataToSend,
-      });
+      responseData = await res.json();
+    } catch {
+      // Si no hay body JSON
+      responseData = null;
+    }
 
-      //console.log("se ha mandado a guardar la multa, se pespera 2 segundos");
-      if (res.status === 401 || res.status === 403) {
-        //console.log("algo falló se retorna todo");
-        setNotificationMessage(
-          "El tiempo de espera seguro ha expirado. Te redirigiremos a la pantalla de inicio."
-        );
-        setShowNotification(true);
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 4000);
-        return;
-      }
-      if (!res.ok) throw new Error("No se pudo enviar la impugnación");
-      const data = await res.json();
-      //console.log("Respuesta:", data);
-      setStep(6);
+    if (res.status === 401 || res.status === 403) {
+      setNotificationMessage(
+        "El tiempo de espera seguro ha expirado. Te redirigiremos a la pantalla de inicio."
+      );
+      setShowNotification(true);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 4000);
+      return;
+    }
 
-      const descripcionVehiculo = vehiculosUsuario.find(
+    if (!res.ok) {
+      // Si el backend devuelve un error custom en JSON, úsalo; si no, mensaje genérico
+      const customError =
+        (responseData && (responseData.error || responseData.mensaje)) ||
+        "No se pudo enviar la impugnación. Intenta nuevamente.";
+      setNotificationMessage(customError);
+      setShowNotification(true);
+      return;
+    }
+
+    // Aquí res.ok === true (HTTP 201)
+    setStep(6);
+
+    const descripcionVehiculo =
+      vehiculosUsuario.find(
         (v) => v.secuencial.toString() === formData.vehiculo
       )?.descripcion || "";
 
-      SessionPaymentManager.guardar({
-        citacion: formData.numeroCitacion,
-        item: descripcionVehiculo,
-        cedula: cedula,
-        //servicio: "Impugnación de Multas de Tránsito",
-        servicio: data.cabeceraId?.toString() || "",
-        valor: data.costo?.toString() || "20.00",
-      });
-      //console.log("se pasa a redirigir la multa par que sea pagado")
-      router.push("/resumenPago");
-    } catch (error: any) {
-      //console.error("Error al enviar:", error);
-      setNotificationMessage(error.message || "Error al enviar la impugnación");
-      setShowNotification(true);
-    }
-  };
+    SessionPaymentManager.guardar({
+      citacion: formData.numeroCitacion,
+      item: descripcionVehiculo,
+      cedula: cedula,
+      servicio: responseData.cabeceraId?.toString() || "",
+      valor: responseData.costo?.toString() || valorImpugnacionGl,
+    });
+
+    router.push("/resumenPago");
+  } catch (error: any) {
+    // Manejo de errores de red y excepciones no previstas
+    setNotificationMessage(
+      error.message ||
+        "No se pudo conectar al servidor. Verifica tu conexión o intenta más tarde."
+    );
+    setShowNotification(true);
+  }
+};
+
 
   // —————————————————————————————
   // NUEVO: Al entrar en step 6, mostrarse 2 segundos y luego ejecutar handleFinalSubmit
