@@ -146,8 +146,8 @@ const ImpugnacionWizard = () => {
   const [vehiculosUsuario, setVehiculosUsuario] = useState<
     { secuencial: number; descripcion: string }[]
   >([]);
- 
-   
+
+
   interface GenerarPromptIAInput {
     nombre: string;
     cedula: string;
@@ -184,6 +184,8 @@ const ImpugnacionWizard = () => {
     label: string;
     value?: React.ReactNode;
   };
+
+
   function generarPromptIA({
     nombre,
     cedula,
@@ -216,17 +218,31 @@ const ImpugnacionWizard = () => {
     archivos.forEach((file: FileWithPreview, idx: number) => {
       prompt += `  - Archivo #${idx + 1}: ${file.name}\n`;
       if (ocrResults[idx]) {
-        prompt += `    OCR Reconocido (confianza ${ocrResults[idx].confidence}%):\n`;
+        const confidence = ocrResults[idx].confidence ?? 0;
+        prompt += `    OCR Reconocido (confianza ${confidence}%):\n`;
         prompt += `    "${ocrResults[idx].text.trim().replace(/\n+/g, ' ')}"\n`;
+        if (confidence < 70) {
+          prompt += `    Nota: Aunque la imagen tiene baja confiabilidad, el abogado experto validará si es útil o no la imagen cargada.\n`;
+        }
         if (ocrResults[idx].extractedData && Object.keys(ocrResults[idx].extractedData).length > 0) {
           prompt += `    Datos estructurados extraídos: ${JSON.stringify(ocrResults[idx].extractedData)}\n`;
         }
       }
     });
-    prompt += `\nPor favor analiza la información, busca inconsistencias, posibles errores en la citación o fundamentos para una defensa, y resume tus hallazgos de forma clara.`;
+
+    // -------- INSTRUCCIÓN MEJORADA PARA LA IA --------
+    prompt += `
+**Notas importantes para el análisis:**
+- Da máxima prioridad a los datos tipeados o seleccionados por el usuario sobre los reconocidos por OCR.
+- Realiza un análisis exhaustivo del campo "fecha de citación". Calcula los días transcurridos desde esa fecha hasta hoy y determina si la impugnación es viable dentro del plazo legal. 
+- Si han pasado más días de los permitidos para una impugnación exitosa, informa en tu análisis que se deberán aplicar estrategias alternativas y que el porcentaje de éxito disminuye por este motivo.
+- Si el OCR de algún documento adjunto tiene baja confiabilidad, señala que la imagen podría ser poco útil y requiere revisión manual.
+- Basa tu análisis y recomendaciones principalmente en los valores aportados por el usuario y resume los hallazgos de manera clara, profesional y específica. 
+`;
 
     return prompt;
   }
+
 
 
 
@@ -1579,10 +1595,8 @@ const ImpugnacionWizard = () => {
                           </section>
                         </div>
                       </div>
-
-
-
-
+ 
+ 
 
                       <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
                         <input
