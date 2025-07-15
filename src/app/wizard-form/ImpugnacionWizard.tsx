@@ -397,6 +397,20 @@ const ImpugnacionWizard = () => {
   }, [step, nombreParam, cedula, vehiculosUsuario, formData]);
 
 
+
+  useEffect(() => {
+    if (respuestaIA) {
+      const result = formatRespuestaIA(respuestaIA);
+      // Si marked.parse es async (raro, pero por config podría), maneja ambas formas:
+      if (typeof result === 'string') {
+        setHtmlIA(result);
+      } else if (result instanceof Promise) {
+        result.then((str) => setHtmlIA(str));
+      }
+    }
+  }, [respuestaIA]);
+
+
   function formatRespuestaIA(text: string) {
     return marked.parse(text);
   }
