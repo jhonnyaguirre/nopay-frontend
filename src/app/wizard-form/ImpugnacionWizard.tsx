@@ -2036,7 +2036,7 @@ const ImpugnacionWizard = () => {
                 <div className="relative z-10 w-24"></div>
               )}
 
-              {step < 5 ? (
+              {step < 6 ? (
                 <button
                   onClick={nextStep}
                   type="button"
