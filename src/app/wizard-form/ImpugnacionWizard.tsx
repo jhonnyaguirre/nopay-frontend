@@ -1604,28 +1604,6 @@ const ImpugnacionWizard = () => {
                         </h2>
                       </div>
 
-                      <div className="mt-8">
-                        <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
-                          <ShieldCheck className="w-5 h-5" /> Diagnóstico IA Jurídica
-                        </h3>
-                        {cargandoIA && (
-                          <div className="bg-gray-800/80 text-cyan-300 p-4 rounded-lg animate-pulse">
-                            Consultando IA... Por favor espera...
-                          </div>
-                        )}
-                        {errorIA && (
-                          <div className="bg-red-700/60 text-red-200 p-4 rounded-lg">
-                            {errorIA}
-                          </div>
-                        )}
-                        {htmlIA && !cargandoIA && (
-                          <div
-                            className="bg-black/60 p-5 rounded-xl text-gray-200 mt-2 shadow-inner prose max-w-none"
-                            dangerouslySetInnerHTML={{ __html: htmlIA }}
-                          />
-                        )}
-
-                      </div>
 
 
 
@@ -1810,6 +1788,39 @@ const ImpugnacionWizard = () => {
 
 
                       </div>
+
+                      <div className="mt-8">
+                        <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
+                          <ShieldCheck className="w-5 h-5" /> Diagnóstico IA Jurídica
+                        </h3>
+                        {cargandoIA && (
+                          <div className="bg-gray-800/80 text-cyan-300 p-4 rounded-lg animate-pulse">
+                            Consultando IA... Por favor espera...
+                          </div>
+                        )}
+                        {errorIA && (
+                          <div className="bg-red-700/60 text-red-200 p-4 rounded-lg">
+                            {errorIA}
+                          </div>
+                        )}
+                        {htmlIA && !cargandoIA && (
+                          <div id="documento-ia-juridica" className="pdf-preview bg-white p-10 rounded-2xl shadow-2xl mx-auto my-6 max-w-3xl border border-gray-300 print:shadow-none print:border-0 print:rounded-none">
+                            <div className="text-center mb-6 border-b-4 border-[#0A1D3E] pb-4">
+                              <h1 className="text-3xl font-bold text-[#0A1D3E]">Diagnóstico Jurídico de tú Multa de Tránsito</h1>
+                              <h2 className="text-lg text-[#3b82f6] font-semibold mt-2">IA Legal - NoPay</h2>
+                              <p className="text-gray-500 mt-1">{new Date().toLocaleDateString()}</p>
+                            </div>
+                            <div
+                              className="prose prose-slate prose-lg max-w-none text-gray-900"
+                              dangerouslySetInnerHTML={{ __html: htmlIA }}
+                            />
+                          </div>
+
+                        )}
+
+                      </div>
+
+
                     </div>
                   </div>
 

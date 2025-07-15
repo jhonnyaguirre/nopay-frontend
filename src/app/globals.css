@@ -44,10 +44,19 @@ input[name="card.holder"].border-red-500 {
 }
 
 @keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
+
 .animate-gradient {
   animation: gradient 6s ease-in-out infinite;
 }
@@ -57,9 +66,17 @@ input[name="card.holder"].border-red-500 {
 
 /* 1) Keyframes para animar el degradado */
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* 2) Clase para el fondo degradado animado estilo NoPay */
@@ -72,8 +89,8 @@ input[name="card.holder"].border-red-500 {
 /* 3) Clase para el patrón geométrico muy sutil (líneas diagonales) */
 .bg-pattern {
   background-image:
-    linear-gradient(45deg, rgba(255,255,255,0.08) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255,255,255,0.08) 25%, transparent 25%);
+    linear-gradient(45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25%);
   background-size: 20px 20px;
 }
 
@@ -83,19 +100,36 @@ input[name="card.holder"].border-red-500 {
 
 .shadow-3d {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3),
-              0 10px 10px -5px rgba(0, 0, 0, 0.1),
-              inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+    0 10px 10px -5px rgba(0, 0, 0, 0.1),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.1);
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes pulse-slow {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.3; }
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.3;
+  }
 }
 
 .group-hover\:animate-gradient-shift:hover {
@@ -104,4 +138,41 @@ input[name="card.holder"].border-red-500 {
 
 .group-hover\:animate-pulse-slow:hover {
   animation: pulse-slow 3s ease infinite;
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+
+  .pdf-preview {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100vw !important;
+    min-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Prose headings: más espacio */
+  .prose h1,
+  .prose h2,
+  .prose h3 {
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+    color: #0A1D3E !important;
+    font-weight: bold !important;
+  }
+
+  .prose p {
+    margin-bottom: 1.2rem !important;
+    font-size: 1.15rem !important;
+    color: #111 !important;
+  }
 }
