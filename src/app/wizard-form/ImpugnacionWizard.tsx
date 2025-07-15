@@ -273,7 +273,7 @@ const ImpugnacionWizard = () => {
     prompt += `5. Fundamentación legal para cada opción\n`;
     prompt += `6. Pasos siguientes recomendados\n\n`;
 
-    prompt += `Recuerda: ¡Ningún caso es imposible! Siempre existe al menos una alternativa jurídica válida.`;
+    prompt += `Recuerda: ¡Ningún caso es imposible! Siempre existe al menos una alternativa jurídica válida y legal, no mientas no generes falsa espectativa; busca todos los medios para que la multa sea impugnable. Cuándo contestes no respondas con "Diagnóstico Inicial (Enfoque Positivo), el lenguaje que uses debe ser muy natural como si fueras un abogado humano muy sociable y amigable. Si el plazo de tiempo REAl de impugnación verfica otras salidas legales. Sé un abogado ecuatoriano experto, y para este caso si podrás execeder el limite de 300 palabras para tu respuesta. "".`;
 
     return prompt;
   }
