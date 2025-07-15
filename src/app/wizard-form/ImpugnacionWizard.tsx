@@ -191,7 +191,6 @@ const ImpugnacionWizard = () => {
   };
 
 
-
   function generarPromptIAOptimista({
     nombre,
     cedula,
@@ -210,11 +209,7 @@ const ImpugnacionWizard = () => {
 
     let prompt = `Fecha de análisis: ${hoy}\n\n`;
     prompt += `Estimada IA Analítica Jurídica:\n\n`;
-    prompt += `Por favor realiza un análisis exhaustivo, optimista y proactivo de esta impugnación de multa de tránsito en Ecuador, bajo los siguientes principios:\n`;
-    prompt += `1. ENFOQUE POSITIVO: Siempre buscar soluciones antes que obstáculos\n`;
-    prompt += `2. CREATIVIDAD JURÍDICA: Identificar todas las vías legales posibles\n`;
-    prompt += `3. RIGOR TÉCNICO: Basado estrictamente en el COIP y Ley de Tránsito ecuatoriana\n`;
-    prompt += `4. PERSPECTIVA HUMANA: Comunicar con empatía y esperanza fundada\n\n`;
+    prompt += `Eres una abogada ecuatoriana experta en derecho de tránsito. Tu misión es analizar y orientar la impugnación de multas de tránsito en Ecuador **basándote estrictamente en el COIP (especialmente Art. 644 y 641), la Ley Orgánica de Transporte Terrestre, Tránsito y Seguridad Vial (LOTTTSV), y los artículos sobre nulidades de actos administrativos (Art. 139 COIP)**. Cita los artículos exactos. Si el plazo ha caducado, menciona opciones legales válidas (prescripción, nulidades absolutas, recursos excepcionales) pero nunca confundas plazos ni artículos. No menciones el Art. 266 COIP ni recursos administrativos que no apliquen. El lenguaje debe ser natural, humano y esperanzador, pero riguroso y exacto.\n\n`;
 
     prompt += `**DATOS DEL CIUDADANO**\n`;
     prompt += `• Nombre: ${nombre}\n`;
@@ -244,36 +239,23 @@ const ImpugnacionWizard = () => {
       }
     });
 
-    prompt += `\n**INSTRUCCIONES ESPECÍFICAS PARA EL ANÁLISIS OPTIMISTA**\n`;
-    prompt += `1. VALIDEZ DE PLAZOS:\n`;
-    prompt += `   • Calcular exactamente los días desde ${fechaCitacion} hasta ${hoy}\n`;
-    prompt += `   • Si hubiera prescripción, sugerir estrategias excepcionales contempladas en el Art. 27 LOTTT\n\n`;
+    prompt += `\n**INSTRUCCIONES ESPECÍFICAS PARA EL ANÁLISIS**\n`;
+    prompt += `1. CALCULA EL PLAZO para impugnar según Art. 644 COIP (3 días hábiles desde la notificación). Si el plazo ha vencido, analiza posibles vías de nulidad, prescripción o excepciones legales (como lo previsto en el Art. 27 LOTTTTSV para prescripción).\n\n`;
+    prompt += `2. REVISA FORMALIDADES DE LA BOLETA: Evalúa si hay errores, datos ilegibles, falta de notificación adecuada, inconsistencias en placa, nombre, fecha, o documentos borrosos (usa Art. 139 COIP para nulidades formales si aplica).\n\n`;
+    prompt += `3. MENCIONA LAS ESTRATEGIAS LEGALES más viables y específicas:  
+  • Impugnación directa según Art. 644 COIP  
+  • Alegaciones de nulidad si hay vicios de forma/fondo (Art. 139 COIP)  
+  • Pronto pago con descuento solo si el usuario lo solicita (Art. 149 LOTTT)  
+  • Negociación/mediación si es permitido por la autoridad, pero dejando claro que esto no reemplaza la impugnación.\n\n`;
+    prompt += `4. FUNDAMENTA CADA SUGERENCIA con el artículo exacto y explica con claridad si aplica o no según el caso concreto.\n\n`;
 
-    prompt += `2. ANÁLISIS DE FORMALIDADES:\n`;
-    prompt += `   • Verificar posibles nulidades por vicios de forma (Art. 139 COIP)\n`;
-    prompt += `   • Buscar inconsistencias en datos esenciales (placa, lugar, fecha)\n\n`;
+    prompt += `5. NUNCA menciones recursos que no existan en la ley ecuatoriana de tránsito ni inventes figuras legales. Sé rigurosa, clara, empática y humana, pero 100% alineada con la ley.\n\n`;
 
-    prompt += `3. ESTRATEGIAS POSITIVAS:\n`;
-    prompt += `   • Proponer alternativas como:\n`;
-    prompt += `     - Recursos de reposición (Art. 266 COIP)\n`;
-    prompt += `     - Mediación previa (Art. 33 LOTTT)\n`;
-    prompt += `     - Convenios de pago diferenciado\n`;
-    prompt += `     - Beneficios por pronto pago\n\n`;
+    prompt += `6. Da una lista clara de pasos a seguir para el usuario según el resultado del análisis (si aún puede impugnar, cómo hacerlo; si ya no puede, qué vías alternativas existen).\n\n`;
 
-    prompt += `4. COMUNICACIÓN:\n`;
-    prompt += `   • Usar lenguaje motivador ej: "Existen vías para..."\n`;
-    prompt += `   • Destacar oportunidades antes que limitaciones\n`;
-    prompt += `   • Incluir fundamentos legales específicos para cada sugerencia\n\n`;
+    prompt += `Redacta como un abogado experto y humano, de forma clara, cálida, y que inspire confianza, pero siempre ajustado a la ley vigente. Puedes exceder el límite de 300 palabras si es necesario.\n\n`;
 
-    prompt += `**FORMATO DE RESPUESTA IDEAL**\n`;
-    prompt += `1. Diagnóstico inicial (enfoque positivo)\n`;
-    prompt += `2. Puntos favorables detectados\n`;
-    prompt += `3. Posibles objeciones técnicas\n`;
-    prompt += `4. 3-5 estrategias viables ordenadas por probabilidad de éxito\n`;
-    prompt += `5. Fundamentación legal para cada opción\n`;
-    prompt += `6. Pasos siguientes recomendados\n\n`;
-
-    prompt += `Recuerda: ¡Ningún caso es imposible! Siempre existe al menos una alternativa jurídica válida y legal, no mientas no generes falsa espectativa; busca todos los medios para que la multa sea impugnable. Cuándo contestes no respondas con "Diagnóstico Inicial (Enfoque Positivo), el lenguaje que uses debe ser muy natural como si fueras un abogado humano muy sociable y amigable. Si el plazo de tiempo REAl de impugnación verfica otras salidas legales. Sé un abogado ecuatoriano experto, y para este caso si podrás execeder el limite de 300 palabras para tu respuesta. "".`;
+    prompt += `¡Tu respuesta debe ser útil y servir de guía legal real!`;
 
     return prompt;
   }
@@ -1549,282 +1531,320 @@ const ImpugnacionWizard = () => {
 
               {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
               {step === 5 && (
-
-
-                <motion.div
-                  key="step5"
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -60 }}
-                  transition={{ duration: 0.4 }}
-                >
-
-                  {promptIA && (
-                    <details className="mt-8">
-                      <summary className="cursor-pointer text-cyan-500 text-sm">Ver Prompt generado para IA</summary>
-                      <pre className="bg-black/60 p-4 rounded-xl text-xs text-green-200 mt-2 overflow-x-auto max-h-64">{promptIA}</pre>
-                    </details>
-                  )}
-
-
-                  {/* Paso 5: Revisión Final */}
-                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                    {/* ✦ Fondos Decorativos Flotantes */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {/* Círculo radial suave */}
-                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                      {/* Forma abstracta irregular */}
-                      <svg
-                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                        viewBox="0 0 500 500"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <defs>
-                          <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
-                          fill="url(#luxGradFinal)"
-                          transform="rotate(40 1182.228 1396.314)"
-                        />
-                      </svg>
-                    </div>
-
-                    {/* ✦ Contenedor Interior */}
-                    <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
-                      <div className="flex items-center gap-4 mb-8">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
-                          <Check className="w-6 h-6 text-white drop-shadow-sm" />
-                        </div>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
-                          Revisión Final
-                        </h2>
+                <>
+                  {/* Mostrar pantalla de espera mientras se consulta la IA */}
+                  {(cargandoIA || !respuestaIA) ? (
+                    <motion.div
+                      key="analizando"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.5 }}
+                      className="flex flex-col items-center justify-center min-h-[480px] bg-gradient-to-br from-blue-900/60 to-cyan-900/60 rounded-2xl shadow-2xl py-20 px-8 relative"
+                    >
+                      <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-full blur-2xl"></div>
                       </div>
+                      <div className="flex flex-col items-center gap-8 relative z-10">
+                        <div className="relative">
+                          <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                          <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white text-center drop-shadow-lg">
+                          Nuestra IA Jurídica está analizando tu caso...
+                        </h2>
+                        <div className="w-56 h-2 bg-cyan-900/40 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
+                            transition={{ duration: 5, repeat: Infinity, repeatType: "loop", ease: "linear" }}
+                            className="h-2 bg-cyan-400 rounded-full"
+                          />
+                        </div>
+                        <p className="text-cyan-100 text-base text-center max-w-lg">
+                          Este proceso puede tardar unos segundos.<br />
+                          Por favor, espera mientras preparamos tu diagnóstico personalizado.<br />
+                          <span className="text-cyan-300 font-mono animate-pulse">Analizando . . .</span>
+                        </p>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="step5"
+                      initial={{ opacity: 0, x: 60 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -60 }}
+                      transition={{ duration: 0.4 }}
+                    >
+
+                      {promptIA && (
+                        <details className="mt-8">
+                          <summary className="cursor-pointer text-cyan-500 text-sm">Ver Prompt generado para IA</summary>
+                          <pre className="bg-black/60 p-4 rounded-xl text-xs text-green-200 mt-2 overflow-x-auto max-h-64">{promptIA}</pre>
+                        </details>
+                      )}
 
 
-
-
-                      <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
-                        {/* Efecto decorativo */}
-                        <div className="absolute -top-6 -left-6 w-16 h-16 bg-cyan-500 opacity-10 rounded-full blur-xl pointer-events-none" />
-
-                        {/* Header */}
-                        <div className="flex items-center gap-4 mb-8 pb-6 border-b border-cyan-600/20">
-                          <div className="p-3 bg-cyan-500/10 rounded-lg backdrop-blur-sm border border-cyan-400/20">
-                            <ClipboardList className="h-6 w-6 text-cyan-400" />
-                          </div>
-                          <h3 className="text-xl sm:text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-md">
-                            Resumen de la Impugnación
-                          </h3>
+                      {/* Paso 5: Revisión Final */}
+                      <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                        {/* ✦ Fondos Decorativos Flotantes */}
+                        <div className="absolute inset-0 pointer-events-none">
+                          {/* Círculo radial suave */}
+                          <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                          {/* Forma abstracta irregular */}
+                          <svg
+                            className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                            viewBox="0 0 500 500"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <defs>
+                              <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                              </linearGradient>
+                            </defs>
+                            <path
+                              d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
+                              fill="url(#luxGradFinal)"
+                              transform="rotate(40 1182.228 1396.314)"
+                            />
+                          </svg>
                         </div>
 
-                        {/* Contenido */}
-                        <div className="space-y-8 text-white/90">
+                        {/* ✦ Contenedor Interior */}
+                        <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                          <div className="flex items-center gap-4 mb-8">
+                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                              <Check className="w-6 h-6 text-white drop-shadow-sm" />
+                            </div>
+                            <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
+                              Revisión Final
+                            </h2>
+                          </div>
 
-                          {/* Datos Personales */}
-                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-4">
-                              <User className="h-5 w-5 text-cyan-400" />
-                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                Datos Personales
-                              </h4>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                              <SummaryItem
-                                label="Dirección"
-                                value={formData.direccion}
-                                icon={<MapPin className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Provincia"
-                                value={formData.provincia}
-                                icon={<Globe className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Ciudad"
-                                value={formData.ciudad}
-                                icon={<Building className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                            </div>
-                          </section>
 
-                          {/* Detalles de la Multa */}
-                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-4">
-                              <AlertTriangle className="h-5 w-5 text-cyan-400" />
-                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                Detalles de la Multa
-                              </h4>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                              <SummaryItem
-                                label="Tipo"
-                                value={formData.tipoMulta}
-                                icon={<List className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Agencia"
-                                value={formData.agencia}
-                                icon={<Shield className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Fecha"
-                                value={formData.fechaCitacion}
-                                icon={<Calendar className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="N° Citación"
-                                value={formData.numeroCitacion}
-                                icon={<Hash className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                            </div>
-                          </section>
 
-                          {/* Documentación Adjunta */}
-                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-4">
-                              <Paperclip className="h-5 w-5 text-cyan-400" />
-                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                Documentación Adjunta
-                              </h4>
-                            </div>
 
-                            <div className="mb-5">
-                              <div className="inline-flex items-center bg-[#1e293b]/70 px-4 py-2 rounded-lg border border-cyan-500/30 shadow-sm">
-                                <Car className="h-5 w-5 text-cyan-400 mr-2" />
-                                <span className="text-cyan-200 font-medium">Vehículo:</span>
-                                <span className="text-white ml-2 font-semibold">
-                                  {vehiculosUsuario.find((v) => v.secuencial.toString() === formData.vehiculo)?.descripcion || "No seleccionado"}
-                                </span>
+                          <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
+                            {/* Efecto decorativo */}
+                            <div className="absolute -top-6 -left-6 w-16 h-16 bg-cyan-500 opacity-10 rounded-full blur-xl pointer-events-none" />
+
+                            {/* Header */}
+                            <div className="flex items-center gap-4 mb-8 pb-6 border-b border-cyan-600/20">
+                              <div className="p-3 bg-cyan-500/10 rounded-lg backdrop-blur-sm border border-cyan-400/20">
+                                <ClipboardList className="h-6 w-6 text-cyan-400" />
                               </div>
+                              <h3 className="text-xl sm:text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-md">
+                                Resumen de la Impugnación
+                              </h3>
                             </div>
 
-                            <div className="space-y-3">
-                              <h5 className="text-sm font-medium text-cyan-300/80">Archivos adjuntos:</h5>
-                              {formData.archivos.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                  {formData.archivos.map((file, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex items-center bg-[#1e293b]/70 p-3 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
-                                    >
-                                      <FileText className="h-5 w-5 text-cyan-400/80 mr-3" />
-                                      <span className="text-sm font-medium text-white/90 truncate">
-                                        {file.name}
-                                      </span>
+                            {/* Contenido */}
+                            <div className="space-y-8 text-white/90">
+
+                              {/* Datos Personales */}
+                              <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <User className="h-5 w-5 text-cyan-400" />
+                                  <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                    Datos Personales
+                                  </h4>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                  <SummaryItem
+                                    label="Dirección"
+                                    value={formData.direccion}
+                                    icon={<MapPin className="h-4 w-4 text-cyan-400/80" />}
+                                  />
+                                  <SummaryItem
+                                    label="Provincia"
+                                    value={formData.provincia}
+                                    icon={<Globe className="h-4 w-4 text-cyan-400/80" />}
+                                  />
+                                  <SummaryItem
+                                    label="Ciudad"
+                                    value={formData.ciudad}
+                                    icon={<Building className="h-4 w-4 text-cyan-400/80" />}
+                                  />
+                                </div>
+                              </section>
+
+                              {/* Detalles de la Multa */}
+                              <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <AlertTriangle className="h-5 w-5 text-cyan-400" />
+                                  <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                    Detalles de la Multa
+                                  </h4>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                  <SummaryItem
+                                    label="Tipo"
+                                    value={formData.tipoMulta}
+                                    icon={<List className="h-4 w-4 text-cyan-400/80" />}
+                                  />
+                                  <SummaryItem
+                                    label="Agencia"
+                                    value={formData.agencia}
+                                    icon={<Shield className="h-4 w-4 text-cyan-400/80" />}
+                                  />
+                                  <SummaryItem
+                                    label="Fecha"
+                                    value={formData.fechaCitacion}
+                                    icon={<Calendar className="h-4 w-4 text-cyan-400/80" />}
+                                  />
+                                  <SummaryItem
+                                    label="N° Citación"
+                                    value={formData.numeroCitacion}
+                                    icon={<Hash className="h-4 w-4 text-cyan-400/80" />}
+                                  />
+                                </div>
+                              </section>
+
+                              {/* Documentación Adjunta */}
+                              <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <Paperclip className="h-5 w-5 text-cyan-400" />
+                                  <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                    Documentación Adjunta
+                                  </h4>
+                                </div>
+
+                                <div className="mb-5">
+                                  <div className="inline-flex items-center bg-[#1e293b]/70 px-4 py-2 rounded-lg border border-cyan-500/30 shadow-sm">
+                                    <Car className="h-5 w-5 text-cyan-400 mr-2" />
+                                    <span className="text-cyan-200 font-medium">Vehículo:</span>
+                                    <span className="text-white ml-2 font-semibold">
+                                      {vehiculosUsuario.find((v) => v.secuencial.toString() === formData.vehiculo)?.descripcion || "No seleccionado"}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="space-y-3">
+                                  <h5 className="text-sm font-medium text-cyan-300/80">Archivos adjuntos:</h5>
+                                  {formData.archivos.length > 0 ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                      {formData.archivos.map((file, index) => (
+                                        <div
+                                          key={index}
+                                          className="flex items-center bg-[#1e293b]/70 p-3 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
+                                        >
+                                          <FileText className="h-5 w-5 text-cyan-400/80 mr-3" />
+                                          <span className="text-sm font-medium text-white/90 truncate">
+                                            {file.name}
+                                          </span>
+                                        </div>
+                                      ))}
                                     </div>
-                                  ))}
+                                  ) : (
+                                    <div className="text-center py-4 bg-[#1e293b]/40 rounded-lg">
+                                      <span className="text-cyan-400/50 text-sm">No hay archivos adjuntos</span>
+                                    </div>
+                                  )}
                                 </div>
-                              ) : (
-                                <div className="text-center py-4 bg-[#1e293b]/40 rounded-lg">
-                                  <span className="text-cyan-400/50 text-sm">No hay archivos adjuntos</span>
-                                </div>
+                              </section>
+                            </div>
+                          </div>
+
+
+
+                          <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
+                            <input
+                              id="terms"
+                              name="terms"
+                              type="checkbox"
+                              checked={formData.aceptaTerminos}
+                              onChange={(e) =>
+                                setFormData({ ...formData, aceptaTerminos: e.target.checked })
+                              }
+                              className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
+                            />
+                            <div className="ml-4 text-white text-sm">
+                              <label htmlFor="terms" className="font-medium leading-snug">
+                                Confirmo que toda la información proporcionada es verídica.
+                              </label>
+                              <p className="text-white/60 mt-1">
+                                Al enviar este formulario, acepto los términos, condiciones de
+                                impugnación y autorización de tratamiento de datos personales
+                                conforme a la normativa vigente.
+                              </p>
+                              {errors.aceptaTerminos && (
+                                <p className="mt-3 text-red-400 text-sm flex items-center">
+                                  <AlertCircle className="mr-1 w-4 h-4" />
+                                  {errors.aceptaTerminos}
+                                </p>
                               )}
                             </div>
-                          </section>
-                        </div>
-                      </div>
 
 
-
-                      <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
-                        <input
-                          id="terms"
-                          name="terms"
-                          type="checkbox"
-                          checked={formData.aceptaTerminos}
-                          onChange={(e) =>
-                            setFormData({ ...formData, aceptaTerminos: e.target.checked })
-                          }
-                          className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
-                        />
-                        <div className="ml-4 text-white text-sm">
-                          <label htmlFor="terms" className="font-medium leading-snug">
-                            Confirmo que toda la información proporcionada es verídica.
-                          </label>
-                          <p className="text-white/60 mt-1">
-                            Al enviar este formulario, acepto los términos, condiciones de
-                            impugnación y autorización de tratamiento de datos personales
-                            conforme a la normativa vigente.
-                          </p>
-                          {errors.aceptaTerminos && (
-                            <p className="mt-3 text-red-400 text-sm flex items-center">
-                              <AlertCircle className="mr-1 w-4 h-4" />
-                              {errors.aceptaTerminos}
-                            </p>
-                          )}
-                        </div>
-
-
-                        <input
-                          id="terms2"
-                          name="terms2"
-                          type="checkbox"
-                          checked={formData.aceptaTerminos}
-                          onChange={(e) =>
-                            setFormData({ ...formData, aceptaTerminos: e.target.checked })
-                          }
-                          className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
-                        />
-                        <div className="ml-4 text-white text-sm">
-                          <label htmlFor="terms" className="font-medium leading-snug">
-                            Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
-                          </label>
-                          <p className="text-white/60 mt-1">
-                            Al enviar este formulario, acepto los términos, condiciones de
-                            impugnación y autorización de tratamiento de datos personales
-                            conforme a la normativa vigente.
-                          </p>
-                          {errors.aceptaTerminos && (
-                            <p className="mt-3 text-red-400 text-sm flex items-center">
-                              <AlertCircle className="mr-1 w-4 h-4" />
-                              {errors.aceptaTerminos}
-                            </p>
-                          )}
-                        </div>
-
-
-                      </div>
-
-                      <div className="mt-8">
-                        <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
-                          <ShieldCheck className="w-5 h-5" /> Diagnóstico IA Jurídica
-                        </h3>
-                        {cargandoIA && (
-                          <div className="bg-gray-800/80 text-cyan-300 p-4 rounded-lg animate-pulse">
-                            Consultando IA... Por favor espera...
-                          </div>
-                        )}
-                        {errorIA && (
-                          <div className="bg-red-700/60 text-red-200 p-4 rounded-lg">
-                            {errorIA}
-                          </div>
-                        )}
-                        {htmlIA && !cargandoIA && (
-                          <div id="documento-ia-juridica" className="pdf-preview bg-white p-10 rounded-2xl shadow-2xl mx-auto my-6 max-w-3xl border border-gray-300 print:shadow-none print:border-0 print:rounded-none">
-                            <div className="text-center mb-6 border-b-4 border-[#0A1D3E] pb-4">
-                              <h1 className="text-3xl font-bold text-[#0A1D3E]">Diagnóstico Jurídico de tú Multa de Tránsito</h1>
-                              <h2 className="text-lg text-[#3b82f6] font-semibold mt-2">IA Legal - NoPay</h2>
-                              <p className="text-gray-500 mt-1">{new Date().toLocaleDateString()}</p>
-                            </div>
-                            <div
-                              className="prose prose-slate prose-lg max-w-none text-gray-900"
-                              dangerouslySetInnerHTML={{ __html: htmlIA }}
+                            <input
+                              id="terms2"
+                              name="terms2"
+                              type="checkbox"
+                              checked={formData.aceptaTerminos}
+                              onChange={(e) =>
+                                setFormData({ ...formData, aceptaTerminos: e.target.checked })
+                              }
+                              className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
                             />
+                            <div className="ml-4 text-white text-sm">
+                              <label htmlFor="terms" className="font-medium leading-snug">
+                                Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
+                              </label>
+                              <p className="text-white/60 mt-1">
+                                Al enviar este formulario, acepto los términos, condiciones de
+                                impugnación y autorización de tratamiento de datos personales
+                                conforme a la normativa vigente.
+                              </p>
+                              {errors.aceptaTerminos && (
+                                <p className="mt-3 text-red-400 text-sm flex items-center">
+                                  <AlertCircle className="mr-1 w-4 h-4" />
+                                  {errors.aceptaTerminos}
+                                </p>
+                              )}
+                            </div>
+
+
                           </div>
 
-                        )}
+                          <div className="mt-8">
+                            <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
+                              <ShieldCheck className="w-5 h-5" /> Diagnóstico IA Jurídica
+                            </h3>
+                            {cargandoIA && (
+                              <div className="bg-gray-800/80 text-cyan-300 p-4 rounded-lg animate-pulse">
+                                Consultando IA... Por favor espera...
+                              </div>
+                            )}
+                            {errorIA && (
+                              <div className="bg-red-700/60 text-red-200 p-4 rounded-lg">
+                                {errorIA}
+                              </div>
+                            )}
+                            {htmlIA && !cargandoIA && (
+                              <div id="documento-ia-juridica" className="pdf-preview bg-white p-10 rounded-2xl shadow-2xl mx-auto my-6 max-w-3xl border border-gray-300 print:shadow-none print:border-0 print:rounded-none">
+                                <div className="text-center mb-6 border-b-4 border-[#0A1D3E] pb-4">
+                                  <h1 className="text-3xl font-bold text-[#0A1D3E]">Diagnóstico Jurídico de tú Multa de Tránsito</h1>
+                                  <h2 className="text-lg text-[#3b82f6] font-semibold mt-2">IA Legal - NoPay</h2>
+                                  <p className="text-gray-500 mt-1">{new Date().toLocaleDateString()}</p>
+                                </div>
+                                <div
+                                  className="prose prose-slate prose-lg max-w-none text-gray-900"
+                                  dangerouslySetInnerHTML={{ __html: htmlIA }}
+                                />
+                              </div>
 
+                            )}
+
+                          </div>
+
+
+                        </div>
                       </div>
 
-
-                    </div>
-                  </div>
-
-                </motion.div>
+                    </motion.div>
+                  )}
+                </>
               )}
 
               {/* ————————————————————————————— STEP 6 (ANTES STEP 5) ————————————————————————————— */}
