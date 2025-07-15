@@ -1897,6 +1897,17 @@ const ImpugnacionWizard = () => {
 
                             )}
 
+                            {!cargandoIA && !errorIA && htmlIA && (
+                              <div className="flex justify-center mt-8">
+                                <button
+                                  onClick={() => setStep(7)}
+                                  className="px-8 py-3 bg-cyan-400 text-gray-900 rounded-lg font-semibold hover:bg-cyan-500 transition"
+                                >
+                                  Aceptar
+                                </button>
+                              </div>
+                            )}
+
                           </div>
 
 
