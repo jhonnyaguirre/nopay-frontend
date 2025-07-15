@@ -609,7 +609,7 @@ const ImpugnacionWizard = () => {
     // Validamos según el número actual de step
     if (validateStep(step)) {
       // Si estamos en el paso 5 (Revisión Final), al hacer Siguiente abrimos modal de términos
-      if (step === 6) {
+      if (step === 7) {
         setShowTermsModal(true);
         setPendingStep(6);
         return;
@@ -729,7 +729,7 @@ const ImpugnacionWizard = () => {
       }
 
       // Aquí res.ok === true (HTTP 201)
-      setStep(6);
+      setStep(7);
 
       const descripcionVehiculo =
         vehiculosUsuario.find(
@@ -757,10 +757,10 @@ const ImpugnacionWizard = () => {
 
 
   // —————————————————————————————
-  // NUEVO: Al entrar en step 6, mostrarse 2 segundos y luego ejecutar handleFinalSubmit
+  // NUEVO: Al entrar en step 7, mostrarse 2 segundos y luego ejecutar handleFinalSubmit
   // —————————————————————————————
   useEffect(() => {
-    if (step === 6) {
+    if (step === 7) {
       const timer = setTimeout(() => {
         handleFinalSubmit();
       }, 100);
@@ -792,7 +792,7 @@ const ImpugnacionWizard = () => {
             </h1>
             <div className="flex items-center space-x-1 sm:space-x-2 w-full sm:w-auto justify-between sm:justify-normal">
               {/* Ahora renderizamos de 1 a 6 pasos */}
-              {[1, 2, 3, 4, 5, 6].map((stepNumber) => (
+              {[1, 2, 3, 4, 5, 6, 7].map((stepNumber) => (
                 <div key={stepNumber} className="flex items-center">
                   <div
                     className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-base ${step === stepNumber
@@ -804,7 +804,7 @@ const ImpugnacionWizard = () => {
                   >
                     {stepNumber}
                   </div>
-                  {stepNumber < 6 && (
+                  {stepNumber < 7 && (
                     <div
                       className={`w-4 sm:w-8 h-0.5 ${step > stepNumber ? "bg-green-500" : "bg-white/20"
                         }`}
@@ -1529,44 +1529,7 @@ const ImpugnacionWizard = () => {
 
               {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
               {step === 5 && (
-                <>
-                  {/* Mostrar pantalla de espera mientras se consulta la IA */}
-                  {(cargandoIA || !respuestaIA) ? (
-                    <motion.div
-                      key="analizando"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.5 }}
-                      className="flex flex-col items-center justify-center min-h-[480px] bg-gradient-to-br from-blue-900/60 to-cyan-900/60 rounded-2xl shadow-2xl py-20 px-8 relative"
-                    >
-                      <div className="absolute inset-0 pointer-events-none">
-                        <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-full blur-2xl"></div>
-                      </div>
-                      <div className="flex flex-col items-center gap-8 relative z-10">
-                        <div className="relative">
-                          <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-                          <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400" />
-                        </div>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white text-center drop-shadow-lg">
-                          Nuestra IA Jurídica está analizando tu caso...
-                        </h2>
-                        <div className="w-56 h-2 bg-cyan-900/40 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: "100%" }}
-                            transition={{ duration: 5, repeat: Infinity, repeatType: "loop", ease: "linear" }}
-                            className="h-2 bg-cyan-400 rounded-full"
-                          />
-                        </div>
-                        <p className="text-cyan-100 text-base text-center max-w-lg">
-                          Este proceso puede tardar unos segundos.<br />
-                          Por favor, espera mientras preparamos tu diagnóstico personalizado.<br />
-                          <span className="text-cyan-300 font-mono animate-pulse">Analizando . . .</span>
-                        </p>
-                      </div>
-                    </motion.div>
-                  ) : (
+                
                     <motion.div
                       key="step5"
                       initial={{ opacity: 0, x: 60 }}
@@ -1575,13 +1538,7 @@ const ImpugnacionWizard = () => {
                       transition={{ duration: 0.4 }}
                     >
 
-                      {promptIA && (
-                        <details className="mt-8">
-                          <summary className="cursor-pointer text-cyan-500 text-sm">Ver Prompt generado para IA</summary>
-                          <pre className="bg-black/60 p-4 rounded-xl text-xs text-green-200 mt-2 overflow-x-auto max-h-64">{promptIA}</pre>
-                        </details>
-                      )}
-
+                       
 
                       {/* Paso 5: Revisión Final */}
                       <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
@@ -1804,6 +1761,103 @@ const ImpugnacionWizard = () => {
 
 
                           </div>
+ 
+
+                        </div>
+                      </div>
+
+                    </motion.div>
+                 
+              )}
+
+
+               {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
+              {step === 6 && (
+                <>
+                  {/* Mostrar pantalla de espera mientras se consulta la IA */}
+                  {(cargandoIA || !respuestaIA) ? (
+                    <motion.div
+                      key="analizando"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.5 }}
+                      className="flex flex-col items-center justify-center min-h-[480px] bg-gradient-to-br from-blue-900/60 to-cyan-900/60 rounded-2xl shadow-2xl py-20 px-8 relative"
+                    >
+                      <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-full blur-2xl"></div>
+                      </div>
+                      <div className="flex flex-col items-center gap-8 relative z-10">
+                        <div className="relative">
+                          <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                          <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white text-center drop-shadow-lg">
+                          Nuestra IA Jurídica está analizando tu caso...
+                        </h2>
+                        <div className="w-56 h-2 bg-cyan-900/40 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
+                            transition={{ duration: 5, repeat: Infinity, repeatType: "loop", ease: "linear" }}
+                            className="h-2 bg-cyan-400 rounded-full"
+                          />
+                        </div>
+                        <p className="text-cyan-100 text-base text-center max-w-lg">
+                          Este proceso puede tardar unos segundos.<br />
+                          Por favor, espera mientras preparamos tu diagnóstico personalizado.<br />
+                          <span className="text-cyan-300 font-mono animate-pulse">Analizando . . .</span>
+                        </p>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="step6"
+                      initial={{ opacity: 0, x: 60 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -60 }}
+                      transition={{ duration: 0.4 }}
+                    >
+
+                       
+
+                      {/* Paso 5: Revisión Final */}
+                      <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                        {/* ✦ Fondos Decorativos Flotantes */}
+                        <div className="absolute inset-0 pointer-events-none">
+                          {/* Círculo radial suave */}
+                          <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                          {/* Forma abstracta irregular */}
+                          <svg
+                            className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                            viewBox="0 0 500 500"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <defs>
+                              <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                              </linearGradient>
+                            </defs>
+                            <path
+                              d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
+                              fill="url(#luxGradFinal)"
+                              transform="rotate(40 1182.228 1396.314)"
+                            />
+                          </svg>
+                        </div>
+
+                        {/* ✦ Contenedor Interior */}
+                        <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                          <div className="flex items-center gap-4 mb-8">
+                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                              <Check className="w-6 h-6 text-white drop-shadow-sm" />
+                            </div>
+                            <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
+                              Análisis Final
+                            </h2>
+                          </div>
+ 
 
                           <div className="mt-8">
                             <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
@@ -1846,7 +1900,7 @@ const ImpugnacionWizard = () => {
               )}
 
               {/* ————————————————————————————— STEP 6 (ANTES STEP 5) ————————————————————————————— */}
-              {step === 6 && (
+              {step === 7 && (
                 <motion.div
                   key="step6"
                   initial={{ opacity: 0, y: 60 }}
