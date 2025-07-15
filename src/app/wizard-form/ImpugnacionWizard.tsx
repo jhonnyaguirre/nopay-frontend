@@ -52,6 +52,7 @@ import BackgroundWithSideSvg from "app/resources/BackgroundWithSideSvg";
 import CargaDocumentosServicio from "app/documentos/page";
 import { API_BASE_URL, valorImpugnacionGl } from "config/apiConfig";
 import { getWizardToken } from "lib/seguridad/sessionUtils";
+import NoPayBackground from "components/NoPayBackground";
 
 // ** Importamos el componente de carga de documentos como un nuevo step **
 
@@ -787,1359 +788,1378 @@ const ImpugnacionWizard = () => {
   // —————————————————————————————
   return (
     <>
-      <BackgroundWithSideSvg>
-        <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
-          <Header />
-          <div className="h-20" />
 
-          {/* ============================================= */}
-          {/* Barra de progreso (círculos 1 a 6) */}
-          {/* ============================================= */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 px-4 sm:px-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-0">
-              Impugnación de Multa de {nombreParam}
-            </h1>
-            <div className="flex items-center space-x-1 sm:space-x-2 w-full sm:w-auto justify-between sm:justify-normal">
-              {/* Ahora renderizamos de 1 a 6 pasos */}
-              {[1, 2, 3, 4, 5, 6, 7].map((stepNumber) => (
-                <div key={stepNumber} className="flex items-center">
-                  <div
-                    className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-base ${step === stepNumber
-                      ? "bg-[#D4AF37] text-[#0A1D3E]"
-                      : completedSteps.includes(stepNumber)
-                        ? "bg-green-500 text-white"
-                        : "bg-white/20 text-white/60"
-                      }`}
-                  >
-                    {stepNumber}
-                  </div>
-                  {stepNumber < 7 && (
-                    <div
-                      className={`w-4 sm:w-8 h-0.5 ${step > stepNumber ? "bg-green-500" : "bg-white/20"
-                        }`}
-                    ></div>
-                  )}
-                </div>
-              ))}
-            </div>
+      <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+        <NoPayBackground />
+        <Header />
+
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-10 text-gray-900"
+        >
+          <div className="inline-block bg-black/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20 mb-6">
+            <span className="text-sm font-medium text-transparent/90">Paso 1 de 3</span>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <AnimatePresence mode="wait">
-              {/* ————————————————————————————— STEP 1 ————————————————————————————— */}
-              {step === 1 && (
-                <motion.div
-                  key="step1"
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -60 }}
-                  transition={{ duration: 0.4 }}
-                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20"
-                >
-                  {/* Paso 1: Información Básica */}
 
-                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                    {/* ✦ Fondos Decorativos Flotantes */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {/* Círculo radial suave */}
-                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                      {/* Forma abstracta irregular */}
-                      <svg
-                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                        viewBox="0 0 500 500"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <defs>
-                          <linearGradient id="luxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
-                          fill="url(#luxGrad)"
-                        />
-                      </svg>
+        </motion.div>
+
+
+        {/* ============================================= */}
+        {/* Barra de progreso (círculos 1 a 6) */}
+        {/* ============================================= */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 px-4 sm:px-6">
+          <h1 className="text-base sm:text-lg md:text-xl font-bold text-[#14213d] mb-1 sm:mb-0 leading-tight">
+            Impugnación de Multa de <span className="text-[#2667A4]">{nombreParam}</span>
+          </h1>
+
+
+
+          <div className="flex items-center gap-1 sm:gap-2 w-full sm:w-auto flex-wrap">
+            {[1, 2, 3, 4, 5, 6, 7].map((stepNumber) => (
+              <div key={stepNumber} className="flex items-center">
+                <div className={`
+        w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition
+        ${step === stepNumber
+                    ? "bg-[#2667A4] text-white shadow"
+                    : completedSteps.includes(stepNumber)
+                      ? "bg-[#E6EEF6] text-[#2667A4]"
+                      : "bg-[#F3F5F7] text-[#B0B9C8]"
+                  }
+      `}>
+                  {stepNumber}
+                </div>
+                {stepNumber < 7 && (
+                  <div className={`w-3 sm:w-5 h-0.5 rounded-full ${step > stepNumber
+                      ? "bg-[#E6EEF6]"
+                      : "bg-[#F3F5F7]"
+                    }`}></div>
+                )}
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+
+        <div className="max-w-4xl mx-auto">
+          <AnimatePresence mode="wait">
+            {/* ————————————————————————————— STEP 1 ————————————————————————————— */}
+            {step === 1 && (
+              <motion.div
+                key="step1"
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.4 }}
+                className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20"
+              >
+                {/* Paso 1: Información Básica */}
+
+                <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                  {/* ✦ Fondos Decorativos Flotantes */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* Círculo radial suave */}
+                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                    {/* Forma abstracta irregular */}
+                    <svg
+                      className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                      viewBox="0 0 500 500"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient id="luxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
+                        fill="url(#luxGrad)"
+                      />
+                    </svg>
+                  </div>
+
+                  <div className="relative z-10">
+                    {/* ✦ Cabecera del Panel */}
+                    <div className="flex items-center gap-4 mb-10">
+                      <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                        <User className="w-7 h-7 text-white drop-shadow-sm" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-white drop-shadow-lg">Ubicación de la infracción</h2>
+                      <p className="text-base text-gray-200 mt-2">
+                        Ingresa la dirección y ciudad donde ocurrió la infracción de tránsito.
+                      </p>
                     </div>
 
-                    <div className="relative z-10">
-                      {/* ✦ Cabecera del Panel */}
-                      <div className="flex items-center gap-4 mb-10">
-                        <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
-                          <User className="w-7 h-7 text-white drop-shadow-sm" />
+                    {/* ✦ Contenido del Formulario */}
+                    <div className="space-y-8">
+                      {/* Dirección */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Dirección
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={formData.direccion}
+                            onChange={(e) =>
+                              setFormData({ ...formData, direccion: e.target.value })
+                            }
+                            placeholder="Está es la dirección de tú Domicilio"
+                            className={`w-full px-5 py-3 bg-gray-800/70 text-white placeholder-gray-400 border ${errors.direccion ? "border-red-500" : "border-gray-600"
+                              } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition`}
+                          />
+                          {errors.direccion && (
+                            <p className="mt-1 text-sm text-red-400 flex items-center">
+                              <AlertCircle className="mr-1 w-4 h-4" /> {errors.direccion}
+                            </p>
+                          )}
                         </div>
-                        <h2 className="text-3xl font-bold text-white drop-shadow-lg">Ubicación de la infracción</h2>
+                      </div>
+
+                      {/* Provincia y Ciudad en Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                        {/* Provincia */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Provincia
+                          </label>
+                          <div className="relative">
+                            <select
+                              value={formData.provincia}
+                              onChange={(e) =>
+                                setFormData({ ...formData, provincia: e.target.value })
+                              }
+                              className={`w-full px-4 py-3 bg-gray-800/70 text-white border ${errors.provincia ? "border-red-500" : "border-gray-600"
+                                } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
+                            >
+                              <option value="" disabled className="text-gray-400 bg-gray-900">
+                                Seleccione una opción
+                              </option>
+                              <option value="Azuay" className="bg-gray-900 text-white">
+                                Azuay
+                              </option>
+                              {/* …otras provincias… */}
+                            </select>
+                            {/* Flecha personalizada */}
+                            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                              <svg
+                                className="w-5 h-5 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          {errors.provincia && (
+                            <p className="mt-1 text-sm text-red-400 flex items-center">
+                              <AlertCircle className="mr-1 w-4 h-4" /> {errors.provincia}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Ciudad */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Ciudad
+                          </label>
+                          <div className="relative">
+                            <select
+                              value={formData.ciudad}
+                              onChange={(e) =>
+                                setFormData({ ...formData, ciudad: e.target.value })
+                              }
+                              className={`w-full px-4 py-3 bg-gray-800/70 text-white border ${errors.ciudad ? "border-red-500" : "border-gray-600"
+                                } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
+                            >
+                              <option value="" disabled className="text-gray-400 bg-gray-900">
+                                Seleccione un cantón
+                              </option>
+                              {[
+                                "Cuenca",
+                                "Camilo Ponce Enríquez",
+                                "Chordeleg",
+                                "El Pan",
+                                "Girón",
+                                "Guachapala",
+                                "Gualaceo",
+                                "Nabón",
+                                "Oña",
+                                "Paute",
+                                "Pucará",
+                                "San Fernando",
+                                "Santa Isabel",
+                                "Sevilla de Oro",
+                                "Sigsig",
+                              ].map((canton) => (
+                                <option
+                                  key={canton}
+                                  className="bg-gray-900 text-white"
+                                  value={canton}
+                                >
+                                  {canton}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                              <svg
+                                className="w-5 h-5 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          {errors.ciudad && (
+                            <p className="mt-1 text-sm text-red-400 flex items-center">
+                              <AlertCircle className="mr-1 w-4 h-4" /> {errors.ciudad}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </motion.div>
+            )}
+
+            {/* ————————————————————————————— STEP 2 ————————————————————————————— */}
+            {step === 2 && (
+              <motion.div
+                key="step2"
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.4 }}
+                className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20"
+              >
+                {/* Paso 2: Detalles de la Multa */}
+                <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                  {/* ✦ Fondos Decorativos Flotantes */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* Círculo radial suave */}
+                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                    {/* Forma abstracta irregular */}
+                    <svg
+                      className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                      viewBox="0 0 500 500"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient id="luxGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
+                        fill="url(#luxGrad2)"
+                      />
+                    </svg>
+                  </div>
+
+                  <div className="relative z-10">
+                    {/* ✦ Panel Interior */}
+                    <div className="bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                      {/* ✦ Cabecera del Panel */}
+                      <div className="flex items-center gap-4 mb-8">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                          <Radar className="w-6 h-6 text-white drop-shadow-sm" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
+                          Detalles de la Multa
+                        </h2>
                         <p className="text-base text-gray-200 mt-2">
-                          Ingresa la dirección y ciudad donde ocurrió la infracción de tránsito.
+                          Completa los datos principales de la multa que deseas impugnar. Utiliza la información de tu papeleta o notificación.
                         </p>
                       </div>
 
                       {/* ✦ Contenido del Formulario */}
                       <div className="space-y-8">
-                        {/* Dirección */}
+                        {/* Cómo fue multado */}
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Dirección
+                            ¿Cómo fue multado?
+
                           </label>
-                          <div className="relative">
-                            <input
-                              type="text"
-                              value={formData.direccion}
-                              onChange={(e) =>
-                                setFormData({ ...formData, direccion: e.target.value })
-                              }
-                              placeholder="Está es la dirección de tú Domicilio"
-                              className={`w-full px-5 py-3 bg-gray-800/70 text-white placeholder-gray-400 border ${errors.direccion ? "border-red-500" : "border-gray-600"
-                                } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition`}
-                            />
-                            {errors.direccion && (
-                              <p className="mt-1 text-sm text-red-400 flex items-center">
-                                <AlertCircle className="mr-1 w-4 h-4" /> {errors.direccion}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Provincia y Ciudad en Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                          {/* Provincia */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                              Provincia
-                            </label>
-                            <div className="relative">
-                              <select
-                                value={formData.provincia}
-                                onChange={(e) =>
-                                  setFormData({ ...formData, provincia: e.target.value })
-                                }
-                                className={`w-full px-4 py-3 bg-gray-800/70 text-white border ${errors.provincia ? "border-red-500" : "border-gray-600"
-                                  } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            {["Radar Móvil", "Radar Fijo", "Policía", "Otro"].map((tipo) => (
+                              <label
+                                key={tipo}
+                                className={`flex items-center gap-2 bg-gray-700/50 rounded-lg px-3 py-2 cursor-pointer border ${formData.tipoMulta === tipo ? "border-cyan-400" : "border-gray-600"
+                                  } hover:bg-gray-700/70 transition`}
                               >
-                                <option value="" disabled className="text-gray-400 bg-gray-900">
-                                  Seleccione una opción
-                                </option>
-                                <option value="Azuay" className="bg-gray-900 text-white">
-                                  Azuay
-                                </option>
-                                {/* …otras provincias… */}
-                              </select>
-                              {/* Flecha personalizada */}
-                              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                                <svg
-                                  className="w-5 h-5 text-gray-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-                            {errors.provincia && (
-                              <p className="mt-1 text-sm text-red-400 flex items-center">
-                                <AlertCircle className="mr-1 w-4 h-4" /> {errors.provincia}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Ciudad */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                              Ciudad
-                            </label>
-                            <div className="relative">
-                              <select
-                                value={formData.ciudad}
-                                onChange={(e) =>
-                                  setFormData({ ...formData, ciudad: e.target.value })
-                                }
-                                className={`w-full px-4 py-3 bg-gray-800/70 text-white border ${errors.ciudad ? "border-red-500" : "border-gray-600"
-                                  } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
-                              >
-                                <option value="" disabled className="text-gray-400 bg-gray-900">
-                                  Seleccione un cantón
-                                </option>
-                                {[
-                                  "Cuenca",
-                                  "Camilo Ponce Enríquez",
-                                  "Chordeleg",
-                                  "El Pan",
-                                  "Girón",
-                                  "Guachapala",
-                                  "Gualaceo",
-                                  "Nabón",
-                                  "Oña",
-                                  "Paute",
-                                  "Pucará",
-                                  "San Fernando",
-                                  "Santa Isabel",
-                                  "Sevilla de Oro",
-                                  "Sigsig",
-                                ].map((canton) => (
-                                  <option
-                                    key={canton}
-                                    className="bg-gray-900 text-white"
-                                    value={canton}
-                                  >
-                                    {canton}
-                                  </option>
-                                ))}
-                              </select>
-                              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                                <svg
-                                  className="w-5 h-5 text-gray-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-                            {errors.ciudad && (
-                              <p className="mt-1 text-sm text-red-400 flex items-center">
-                                <AlertCircle className="mr-1 w-4 h-4" /> {errors.ciudad}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                </motion.div>
-              )}
-
-              {/* ————————————————————————————— STEP 2 ————————————————————————————— */}
-              {step === 2 && (
-                <motion.div
-                  key="step2"
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -60 }}
-                  transition={{ duration: 0.4 }}
-                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20"
-                >
-                  {/* Paso 2: Detalles de la Multa */}
-                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                    {/* ✦ Fondos Decorativos Flotantes */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {/* Círculo radial suave */}
-                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                      {/* Forma abstracta irregular */}
-                      <svg
-                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                        viewBox="0 0 500 500"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <defs>
-                          <linearGradient id="luxGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
-                          fill="url(#luxGrad2)"
-                        />
-                      </svg>
-                    </div>
-
-                    <div className="relative z-10">
-                      {/* ✦ Panel Interior */}
-                      <div className="bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
-                        {/* ✦ Cabecera del Panel */}
-                        <div className="flex items-center gap-4 mb-8">
-                          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
-                            <Radar className="w-6 h-6 text-white drop-shadow-sm" />
-                          </div>
-                          <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
-                            Detalles de la Multa
-                          </h2>
-                          <p className="text-base text-gray-200 mt-2">
-                            Completa los datos principales de la multa que deseas impugnar. Utiliza la información de tu papeleta o notificación.
-                          </p>
-                        </div>
-
-                        {/* ✦ Contenido del Formulario */}
-                        <div className="space-y-8">
-                          {/* Cómo fue multado */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                              ¿Cómo fue multado?
-
-                            </label>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                              {["Radar Móvil", "Radar Fijo", "Policía", "Otro"].map((tipo) => (
-                                <label
-                                  key={tipo}
-                                  className={`flex items-center gap-2 bg-gray-700/50 rounded-lg px-3 py-2 cursor-pointer border ${formData.tipoMulta === tipo ? "border-cyan-400" : "border-gray-600"
-                                    } hover:bg-gray-700/70 transition`}
-                                >
-                                  <input
-                                    type="radio"
-                                    name="tipoMulta"
-                                    checked={formData.tipoMulta === tipo}
-                                    onChange={() => setFormData({ ...formData, tipoMulta: tipo })}
-                                    className="h-4 w-4 text-cyan-400 accent-cyan-400 focus:ring-cyan-400"
-                                  />
-                                  <span className="text-white text-xs sm:text-sm font-medium">
-                                    {tipo}
-                                  </span>
-                                </label>
-                              ))}
-                            </div>
-                            {errors.tipoMulta && (
-                              <p className="mt-1 text-sm text-red-400 flex items-center">
-                                <AlertCircle className="mr-1 h-4 w-4" /> {errors.tipoMulta}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Agencia que emitió la multa */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                              Agencia que emitió la multa
-                            </label>
-                            <div className="relative">
-                              <select
-                                value={formData.agencia}
-                                onChange={(e) =>
-                                  setFormData({ ...formData, agencia: e.target.value })
-                                }
-                                className={`w-full px-4 py-3 bg-gray-700/50 text-white border ${errors.agencia ? "border-red-500" : "border-gray-600"
-                                  } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
-                              >
-                                <option value="" disabled className="text-gray-400 bg-gray-800">
-                                  Seleccione la Agencia
-                                </option>
-                                <option className="bg-gray-800 text-white" value="EMOV EP">
-                                  EMOV EP
-                                </option>
-                                <option className="bg-gray-800 text-white" value="ANT">
-                                  ANT
-                                </option>
-                                <option className="bg-gray-800 text-white" value="Municipal">
-                                  Municipal
-                                </option>
-                              </select>
-                              {/* Flecha personalizada */}
-                              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                                <svg
-                                  className="w-5 h-5 text-gray-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-                            {errors.agencia && (
-                              <p className="mt-1 text-sm text-red-400 flex items-center">
-                                <AlertCircle className="mr-1 h-4 w-4" /> {errors.agencia}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Fecha y Número de Citación */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {/* Fecha de Citación */}
-                            <div>
-                              <label className="block text-sm font-medium text-gray-300 mb-2">
-                                Fecha de Citación
-                              </label>
-                              <div className="relative">
                                 <input
-                                  type="date"
-                                  value={formData.fechaCitacion}
-                                  max={new Date().toISOString().split("T")[0]}
-                                  onChange={(e) =>
-                                    setFormData({ ...formData, fechaCitacion: e.target.value })
-                                  }
-                                  className={`w-full px-4 py-3 bg-gray-700/50 text-white border ${errors.fechaCitacion ? "border-red-500" : "border-gray-600"
-                                    } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition`}
+                                  type="radio"
+                                  name="tipoMulta"
+                                  checked={formData.tipoMulta === tipo}
+                                  onChange={() => setFormData({ ...formData, tipoMulta: tipo })}
+                                  className="h-4 w-4 text-cyan-400 accent-cyan-400 focus:ring-cyan-400"
                                 />
-                              </div>
-                              {errors.fechaCitacion && (
-                                <p className="mt-1 text-sm text-red-400 flex items-center">
-                                  <AlertCircle className="mr-1 h-4 w-4" /> {errors.fechaCitacion}
-                                </p>
-                              )}
-                            </div>
-
-                            {/* Número de Citación */}
-                            <div>
-                              <label className="block text-sm font-medium text-gray-300 mb-2">
-                                Número de Citación
+                                <span className="text-white text-xs sm:text-sm font-medium">
+                                  {tipo}
+                                </span>
                               </label>
-                              <div className="relative">
-                                <input
-                                  type="text"
-                                  value={formData.numeroCitacion}
-                                  onChange={(e) =>
-                                    setFormData({ ...formData, numeroCitacion: e.target.value })
-                                  }
-                                  placeholder="Ej: 2023-0012345"
-                                  className={`w-full px-4 py-3 bg-gray-700/50 text-white placeholder-gray-400 border ${errors.numeroCitacion ? "border-red-500" : "border-gray-600"
-                                    } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition`}
-                                />
-                              </div>
-                              {errors.numeroCitacion && (
-                                <p className="mt-1 text-sm text-red-400 flex items-center">
-                                  <AlertCircle className="mr-1 h-4 w-4" /> {errors.numeroCitacion}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </motion.div>
-              )}
-
-              {/* ————————————————————————————— STEP 3 (NUEVO) ————————————————————————————— */}
-              {step === 3 && (
-                <motion.div
-                  key="step3"
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -60 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  {/* ✦ Contenedor tech-style para el step 3 */}
-                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                    {/* Fondos decorativos secundarios */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                      <svg
-                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                        viewBox="0 0 500 500"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <defs>
-                          <linearGradient id="luxGradStep3" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
-                          fill="url(#luxGradStep3)"
-                        />
-                      </svg>
-                    </div>
-
-                    {/* Contenido real del step 3 */}
-                    <div className="relative z-10">
-                      <CargaDocumentosServicio />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-
-              {/* ————————————————————————————— STEP 4 (ANTES STEP 3) ————————————————————————————— */}
-              {step === 4 && (
-                <motion.div
-                  key="step4"
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -60 }}
-                  transition={{ duration: 0.4 }}
-                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20"
-                >
-                  {/* Paso 4: Documentación Requerida (antes era step 3) */}
-                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                    {/* ✦ Fondos Decorativos Flotantes */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {/* Círculo radial suave */}
-                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                      {/* Forma abstracta irregular */}
-                      <svg
-                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                        viewBox="0 0 500 500"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <defs>
-                          <linearGradient id="luxGradDocReq" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
-                          fill="url(#luxGradDocReq)"
-                        />
-                      </svg>
-                    </div>
-
-                    {/* ✦ Contenedor Interior */}
-                    <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
-                      <div className="flex items-center gap-4 mb-8">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
-                          <FileText className="w-6 h-6 text-white drop-shadow-sm" />
-                        </div>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
-                          Sube la foto de tu multa
-                        </h2>
-                        {/* -------- BOTÓN QUE ABRE EL MODAL DE /documentos ---------- */}
-                        <Button
-                          onClick={() => setShowDocsModal(true)}
-                          className="ml-auto px-4 py-2 text-xs sm:text-sm bg-gray-700/80 text-white rounded-lg shadow-md hover:bg-gray-700 transition"
-                        >
-                          Ver más documentos
-                        </Button>
-                      </div>
-
-                      <div className="space-y-8">
-                        {/* Campo Vehículo */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Seleccionar Vehículo
-                          </label>
-                          <div className="flex gap-2 items-center">
-                            <select
-                              value={formData.vehiculo}
-                              onChange={(e) =>
-                                setFormData({ ...formData, vehiculo: e.target.value })
-                              }
-                              className={`flex-1 px-4 py-3 bg-gray-700/50 text-white placeholder-gray-400 border ${errors.vehiculo ? "border-red-500" : "border-gray-600"
-                                } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
-                            >
-                              <option className="bg-gray-900 text-gray-400" value="">
-                                Seleccione su vehículo
-                              </option>
-                              {vehiculosUsuario.map((v) => (
-                                <option
-                                  key={v.secuencial}
-                                  className="bg-gray-900 text-white"
-                                  value={v.secuencial}
-                                >
-                                  {v.descripcion}
-                                </option>
-                              ))}
-                            </select>
-
-                            <button
-                              onClick={() => {
-                                const lastPlate =
-                                  formData.ocrResults[formData.ocrResults.length - 1]
-                                    ?.extractedData.licensePlate;
-                                if (lastPlate) {
-                                  setFormData({ ...formData, vehiculo: lastPlate });
-                                }
-                              }}
-                              className="px-3 py-2 bg-cyan-400/20 text-cyan-400 rounded-lg hover:bg-cyan-400/30 text-xs sm:text-sm transition"
-                              disabled={!formData.ocrResults.length}
-                            >
-                              Usar detectado
-                            </button>
-                          </div>
-                          {errors.vehiculo && (
-                            <p className="mt-1 text-sm text-red-400 flex items-center">
-                              <AlertCircle className="mr-1 w-4 h-4" /> {errors.vehiculo}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Subida de imágenes */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Cargar Imágenes de la Citación
-                          </label>
-
-                          {isProcessing && (
-                            <div className="mb-4 p-4 bg-gray-700/50 rounded-xl border border-gray-600 shadow-md">
-                              <div className="flex items-center gap-3">
-                                <Loader2 className="w-5 h-5 text-cyan-400 animate-spin" />
-                                <div className="w-full bg-gray-600 rounded-full h-2">
-                                  <div
-                                    className="bg-cyan-400 h-2 rounded-full"
-                                    style={{ width: `${ocrProgress}%` }}
-                                  ></div>
-                                </div>
-                                <span className="text-xs sm:text-sm text-gray-300">{ocrProgress}%</span>
-                              </div>
-                              <p className="mt-1 text-xs sm:text-sm text-gray-400">
-                                Reconociendo texto en la imagen...
-                              </p>
-                            </div>
-                          )}
-
-                          <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-600 rounded-xl cursor-pointer hover:bg-gray-700/30 transition">
-                            <UploadCloud className="w-8 h-8 text-cyan-400 mb-2" />
-                            <p className="text-sm text-gray-300 text-center">
-                              <span className="font-semibold">Haz clic para subir</span> o arrastra
-                              aquí tus imágenes
-                            </p>
-                            <p className="text-[10px] sm:text-xs text-gray-400">
-                              JPG, JPEG, PNG (máx. 10MB)
-                            </p>
-                            <input
-                              ref={fileInputRef}
-                              type="file"
-                              className="hidden"
-                              multiple
-                              accept="image/*"
-                              onChange={handleFileChange}
-                            />
-                          </label>
-                          {errors.archivos && (
-                            <p className="mt-1 text-sm text-red-400 flex items-center">
-                              <AlertCircle className="mr-1 w-4 h-4" /> {errors.archivos}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Resultados OCR */}
-                        {formData.archivos.length > 0 && (
-                          <div className="space-y-4 mt-6">
-                            {formData.archivos.map((file, index) => (
-                              <div
-                                key={index}
-                                className="bg-gray-700/50 border border-gray-600 rounded-xl shadow-sm overflow-hidden"
-                              >
-                                <div className="flex items-center p-4">
-                                  <img
-                                    src={file.preview}
-                                    alt="Previsualización"
-                                    className="w-12 h-12 object-cover rounded-lg mr-4 border border-gray-600"
-                                  />
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-white text-sm font-medium truncate">{file.name}</p>
-
-                                    {formData.ocrResults[index] && (
-                                      <div className="mt-1 p-3 bg-gray-700/40 rounded-lg border border-gray-600">
-                                        {formData.ocrResults[index].confidence >= 70 ? (
-                                          <div className="text-green-400 text-sm flex items-center">
-                                            <Check className="mr-2 w-4 h-4" />
-                                            Reconocimiento confiable ({formData.ocrResults[index].confidence}
-                                            %)
-                                          </div>
-                                        ) : (
-                                          <div className="text-yellow-300 text-sm flex items-start">
-                                            <AlertCircle className="mr-2 w-5 h-5 mt-1" />
-                                            <span>
-                                              Procesamiento realizado. Algunos datos podrían requerir
-                                              verificación. Nuestro equipo lo validará.
-                                            </span>
-                                          </div>
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                  <button
-                                    onClick={() => removeFile(index)}
-                                    className="text-red-400 hover:text-red-300 ml-2 text-xl font-bold"
-                                  >
-                                    ×
-                                  </button>
-                                </div>
-
-                                {/* Campos detectados */}
-                                {formData.ocrResults[index] && (
-                                  <div className="p-4 bg-gray-700/40 border-t border-gray-600">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
-                                      <div>
-                                        <label className="text-xs text-gray-400 block mb-1">N° Citación</label>
-                                        <div className="flex gap-2">
-                                          <input
-                                            type="text"
-                                            value={formData.numeroCitacion}
-                                            onChange={(e) =>
-                                              setFormData({ ...formData, numeroCitacion: e.target.value })
-                                            }
-                                            className="flex-1 px-3 py-2 bg-gray-800/50 text-white text-sm border border-gray-600 rounded"
-                                          />
-                                          <button
-                                            onClick={() => {
-                                              const detected =
-                                                formData.ocrResults[index].extractedData.citationNumber;
-                                              if (detected) {
-                                                setFormData({
-                                                  ...formData,
-                                                  numeroCitacion: detected,
-                                                });
-                                              }
-                                            }}
-                                            className="px-3 py-2 bg-cyan-400/20 text-cyan-400 rounded hover:bg-cyan-400/30 text-xs sm:text-sm"
-                                          >
-                                            Usar
-                                          </button>
-                                        </div>
-                                      </div>
-                                      <div>
-                                        <label className="text-xs text-gray-400 block mb-1">Fecha</label>
-                                        <div className="flex gap-2">
-                                          <input
-                                            type="text"
-                                            value={formData.fechaCitacion}
-                                            onChange={(e) =>
-                                              setFormData({ ...formData, fechaCitacion: e.target.value })
-                                            }
-                                            className="flex-1 px-3 py-2 bg-gray-800/50 text-white text-sm border border-gray-600 rounded"
-                                          />
-                                          <button
-                                            onClick={() => {
-                                              const detected =
-                                                formData.ocrResults[index].extractedData.date;
-                                              if (detected) {
-                                                setFormData({
-                                                  ...formData,
-                                                  fechaCitacion: detected,
-                                                });
-                                              }
-                                            }}
-                                            className="px-3 py-2 bg-cyan-400/20 text-cyan-400 rounded hover:bg-cyan-400/30 text-xs sm:text-sm"
-                                          >
-                                            Usar
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <details className="mt-2">
-                                      <summary className="text-xs text-cyan-400 cursor-pointer">Ver texto reconocido</summary>
-                                      <div className="mt-2 p-2 bg-black/30 rounded text-xs text-gray-300 font-mono whitespace-pre-wrap max-h-40 overflow-y-auto">
-                                        {formData.ocrResults[index].text}
-                                      </div>
-                                    </details>
-                                  </div>
-                                )}
-                              </div>
                             ))}
                           </div>
-                        )}
+                          {errors.tipoMulta && (
+                            <p className="mt-1 text-sm text-red-400 flex items-center">
+                              <AlertCircle className="mr-1 h-4 w-4" /> {errors.tipoMulta}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Agencia que emitió la multa */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Agencia que emitió la multa
+                          </label>
+                          <div className="relative">
+                            <select
+                              value={formData.agencia}
+                              onChange={(e) =>
+                                setFormData({ ...formData, agencia: e.target.value })
+                              }
+                              className={`w-full px-4 py-3 bg-gray-700/50 text-white border ${errors.agencia ? "border-red-500" : "border-gray-600"
+                                } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
+                            >
+                              <option value="" disabled className="text-gray-400 bg-gray-800">
+                                Seleccione la Agencia
+                              </option>
+                              <option className="bg-gray-800 text-white" value="EMOV EP">
+                                EMOV EP
+                              </option>
+                              <option className="bg-gray-800 text-white" value="ANT">
+                                ANT
+                              </option>
+                              <option className="bg-gray-800 text-white" value="Municipal">
+                                Municipal
+                              </option>
+                            </select>
+                            {/* Flecha personalizada */}
+                            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                              <svg
+                                className="w-5 h-5 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          {errors.agencia && (
+                            <p className="mt-1 text-sm text-red-400 flex items-center">
+                              <AlertCircle className="mr-1 h-4 w-4" /> {errors.agencia}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Fecha y Número de Citación */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                          {/* Fecha de Citación */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Fecha de Citación
+                            </label>
+                            <div className="relative">
+                              <input
+                                type="date"
+                                value={formData.fechaCitacion}
+                                max={new Date().toISOString().split("T")[0]}
+                                onChange={(e) =>
+                                  setFormData({ ...formData, fechaCitacion: e.target.value })
+                                }
+                                className={`w-full px-4 py-3 bg-gray-700/50 text-white border ${errors.fechaCitacion ? "border-red-500" : "border-gray-600"
+                                  } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition`}
+                              />
+                            </div>
+                            {errors.fechaCitacion && (
+                              <p className="mt-1 text-sm text-red-400 flex items-center">
+                                <AlertCircle className="mr-1 h-4 w-4" /> {errors.fechaCitacion}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Número de Citación */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Número de Citación
+                            </label>
+                            <div className="relative">
+                              <input
+                                type="text"
+                                value={formData.numeroCitacion}
+                                onChange={(e) =>
+                                  setFormData({ ...formData, numeroCitacion: e.target.value })
+                                }
+                                placeholder="Ej: 2023-0012345"
+                                className={`w-full px-4 py-3 bg-gray-700/50 text-white placeholder-gray-400 border ${errors.numeroCitacion ? "border-red-500" : "border-gray-600"
+                                  } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition`}
+                              />
+                            </div>
+                            {errors.numeroCitacion && (
+                              <p className="mt-1 text-sm text-red-400 flex items-center">
+                                <AlertCircle className="mr-1 h-4 w-4" /> {errors.numeroCitacion}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                </motion.div>
-              )}
+              </motion.div>
+            )}
 
-              {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
-              {step === 5 && (
+            {/* ————————————————————————————— STEP 3 (NUEVO) ————————————————————————————— */}
+            {step === 3 && (
+              <motion.div
+                key="step3"
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.4 }}
+              >
+                {/* ✦ Contenedor tech-style para el step 3 */}
+                <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                  {/* Fondos decorativos secundarios */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                    <svg
+                      className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                      viewBox="0 0 500 500"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient id="luxGradStep3" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
+                        fill="url(#luxGradStep3)"
+                      />
+                    </svg>
+                  </div>
 
-                <motion.div
-                  key="step5"
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -60 }}
-                  transition={{ duration: 0.4 }}
-                >
+                  {/* Contenido real del step 3 */}
+                  <div className="relative z-10">
+                    <CargaDocumentosServicio />
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
 
+            {/* ————————————————————————————— STEP 4 (ANTES STEP 3) ————————————————————————————— */}
+            {step === 4 && (
+              <motion.div
+                key="step4"
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.4 }}
+                className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20"
+              >
+                {/* Paso 4: Documentación Requerida (antes era step 3) */}
+                <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                  {/* ✦ Fondos Decorativos Flotantes */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* Círculo radial suave */}
+                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                    {/* Forma abstracta irregular */}
+                    <svg
+                      className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                      viewBox="0 0 500 500"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient id="luxGradDocReq" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
+                        fill="url(#luxGradDocReq)"
+                      />
+                    </svg>
+                  </div>
 
-                  {/* Paso 5: Revisión Final */}
-                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                    {/* ✦ Fondos Decorativos Flotantes */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {/* Círculo radial suave */}
-                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                      {/* Forma abstracta irregular */}
-                      <svg
-                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                        viewBox="0 0 500 500"
-                        xmlns="http://www.w3.org/2000/svg"
+                  {/* ✦ Contenedor Interior */}
+                  <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                        <FileText className="w-6 h-6 text-white drop-shadow-sm" />
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
+                        Sube la foto de tu multa
+                      </h2>
+                      {/* -------- BOTÓN QUE ABRE EL MODAL DE /documentos ---------- */}
+                      <Button
+                        onClick={() => setShowDocsModal(true)}
+                        className="ml-auto px-4 py-2 text-xs sm:text-sm bg-gray-700/80 text-white rounded-lg shadow-md hover:bg-gray-700 transition"
                       >
-                        <defs>
-                          <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
-                          fill="url(#luxGradFinal)"
-                          transform="rotate(40 1182.228 1396.314)"
-                        />
-                      </svg>
+                        Ver más documentos
+                      </Button>
                     </div>
 
-                    {/* ✦ Contenedor Interior */}
-                    <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
-                      <div className="flex items-center gap-4 mb-8">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
-                          <Check className="w-6 h-6 text-white drop-shadow-sm" />
+                    <div className="space-y-8">
+                      {/* Campo Vehículo */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Seleccionar Vehículo
+                        </label>
+                        <div className="flex gap-2 items-center">
+                          <select
+                            value={formData.vehiculo}
+                            onChange={(e) =>
+                              setFormData({ ...formData, vehiculo: e.target.value })
+                            }
+                            className={`flex-1 px-4 py-3 bg-gray-700/50 text-white placeholder-gray-400 border ${errors.vehiculo ? "border-red-500" : "border-gray-600"
+                              } rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 appearance-none transition`}
+                          >
+                            <option className="bg-gray-900 text-gray-400" value="">
+                              Seleccione su vehículo
+                            </option>
+                            {vehiculosUsuario.map((v) => (
+                              <option
+                                key={v.secuencial}
+                                className="bg-gray-900 text-white"
+                                value={v.secuencial}
+                              >
+                                {v.descripcion}
+                              </option>
+                            ))}
+                          </select>
+
+                          <button
+                            onClick={() => {
+                              const lastPlate =
+                                formData.ocrResults[formData.ocrResults.length - 1]
+                                  ?.extractedData.licensePlate;
+                              if (lastPlate) {
+                                setFormData({ ...formData, vehiculo: lastPlate });
+                              }
+                            }}
+                            className="px-3 py-2 bg-cyan-400/20 text-cyan-400 rounded-lg hover:bg-cyan-400/30 text-xs sm:text-sm transition"
+                            disabled={!formData.ocrResults.length}
+                          >
+                            Usar detectado
+                          </button>
                         </div>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
-                          Revisión Final
-                        </h2>
+                        {errors.vehiculo && (
+                          <p className="mt-1 text-sm text-red-400 flex items-center">
+                            <AlertCircle className="mr-1 w-4 h-4" /> {errors.vehiculo}
+                          </p>
+                        )}
                       </div>
 
+                      {/* Subida de imágenes */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Cargar Imágenes de la Citación
+                        </label>
 
-
-
-                      <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
-                        {/* Efecto decorativo */}
-                        <div className="absolute -top-6 -left-6 w-16 h-16 bg-cyan-500 opacity-10 rounded-full blur-xl pointer-events-none" />
-
-                        {/* Header */}
-                        <div className="flex items-center gap-4 mb-8 pb-6 border-b border-cyan-600/20">
-                          <div className="p-3 bg-cyan-500/10 rounded-lg backdrop-blur-sm border border-cyan-400/20">
-                            <ClipboardList className="h-6 w-6 text-cyan-400" />
-                          </div>
-                          <h3 className="text-xl sm:text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-md">
-                            Resumen de la Impugnación
-                          </h3>
-                        </div>
-
-                        {/* Contenido */}
-                        <div className="space-y-8 text-white/90">
-
-                          {/* Datos Personales */}
-                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-4">
-                              <User className="h-5 w-5 text-cyan-400" />
-                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                Datos Personales
-                              </h4>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                              <SummaryItem
-                                label="Dirección"
-                                value={formData.direccion}
-                                icon={<MapPin className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Provincia"
-                                value={formData.provincia}
-                                icon={<Globe className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Ciudad"
-                                value={formData.ciudad}
-                                icon={<Building className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                            </div>
-                          </section>
-
-                          {/* Detalles de la Multa */}
-                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-4">
-                              <AlertTriangle className="h-5 w-5 text-cyan-400" />
-                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                Detalles de la Multa
-                              </h4>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                              <SummaryItem
-                                label="Tipo"
-                                value={formData.tipoMulta}
-                                icon={<List className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Agencia"
-                                value={formData.agencia}
-                                icon={<Shield className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="Fecha"
-                                value={formData.fechaCitacion}
-                                icon={<Calendar className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                              <SummaryItem
-                                label="N° Citación"
-                                value={formData.numeroCitacion}
-                                icon={<Hash className="h-4 w-4 text-cyan-400/80" />}
-                              />
-                            </div>
-                          </section>
-
-                          {/* Documentación Adjunta */}
-                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-4">
-                              <Paperclip className="h-5 w-5 text-cyan-400" />
-                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                Documentación Adjunta
-                              </h4>
-                            </div>
-
-                            <div className="mb-5">
-                              <div className="inline-flex items-center bg-[#1e293b]/70 px-4 py-2 rounded-lg border border-cyan-500/30 shadow-sm">
-                                <Car className="h-5 w-5 text-cyan-400 mr-2" />
-                                <span className="text-cyan-200 font-medium">Vehículo:</span>
-                                <span className="text-white ml-2 font-semibold">
-                                  {vehiculosUsuario.find((v) => v.secuencial.toString() === formData.vehiculo)?.descripcion || "No seleccionado"}
-                                </span>
+                        {isProcessing && (
+                          <div className="mb-4 p-4 bg-gray-700/50 rounded-xl border border-gray-600 shadow-md">
+                            <div className="flex items-center gap-3">
+                              <Loader2 className="w-5 h-5 text-cyan-400 animate-spin" />
+                              <div className="w-full bg-gray-600 rounded-full h-2">
+                                <div
+                                  className="bg-cyan-400 h-2 rounded-full"
+                                  style={{ width: `${ocrProgress}%` }}
+                                ></div>
                               </div>
+                              <span className="text-xs sm:text-sm text-gray-300">{ocrProgress}%</span>
                             </div>
+                            <p className="mt-1 text-xs sm:text-sm text-gray-400">
+                              Reconociendo texto en la imagen...
+                            </p>
+                          </div>
+                        )}
 
-                            <div className="space-y-3">
-                              <h5 className="text-sm font-medium text-cyan-300/80">Archivos adjuntos:</h5>
-                              {formData.archivos.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                  {formData.archivos.map((file, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex items-center bg-[#1e293b]/70 p-3 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
-                                    >
-                                      <FileText className="h-5 w-5 text-cyan-400/80 mr-3" />
-                                      <span className="text-sm font-medium text-white/90 truncate">
-                                        {file.name}
-                                      </span>
+                        <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-600 rounded-xl cursor-pointer hover:bg-gray-700/30 transition">
+                          <UploadCloud className="w-8 h-8 text-cyan-400 mb-2" />
+                          <p className="text-sm text-gray-300 text-center">
+                            <span className="font-semibold">Haz clic para subir</span> o arrastra
+                            aquí tus imágenes
+                          </p>
+                          <p className="text-[10px] sm:text-xs text-gray-400">
+                            JPG, JPEG, PNG (máx. 10MB)
+                          </p>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            className="hidden"
+                            multiple
+                            accept="image/*"
+                            onChange={handleFileChange}
+                          />
+                        </label>
+                        {errors.archivos && (
+                          <p className="mt-1 text-sm text-red-400 flex items-center">
+                            <AlertCircle className="mr-1 w-4 h-4" /> {errors.archivos}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Resultados OCR */}
+                      {formData.archivos.length > 0 && (
+                        <div className="space-y-4 mt-6">
+                          {formData.archivos.map((file, index) => (
+                            <div
+                              key={index}
+                              className="bg-gray-700/50 border border-gray-600 rounded-xl shadow-sm overflow-hidden"
+                            >
+                              <div className="flex items-center p-4">
+                                <img
+                                  src={file.preview}
+                                  alt="Previsualización"
+                                  className="w-12 h-12 object-cover rounded-lg mr-4 border border-gray-600"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-white text-sm font-medium truncate">{file.name}</p>
+
+                                  {formData.ocrResults[index] && (
+                                    <div className="mt-1 p-3 bg-gray-700/40 rounded-lg border border-gray-600">
+                                      {formData.ocrResults[index].confidence >= 70 ? (
+                                        <div className="text-green-400 text-sm flex items-center">
+                                          <Check className="mr-2 w-4 h-4" />
+                                          Reconocimiento confiable ({formData.ocrResults[index].confidence}
+                                          %)
+                                        </div>
+                                      ) : (
+                                        <div className="text-yellow-300 text-sm flex items-start">
+                                          <AlertCircle className="mr-2 w-5 h-5 mt-1" />
+                                          <span>
+                                            Procesamiento realizado. Algunos datos podrían requerir
+                                            verificación. Nuestro equipo lo validará.
+                                          </span>
+                                        </div>
+                                      )}
                                     </div>
-                                  ))}
+                                  )}
                                 </div>
-                              ) : (
-                                <div className="text-center py-4 bg-[#1e293b]/40 rounded-lg">
-                                  <span className="text-cyan-400/50 text-sm">No hay archivos adjuntos</span>
+                                <button
+                                  onClick={() => removeFile(index)}
+                                  className="text-red-400 hover:text-red-300 ml-2 text-xl font-bold"
+                                >
+                                  ×
+                                </button>
+                              </div>
+
+                              {/* Campos detectados */}
+                              {formData.ocrResults[index] && (
+                                <div className="p-4 bg-gray-700/40 border-t border-gray-600">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+                                    <div>
+                                      <label className="text-xs text-gray-400 block mb-1">N° Citación</label>
+                                      <div className="flex gap-2">
+                                        <input
+                                          type="text"
+                                          value={formData.numeroCitacion}
+                                          onChange={(e) =>
+                                            setFormData({ ...formData, numeroCitacion: e.target.value })
+                                          }
+                                          className="flex-1 px-3 py-2 bg-gray-800/50 text-white text-sm border border-gray-600 rounded"
+                                        />
+                                        <button
+                                          onClick={() => {
+                                            const detected =
+                                              formData.ocrResults[index].extractedData.citationNumber;
+                                            if (detected) {
+                                              setFormData({
+                                                ...formData,
+                                                numeroCitacion: detected,
+                                              });
+                                            }
+                                          }}
+                                          className="px-3 py-2 bg-cyan-400/20 text-cyan-400 rounded hover:bg-cyan-400/30 text-xs sm:text-sm"
+                                        >
+                                          Usar
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <label className="text-xs text-gray-400 block mb-1">Fecha</label>
+                                      <div className="flex gap-2">
+                                        <input
+                                          type="text"
+                                          value={formData.fechaCitacion}
+                                          onChange={(e) =>
+                                            setFormData({ ...formData, fechaCitacion: e.target.value })
+                                          }
+                                          className="flex-1 px-3 py-2 bg-gray-800/50 text-white text-sm border border-gray-600 rounded"
+                                        />
+                                        <button
+                                          onClick={() => {
+                                            const detected =
+                                              formData.ocrResults[index].extractedData.date;
+                                            if (detected) {
+                                              setFormData({
+                                                ...formData,
+                                                fechaCitacion: detected,
+                                              });
+                                            }
+                                          }}
+                                          className="px-3 py-2 bg-cyan-400/20 text-cyan-400 rounded hover:bg-cyan-400/30 text-xs sm:text-sm"
+                                        >
+                                          Usar
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <details className="mt-2">
+                                    <summary className="text-xs text-cyan-400 cursor-pointer">Ver texto reconocido</summary>
+                                    <div className="mt-2 p-2 bg-black/30 rounded text-xs text-gray-300 font-mono whitespace-pre-wrap max-h-40 overflow-y-auto">
+                                      {formData.ocrResults[index].text}
+                                    </div>
+                                  </details>
                                 </div>
                               )}
                             </div>
-                          </section>
+                          ))}
                         </div>
-                      </div>
-
-
-
-                      <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
-                        <input
-                          id="terms"
-                          name="terms"
-                          type="checkbox"
-                          checked={formData.aceptaTerminos}
-                          onChange={(e) =>
-                            setFormData({ ...formData, aceptaTerminos: e.target.checked })
-                          }
-                          className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
-                        />
-                        <div className="ml-4 text-white text-sm">
-                          <label htmlFor="terms" className="font-medium leading-snug">
-                            Confirmo que toda la información proporcionada es verídica.
-                          </label>
-                          <p className="text-white/60 mt-1">
-                            Al enviar este formulario, acepto los términos, condiciones de
-                            impugnación y autorización de tratamiento de datos personales
-                            conforme a la normativa vigente.
-                          </p>
-                          {errors.aceptaTerminos && (
-                            <p className="mt-3 text-red-400 text-sm flex items-center">
-                              <AlertCircle className="mr-1 w-4 h-4" />
-                              {errors.aceptaTerminos}
-                            </p>
-                          )}
-                        </div>
-
-
-                        <input
-                          id="terms2"
-                          name="terms2"
-                          type="checkbox"
-                          checked={formData.aceptaTerminos}
-                          onChange={(e) =>
-                            setFormData({ ...formData, aceptaTerminos: e.target.checked })
-                          }
-                          className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
-                        />
-                        <div className="ml-4 text-white text-sm">
-                          <label htmlFor="terms" className="font-medium leading-snug">
-                            Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
-                          </label>
-                          <p className="text-white/60 mt-1">
-                            Al enviar este formulario, acepto los términos, condiciones de
-                            impugnación y autorización de tratamiento de datos personales
-                            conforme a la normativa vigente.
-                          </p>
-                          {errors.aceptaTerminos && (
-                            <p className="mt-3 text-red-400 text-sm flex items-center">
-                              <AlertCircle className="mr-1 w-4 h-4" />
-                              {errors.aceptaTerminos}
-                            </p>
-                          )}
-                        </div>
-
-
-                      </div>
-
-
+                      )}
                     </div>
                   </div>
+                </div>
 
-                </motion.div>
+              </motion.div>
+            )}
 
-              )}
+            {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
+            {step === 5 && (
+
+              <motion.div
+                key="step5"
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.4 }}
+              >
 
 
-              {/* ————————————————————————————— STEP 6 (ANTES STEP 4) ————————————————————————————— */}
-              {step === 6 && (
-                <>
-                  {/* Mostrar pantalla de espera mientras se consulta la IA */}
-                  {(cargandoIA || !respuestaIA) ? (
-                    <motion.div
-                      key="analizando"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.5 }}
-                      className="flex flex-col items-center justify-center min-h-[480px] bg-gradient-to-br from-blue-900/60 to-cyan-900/60 rounded-2xl shadow-2xl py-20 px-8 relative"
+
+                {/* Paso 5: Revisión Final */}
+                <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                  {/* ✦ Fondos Decorativos Flotantes */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* Círculo radial suave */}
+                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                    {/* Forma abstracta irregular */}
+                    <svg
+                      className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                      viewBox="0 0 500 500"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div className="absolute inset-0 pointer-events-none">
-                        <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-full blur-2xl"></div>
+                      <defs>
+                        <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
+                        fill="url(#luxGradFinal)"
+                        transform="rotate(40 1182.228 1396.314)"
+                      />
+                    </svg>
+                  </div>
+
+                  {/* ✦ Contenedor Interior */}
+                  <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                        <Check className="w-6 h-6 text-white drop-shadow-sm" />
                       </div>
-                      <div className="flex flex-col items-center gap-8 relative z-10">
-                        <div className="relative">
-                          <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-                          <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400" />
-                        </div>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white text-center drop-shadow-lg">
-                          Nuestra IA Jurídica está analizando tu caso...
-                        </h2>
-                        <div className="w-56 h-2 bg-cyan-900/40 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: "100%" }}
-                            transition={{ duration: 5, repeat: Infinity, repeatType: "loop", ease: "linear" }}
-                            className="h-2 bg-cyan-400 rounded-full"
-                          />
-                        </div>
-                        <p className="text-cyan-100 text-base text-center max-w-lg">
-                          Este proceso puede tardar unos segundos.<br />
-                          Por favor, espera mientras preparamos tu diagnóstico personalizado.<br />
-                          <span className="text-cyan-300 font-mono animate-pulse">Analizando . . .</span>
-                        </p>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="step6"
-                      initial={{ opacity: 0, x: 60 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -60 }}
-                      transition={{ duration: 0.4 }}
-                    >
-
-
-
-                      {/* Paso 5: Revisión Final */}
-                      <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                        {/* ✦ Fondos Decorativos Flotantes */}
-                        <div className="absolute inset-0 pointer-events-none">
-                          {/* Círculo radial suave */}
-                          <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                          {/* Forma abstracta irregular */}
-                          <svg
-                            className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                            viewBox="0 0 500 500"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <defs>
-                              <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                                <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                              </linearGradient>
-                            </defs>
-                            <path
-                              d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
-                              fill="url(#luxGradFinal)"
-                              transform="rotate(40 1182.228 1396.314)"
-                            />
-                          </svg>
-                        </div>
-
-                        {/* ✦ Contenedor Interior */}
-                        <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
-                          <div className="flex items-center gap-4 mb-8">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
-                              <Check className="w-6 h-6 text-white drop-shadow-sm" />
-                            </div>
-                            <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
-                              Análisis Final
-                            </h2>
-                          </div>
-
-
-                          <div className="mt-8">
-                            <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
-                              <ShieldCheck className="w-5 h-5" /> Diagnóstico IA Jurídica
-                            </h3>
-                            {cargandoIA && (
-                              <div className="bg-gray-800/80 text-cyan-300 p-4 rounded-lg animate-pulse">
-                                Consultando IA... Por favor espera...
-                              </div>
-                            )}
-                            {errorIA && (
-                              <div className="bg-red-700/60 text-red-200 p-4 rounded-lg">
-                                {errorIA}
-                              </div>
-                            )}
-                            {htmlIA && !cargandoIA && (
-                              <div id="documento-ia-juridica" className="pdf-preview bg-white p-10 rounded-2xl shadow-2xl mx-auto my-6 max-w-3xl border border-gray-300 print:shadow-none print:border-0 print:rounded-none">
-                                <div className="text-center mb-6 border-b-4 border-[#0A1D3E] pb-4">
-                                  <h1 className="text-3xl font-bold text-[#0A1D3E]">Diagnóstico Jurídico de tú Multa de Tránsito</h1>
-                                  <h2 className="text-lg text-[#3b82f6] font-semibold mt-2">IA Legal - NoPay</h2>
-                                  <p className="text-gray-500 mt-1">{new Date().toLocaleDateString()}</p>
-                                </div>
-                                <div
-                                  className="prose prose-slate prose-lg max-w-none text-gray-900"
-                                  dangerouslySetInnerHTML={{ __html: htmlIA }}
-                                />
-                              </div>
-
-                            )}
-
-                            {!cargandoIA && !errorIA && htmlIA && (
-                              <div className="flex justify-center mt-8">
-                                <button
-                                  onClick={() => setStep(7)}
-                                  className="px-8 py-3 bg-cyan-400 text-gray-900 rounded-lg font-semibold hover:bg-cyan-500 transition"
-                                >
-                                  Aceptar
-                                </button>
-                              </div>
-                            )}
-
-                          </div>
-
-
-                        </div>
-                      </div>
-
-                    </motion.div>
-                  )}
-                </>
-              )}
-
-              {/* ————————————————————————————— STEP 6 (ANTES STEP 5) ————————————————————————————— */}
-              {step === 7 && (
-                <motion.div
-                  key="step6"
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -60 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  {/* Paso 6: Confirmación */}
-                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8 text-center">
-                    {/* ✦ Fondos Decorativos Flotantes */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {/* Círculo radial suave */}
-                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                      {/* Forma abstracta irregular */}
-                      <svg
-                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                        viewBox="0 0 500 500"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <defs>
-                          <linearGradient id="luxGradFinal2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
-                          fill="url(#luxGradFinal2)"
-                          transform="rotate(40 1182.228 1396.314)"
-                        />
-                      </svg>
-                    </div>
-
-                    {/* ✦ Contenido Interior */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
-                      className="relative z-10 flex flex-col items-center justify-center py-8 sm:py-14"
-                    >
-                      <div className="relative w-20 h-20 sm:w-28 sm:h-28 mb-6 sm:mb-8">
-                        <div className="absolute inset-0 rounded-full bg-cyan-400/30 blur-xl animate-ping"></div>
-                        <div className="absolute inset-2 flex items-center justify-center rounded-full bg-blue-500/40 shadow-xl ring-1 ring-gray-800">
-                          <Check className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
-                        </div>
-                      </div>
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-2 sm:mb-3 tracking-tight drop-shadow-sm">
-                        ¡Tu impugnación fue enviada!
+                      <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
+                        Revisión Final
                       </h2>
-                      <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto mb-6 sm:mb-10 leading-relaxed">
-                        Hemos recibido tu solicitud y comenzamos el proceso de revisión. Pronto te
-                        notificaremos por correo electrónico con las actualizaciones
-                        correspondientes.
-                      </p>
-                      <div className="w-full max-w-2xl bg-gray-800/50 rounded-2xl border border-gray-600 shadow-xl p-6 md:p-8 backdrop-blur">
-                        <h3 className="text-base sm:text-lg text-cyan-400 font-semibold mb-4 uppercase tracking-wide">
-                          Resumen del Envío
-                        </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-300">
-                          <div>
-                            <p className="text-gray-500">Número de caso</p>
-                            <p className="font-semibold">
-                              2023-IMP-{Math.floor(100000 + Math.random() * 899999)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-gray-500">Fecha de registro</p>
-                            <p className="font-semibold">{new Date().toLocaleDateString()}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-500">Estado actual</p>
-                            <p className="text-yellow-400 font-bold">En Revisión</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-500">Verificación</p>
-                            <p className="text-green-400 font-semibold">Validación inicial completada</p>
-                          </div>
+                    </div>
+
+
+
+
+                    <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
+                      {/* Efecto decorativo */}
+                      <div className="absolute -top-6 -left-6 w-16 h-16 bg-cyan-500 opacity-10 rounded-full blur-xl pointer-events-none" />
+
+                      {/* Header */}
+                      <div className="flex items-center gap-4 mb-8 pb-6 border-b border-cyan-600/20">
+                        <div className="p-3 bg-cyan-500/10 rounded-lg backdrop-blur-sm border border-cyan-400/20">
+                          <ClipboardList className="h-6 w-6 text-cyan-400" />
                         </div>
+                        <h3 className="text-xl sm:text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-md">
+                          Resumen de la Impugnación
+                        </h3>
                       </div>
 
-                    </motion.div>
+                      {/* Contenido */}
+                      <div className="space-y-8 text-white/90">
+
+                        {/* Datos Personales */}
+                        <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                          <div className="flex items-center gap-3 mb-4">
+                            <User className="h-5 w-5 text-cyan-400" />
+                            <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                              Datos Personales
+                            </h4>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <SummaryItem
+                              label="Dirección"
+                              value={formData.direccion}
+                              icon={<MapPin className="h-4 w-4 text-cyan-400/80" />}
+                            />
+                            <SummaryItem
+                              label="Provincia"
+                              value={formData.provincia}
+                              icon={<Globe className="h-4 w-4 text-cyan-400/80" />}
+                            />
+                            <SummaryItem
+                              label="Ciudad"
+                              value={formData.ciudad}
+                              icon={<Building className="h-4 w-4 text-cyan-400/80" />}
+                            />
+                          </div>
+                        </section>
+
+                        {/* Detalles de la Multa */}
+                        <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                          <div className="flex items-center gap-3 mb-4">
+                            <AlertTriangle className="h-5 w-5 text-cyan-400" />
+                            <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                              Detalles de la Multa
+                            </h4>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                            <SummaryItem
+                              label="Tipo"
+                              value={formData.tipoMulta}
+                              icon={<List className="h-4 w-4 text-cyan-400/80" />}
+                            />
+                            <SummaryItem
+                              label="Agencia"
+                              value={formData.agencia}
+                              icon={<Shield className="h-4 w-4 text-cyan-400/80" />}
+                            />
+                            <SummaryItem
+                              label="Fecha"
+                              value={formData.fechaCitacion}
+                              icon={<Calendar className="h-4 w-4 text-cyan-400/80" />}
+                            />
+                            <SummaryItem
+                              label="N° Citación"
+                              value={formData.numeroCitacion}
+                              icon={<Hash className="h-4 w-4 text-cyan-400/80" />}
+                            />
+                          </div>
+                        </section>
+
+                        {/* Documentación Adjunta */}
+                        <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                          <div className="flex items-center gap-3 mb-4">
+                            <Paperclip className="h-5 w-5 text-cyan-400" />
+                            <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                              Documentación Adjunta
+                            </h4>
+                          </div>
+
+                          <div className="mb-5">
+                            <div className="inline-flex items-center bg-[#1e293b]/70 px-4 py-2 rounded-lg border border-cyan-500/30 shadow-sm">
+                              <Car className="h-5 w-5 text-cyan-400 mr-2" />
+                              <span className="text-cyan-200 font-medium">Vehículo:</span>
+                              <span className="text-white ml-2 font-semibold">
+                                {vehiculosUsuario.find((v) => v.secuencial.toString() === formData.vehiculo)?.descripcion || "No seleccionado"}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="space-y-3">
+                            <h5 className="text-sm font-medium text-cyan-300/80">Archivos adjuntos:</h5>
+                            {formData.archivos.length > 0 ? (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {formData.archivos.map((file, index) => (
+                                  <div
+                                    key={index}
+                                    className="flex items-center bg-[#1e293b]/70 p-3 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
+                                  >
+                                    <FileText className="h-5 w-5 text-cyan-400/80 mr-3" />
+                                    <span className="text-sm font-medium text-white/90 truncate">
+                                      {file.name}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="text-center py-4 bg-[#1e293b]/40 rounded-lg">
+                                <span className="text-cyan-400/50 text-sm">No hay archivos adjuntos</span>
+                              </div>
+                            )}
+                          </div>
+                        </section>
+                      </div>
+                    </div>
+
+
+
+                    <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
+                      <input
+                        id="terms"
+                        name="terms"
+                        type="checkbox"
+                        checked={formData.aceptaTerminos}
+                        onChange={(e) =>
+                          setFormData({ ...formData, aceptaTerminos: e.target.checked })
+                        }
+                        className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
+                      />
+                      <div className="ml-4 text-white text-sm">
+                        <label htmlFor="terms" className="font-medium leading-snug">
+                          Confirmo que toda la información proporcionada es verídica.
+                        </label>
+                        <p className="text-white/60 mt-1">
+                          Al enviar este formulario, acepto los términos, condiciones de
+                          impugnación y autorización de tratamiento de datos personales
+                          conforme a la normativa vigente.
+                        </p>
+                        {errors.aceptaTerminos && (
+                          <p className="mt-3 text-red-400 text-sm flex items-center">
+                            <AlertCircle className="mr-1 w-4 h-4" />
+                            {errors.aceptaTerminos}
+                          </p>
+                        )}
+                      </div>
+
+
+                      <input
+                        id="terms2"
+                        name="terms2"
+                        type="checkbox"
+                        checked={formData.aceptaTerminos}
+                        onChange={(e) =>
+                          setFormData({ ...formData, aceptaTerminos: e.target.checked })
+                        }
+                        className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
+                      />
+                      <div className="ml-4 text-white text-sm">
+                        <label htmlFor="terms" className="font-medium leading-snug">
+                          Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
+                        </label>
+                        <p className="text-white/60 mt-1">
+                          Al enviar este formulario, acepto los términos, condiciones de
+                          impugnación y autorización de tratamiento de datos personales
+                          conforme a la normativa vigente.
+                        </p>
+                        {errors.aceptaTerminos && (
+                          <p className="mt-3 text-red-400 text-sm flex items-center">
+                            <AlertCircle className="mr-1 w-4 h-4" />
+                            {errors.aceptaTerminos}
+                          </p>
+                        )}
+                      </div>
+
+
+                    </div>
+
+
+                  </div>
+                </div>
+
+              </motion.div>
+
+            )}
+
+
+            {/* ————————————————————————————— STEP 6 (ANTES STEP 4) ————————————————————————————— */}
+            {step === 6 && (
+              <>
+                {/* Mostrar pantalla de espera mientras se consulta la IA */}
+                {(cargandoIA || !respuestaIA) ? (
+                  <motion.div
+                    key="analizando"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-center justify-center min-h-[480px] bg-gradient-to-br from-blue-900/60 to-cyan-900/60 rounded-2xl shadow-2xl py-20 px-8 relative"
+                  >
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-full blur-2xl"></div>
+                    </div>
+                    <div className="flex flex-col items-center gap-8 relative z-10">
+                      <div className="relative">
+                        <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                        <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400" />
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white text-center drop-shadow-lg">
+                        Nuestra IA Jurídica está analizando tu caso...
+                      </h2>
+                      <div className="w-56 h-2 bg-cyan-900/40 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: "100%" }}
+                          transition={{ duration: 5, repeat: Infinity, repeatType: "loop", ease: "linear" }}
+                          className="h-2 bg-cyan-400 rounded-full"
+                        />
+                      </div>
+                      <p className="text-cyan-100 text-base text-center max-w-lg">
+                        Este proceso puede tardar unos segundos.<br />
+                        Por favor, espera mientras preparamos tu diagnóstico personalizado.<br />
+                        <span className="text-cyan-300 font-mono animate-pulse">Analizando . . .</span>
+                      </p>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="step6"
+                    initial={{ opacity: 0, x: 60 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -60 }}
+                    transition={{ duration: 0.4 }}
+                  >
+
+
+
+                    {/* Paso 5: Revisión Final */}
+                    <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                      {/* ✦ Fondos Decorativos Flotantes */}
+                      <div className="absolute inset-0 pointer-events-none">
+                        {/* Círculo radial suave */}
+                        <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                        {/* Forma abstracta irregular */}
+                        <svg
+                          className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                          viewBox="0 0 500 500"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <defs>
+                            <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                              <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                            </linearGradient>
+                          </defs>
+                          <path
+                            d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
+                            fill="url(#luxGradFinal)"
+                            transform="rotate(40 1182.228 1396.314)"
+                          />
+                        </svg>
+                      </div>
+
+                      {/* ✦ Contenedor Interior */}
+                      <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                        <div className="flex items-center gap-4 mb-8">
+                          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                            <Check className="w-6 h-6 text-white drop-shadow-sm" />
+                          </div>
+                          <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
+                            Análisis Final
+                          </h2>
+                        </div>
+
+
+                        <div className="mt-8">
+                          <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
+                            <ShieldCheck className="w-5 h-5" /> Diagnóstico IA Jurídica
+                          </h3>
+                          {cargandoIA && (
+                            <div className="bg-gray-800/80 text-cyan-300 p-4 rounded-lg animate-pulse">
+                              Consultando IA... Por favor espera...
+                            </div>
+                          )}
+                          {errorIA && (
+                            <div className="bg-red-700/60 text-red-200 p-4 rounded-lg">
+                              {errorIA}
+                            </div>
+                          )}
+                          {htmlIA && !cargandoIA && (
+                            <div id="documento-ia-juridica" className="pdf-preview bg-white p-10 rounded-2xl shadow-2xl mx-auto my-6 max-w-3xl border border-gray-300 print:shadow-none print:border-0 print:rounded-none">
+                              <div className="text-center mb-6 border-b-4 border-[#0A1D3E] pb-4">
+                                <h1 className="text-3xl font-bold text-[#0A1D3E]">Diagnóstico Jurídico de tú Multa de Tránsito</h1>
+                                <h2 className="text-lg text-[#3b82f6] font-semibold mt-2">IA Legal - NoPay</h2>
+                                <p className="text-gray-500 mt-1">{new Date().toLocaleDateString()}</p>
+                              </div>
+                              <div
+                                className="prose prose-slate prose-lg max-w-none text-gray-900"
+                                dangerouslySetInnerHTML={{ __html: htmlIA }}
+                              />
+                            </div>
+
+                          )}
+
+                          {!cargandoIA && !errorIA && htmlIA && (
+                            <div className="flex justify-center mt-8">
+                              <button
+                                onClick={() => setStep(7)}
+                                className="px-8 py-3 bg-cyan-400 text-gray-900 rounded-lg font-semibold hover:bg-cyan-500 transition"
+                              >
+                                Procesar y Pagar
+                              </button>
+                            </div>
+                          )}
+
+                        </div>
+
+
+                      </div>
+                    </div>
+
+                  </motion.div>
+                )}
+              </>
+            )}
+
+            {/* ————————————————————————————— STEP 6 (ANTES STEP 5) ————————————————————————————— */}
+            {step === 7 && (
+              <motion.div
+                key="step6"
+                initial={{ opacity: 0, y: 60 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -60 }}
+                transition={{ duration: 0.4 }}
+              >
+                {/* Paso 6: Confirmación */}
+                <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8 text-center">
+                  {/* ✦ Fondos Decorativos Flotantes */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* Círculo radial suave */}
+                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                    {/* Forma abstracta irregular */}
+                    <svg
+                      className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                      viewBox="0 0 500 500"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient id="luxGradFinal2" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
+                        fill="url(#luxGradFinal2)"
+                        transform="rotate(40 1182.228 1396.314)"
+                      />
+                    </svg>
                   </div>
 
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  {/* ✦ Contenido Interior */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="relative z-10 flex flex-col items-center justify-center py-8 sm:py-14"
+                  >
+                    <div className="relative w-20 h-20 sm:w-28 sm:h-28 mb-6 sm:mb-8">
+                      <div className="absolute inset-0 rounded-full bg-cyan-400/30 blur-xl animate-ping"></div>
+                      <div className="absolute inset-2 flex items-center justify-center rounded-full bg-blue-500/40 shadow-xl ring-1 ring-gray-800">
+                        <Check className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
+                      </div>
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-2 sm:mb-3 tracking-tight drop-shadow-sm">
+                      ¡Tu impugnación fue enviada!
+                    </h2>
+                    <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto mb-6 sm:mb-10 leading-relaxed">
+                      Hemos recibido tu solicitud y comenzamos el proceso de revisión. Pronto te
+                      notificaremos por correo electrónico con las actualizaciones
+                      correspondientes.
+                    </p>
+                    <div className="w-full max-w-2xl bg-gray-800/50 rounded-2xl border border-gray-600 shadow-xl p-6 md:p-8 backdrop-blur">
+                      <h3 className="text-base sm:text-lg text-cyan-400 font-semibold mb-4 uppercase tracking-wide">
+                        Resumen del Envío
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-300">
+                        <div>
+                          <p className="text-gray-500">Número de caso</p>
+                          <p className="font-semibold">
+                            2023-IMP-{Math.floor(100000 + Math.random() * 899999)}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Fecha de registro</p>
+                          <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Estado actual</p>
+                          <p className="text-yellow-400 font-bold">En Revisión</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Verificación</p>
+                          <p className="text-green-400 font-semibold">Validación inicial completada</p>
+                        </div>
+                      </div>
+                    </div>
 
-          {/* ============================================= */}
-          {/* Botones “Anterior” / “Siguiente” / “Enviar” */}
-          {/* ============================================= */}
-          {step < 6 && (
-            <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border-t border-gray-600 shadow-2xl max-w-4xl mx-auto w-full mt-6 px-6 py-4 flex justify-between">
-              {/* ✦ Fondos Decorativos */}
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-16 -left-16 w-48 h-48 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                <svg
-                  className="absolute bottom-0 right-0 w-80 h-80 opacity-10"
-                  viewBox="0 0 500 500"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <defs>
-                    <linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.2" />
-                      <stop offset="100%" stopColor="#EC4899" stopOpacity="0.2" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
-                    fill="url(#navGrad)"
-                  />
-                </svg>
-              </div>
+                  </motion.div>
+                </div>
 
-              {/* Contenido de navegación */}
-              {step > 1 ? (
-                <button
-                  onClick={prevStep}
-                  type="button"
-                  className="relative z-10 flex items-center px-5 py-2 border border-cyan-400 text-white rounded-lg hover:bg-cyan-500/20 transition flex items-center"
-                >
-                  <ChevronLeft className="w-5 h-5 mr-1" />
-                  Anterior
-                </button>
-              ) : (
-                <div className="relative z-10 w-24"></div>
-              )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-              {step < 6 ? (
-                <button
-                  onClick={nextStep}
-                  type="button"
-                  className="relative z-10 flex items-center px-6 py-2 bg-cyan-400 text-gray-900 rounded-lg hover:bg-cyan-500 transition flex items-center"
-                >
-                  Siguiente
-                  <ChevronRight className="w-5 h-5 ml-1" />
-                </button>
-              ) : step === 6 ? (
-                <button
-                  onClick={nextStep}
-                  type="button"
-                  className="relative z-10 flex items-center px-6 py-2 bg-cyan-400 text-gray-900 rounded-lg hover:bg-cyan-500 transition flex items-center"
-                >
-                  Aceptar Términos
-                  <ShieldCheck className="w-5 h-5 ml-1" />
-                </button>
-              ) : (
-                <div className="relative z-10 w-24"></div>
-              )}
+        {/* ============================================= */}
+        {/* Botones “Anterior” / “Siguiente” / “Enviar” */}
+        {/* ============================================= */}
+        {step < 6 && (
+          <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border-t border-gray-600 shadow-2xl max-w-4xl mx-auto w-full mt-6 px-6 py-4 flex justify-between">
+            {/* ✦ Fondos Decorativos */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute -top-16 -left-16 w-48 h-48 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+              <svg
+                className="absolute bottom-0 right-0 w-80 h-80 opacity-10"
+                viewBox="0 0 500 500"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="#EC4899" stopOpacity="0.2" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M421.3,281.2Q386,362,303.8,377.7Q221.6,393.3,149.4,358.5Q77.1,323.7,55.5,249.8Q33.9,175.8,83.5,115.3Q133.2,54.7,210.9,34.4Q288.5,14,346,64.6Q403.6,115.2,421.3,195.6Q439,276,421.3,281.2Z"
+                  fill="url(#navGrad)"
+                />
+              </svg>
             </div>
 
-          )}
-
-          <AnimatePresence>
-            {showTermsModal && (
-              <TermsModal
-                onAccept={() => {
-                  setShowTermsModal(false);
-                  if (pendingStep) {
-                    setCompletedSteps((prev) =>
-                      !prev.includes(step) ? [...prev, step] : prev
-                    );
-                    setStep(pendingStep);
-                    setPendingStep(null);
-                  }
-                }}
-                onCancel={() => {
-                  setShowTermsModal(false);
-                  setPendingStep(null);
-                }}
-              />
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showNotification && (
-              <Notification
-                message={notificationMessage}
-                onClose={() => setShowNotification(false)}
-              />
-            )}
-          </AnimatePresence>
-        </main>
-
-        {/* ————————————————————————————— */}
-        {/* MODAL QUE MUESTRA /documentos EN UN IFRAME */}
-        {/* ————————————————————————————— */}
-        <AnimatePresence>
-          {showDocsModal && (
-            <motion.div
-              key="docsModal"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-            >
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="relative w-full max-w-3xl h-[80vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+            {/* Contenido de navegación */}
+            {step > 1 ? (
+              <button
+                onClick={prevStep}
+                type="button"
+                className="relative z-10 flex items-center px-5 py-2 border border-cyan-400 text-white rounded-lg hover:bg-cyan-500/20 transition flex items-center"
               >
-                <button
-                  onClick={() => setShowDocsModal(false)}
-                  className="absolute top-3 right-3 z-10 text-gray-600 hover:text-gray-800"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-                <iframe
-                  src="/documentos"
-                  className="w-full h-full border-none"
-                  title="Documentos"
-                />
-              </motion.div>
-            </motion.div>
+                <ChevronLeft className="w-5 h-5 mr-1" />
+                Anterior
+              </button>
+            ) : (
+              <div className="relative z-10 w-24"></div>
+            )}
+
+            {step < 6 ? (
+              <button
+                onClick={nextStep}
+                type="button"
+                className="relative z-10 flex items-center px-6 py-2 bg-cyan-400 text-gray-900 rounded-lg hover:bg-cyan-500 transition flex items-center"
+              >
+                Siguiente
+                <ChevronRight className="w-5 h-5 ml-1" />
+              </button>
+            ) : step === 6 ? (
+              <button
+                onClick={nextStep}
+                type="button"
+                className="relative z-10 flex items-center px-6 py-2 bg-cyan-400 text-gray-900 rounded-lg hover:bg-cyan-500 transition flex items-center"
+              >
+                Aceptar Términos
+                <ShieldCheck className="w-5 h-5 ml-1" />
+              </button>
+            ) : (
+              <div className="relative z-10 w-24"></div>
+            )}
+          </div>
+
+        )}
+
+        <AnimatePresence>
+          {showTermsModal && (
+            <TermsModal
+              onAccept={() => {
+                setShowTermsModal(false);
+                if (pendingStep) {
+                  setCompletedSteps((prev) =>
+                    !prev.includes(step) ? [...prev, step] : prev
+                  );
+                  setStep(pendingStep);
+                  setPendingStep(null);
+                }
+              }}
+              onCancel={() => {
+                setShowTermsModal(false);
+                setPendingStep(null);
+              }}
+            />
           )}
         </AnimatePresence>
-      </BackgroundWithSideSvg>
+
+        <AnimatePresence>
+          {showNotification && (
+            <Notification
+              message={notificationMessage}
+              onClose={() => setShowNotification(false)}
+            />
+          )}
+        </AnimatePresence>
+      </main>
+
+      {/* ————————————————————————————— */}
+      {/* MODAL QUE MUESTRA /documentos EN UN IFRAME */}
+      {/* ————————————————————————————— */}
+      <AnimatePresence>
+        {showDocsModal && (
+          <motion.div
+            key="docsModal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full max-w-3xl h-[80vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+            >
+              <button
+                onClick={() => setShowDocsModal(false)}
+                className="absolute top-3 right-3 z-10 text-gray-600 hover:text-gray-800"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <iframe
+                src="/documentos"
+                className="w-full h-full border-none"
+                title="Documentos"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Footer />
     </>
   );

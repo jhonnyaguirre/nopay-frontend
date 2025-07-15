@@ -30,6 +30,7 @@ import { getColorCode } from 'utils/ColorUtils';
 import BackgroundWithSideSvg from 'app/resources/BackgroundWithSideSvg';
 import { getUserProfile, setUserProfile } from 'lib/seguridad/SessionUser';
 import { API_BASE_URL } from 'config/apiConfig';
+import NoPayBackground from 'components/NoPayBackground';
 
 // [Tus imports y funciones de validación se mantienen igual...]
 
@@ -656,7 +657,7 @@ const AdvancedForm = () => {
 
       const result = await response.json();
       console.timeEnd('⏳ regusuarios POST');
-      
+
 
       console.time('⏳ crearSesionJWT');
 
@@ -748,568 +749,569 @@ const AdvancedForm = () => {
 
   return (
     <>
-      <BackgroundWithSideSvg>
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pb-28">
-          <Header />
+      <NoPayBackground />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pb-28">
+        <Header />
 
-          <main className="flex-grow py-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto">
-              {/* Encabezado Mejorado */}
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-center mb-10"
-              >
-                <div className="inline-block bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20 mb-6">
-                  <span className="text-sm font-medium text-white/90">Paso 1 de 3</span>
+        <main className="flex-grow py-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            {/* Encabezado Mejorado */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-10 text-gray-900"
+            >
+              <div className="inline-block bg-black/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20 mb-6">
+                <span className="text-sm font-medium text-white/90">Paso 1 de 3</span>
+              </div>
+              <h1 className="text-3xl md:text-3xl font-bold text-gray-900 mb-3">
+                <span className="bg-gradient-to-r from-gray-900 to-[#F59E0B] bg-clip-text text-transparent">
+                  Completa tus datos
+                </span>
+              </h1>
+              <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+                Necesitamos verificar tu información personal y de tu vehículo para continuar
+              </p>
+
+            </motion.div>
+
+            {/* Formulario Principal */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden border border-white/20"
+            >
+              <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                {/* ✦ Fondos Decorativos Flotantes */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {/* Círculo radial suave */}
+                  <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                  {/* Forma abstracta irregular */}
+                  <svg
+                    className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                    viewBox="0 0 500 500"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <defs>
+                      <linearGradient id="formGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
+                      fill="url(#formGrad)"
+                      transform="rotate(40 1182.228 1396.314)"
+                    />
+                  </svg>
                 </div>
-                <h1 className="text-3xl md:text-3xl font-bold text-white mb-3">
-                  <span className="bg-gradient-to-r from-white to-[#FDE68A] bg-clip-text text-transparent">
-                    Completa tus datos
-                  </span>
-                </h1>
-                <p className="text-lg text-white/80 max-w-2xl mx-auto">
-                  Necesitamos verificar tu información personal y de tu vehículo para continuar
-                </p>
-              </motion.div>
 
-              {/* Formulario Principal */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden border border-white/20"
-              >
-                <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                  {/* ✦ Fondos Decorativos Flotantes */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {/* Círculo radial suave */}
-                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                    {/* Forma abstracta irregular */}
-                    <svg
-                      className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                      viewBox="0 0 500 500"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <defs>
-                        <linearGradient id="formGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                          <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                        </linearGradient>
-                      </defs>
-                      <path
-                        d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
-                        fill="url(#formGrad)"
-                        transform="rotate(40 1182.228 1396.314)"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* ✦ Contenedor Interior */}
-                  <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
-                    <form onSubmit={handleFormSubmit} className="space-y-10">
-                      {/* Sección de Cédula - Diseño Mejorado */}
-                      <div>
-                        <div className="flex items-center gap-3 mb-5">
-                          <div className="p-3 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 text-white shadow-inner">
-                            <User className="h-6 w-6" />
-                          </div>
-                          <h2 className="text-2xl font-extrabold text-white drop-shadow-lg">Identificación</h2>
+                {/* ✦ Contenedor Interior */}
+                <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                  <form onSubmit={handleFormSubmit} className="space-y-10">
+                    {/* Sección de Cédula - Diseño Mejorado */}
+                    <div>
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="p-3 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 text-white shadow-inner">
+                          <User className="h-6 w-6" />
                         </div>
-
-                        <div className="space-y-6">
-                          {/* === Input de cédula === */}
-                          <div>
-                            <label className="block text-sm font-medium text-white/80 mb-2">Cédula</label>
-                            <div className="relative">
-                              <input
-                                type="text"
-                                value={cedula}
-                                onChange={(e) => {
-                                  setCedula(e.target.value);
-                                  setErrorMsg(null); // limpiamos el error cuando el usuario vuelve a escribir
-                                }}
-                                placeholder="Ej: 1712345678"
-                                className="w-full bg-white/90 text-gray-900 rounded-xl py-3 px-4 placeholder-gray-500 focus:ring-2 focus:ring-[#EC4899] transition-all shadow-sm"
-                                maxLength={10}
-                                disabled={cedulaBloqueada}
-                              />
-                              {cedula.length === 10 && (
-                                <div className="absolute right-3 top-3">
-                                  {fetchingUserData ? (
-                                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#EC4899] border-t-transparent"></div>
-                                  ) : cedulaValida ? (
-                                    <Check className="h-5 w-5 text-green-400" />
-                                  ) : (
-                                    <span className="text-red-400">✖</span>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Mensaje cuando la longitud es 10 pero la validación falla */}
-                            {cedula.length === 10 && !cedulaValida && (
-                              <p className="text-sm text-red-300 mt-2">Ingresa una cédula válida</p>
-                            )}
-
-                            {/* Aquí mostramos el error de “cédula corresponde a otra cuenta” siempre que errorMsg no sea null */}
-                            {errorMsg && (
-                              <p className="text-sm text-red-500 mt-2">{errorMsg}</p>
-                            )}
-                          </div>
-
-                        </div>
-
-                        {/* Subformulario de Usuario */}
-                        <AnimatePresence>
-                          {showUserForm && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.4 }}
-                              className="mt-8 overflow-hidden"
-                            >
-                              <div className="bg-gray-700/50 backdrop-blur-md rounded-2xl p-6 border border-gray-600 shadow-xl">
-                                {/* Encabezado con icono */}
-                                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-600">
-                                  <div className="p-3 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 text-white shadow-inner">
-                                    <User className="h-6 w-6" />
-                                  </div>
-                                  <div>
-                                    <h3 className="text-xl font-semibold text-white">Información Personal</h3>
-                                    <p className="text-sm text-white/60">Verifica y actualiza tus datos</p>
-                                  </div>
-                                </div>
-
-                                {/* Grid de campos del formulario */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                  {/* Columna izquierda */}
-                                  <div className="space-y-6">
-                                    {/* Campo Nombres */}
-                                    <div className="space-y-2">
-                                      <label className="block text-sm font-medium text-white/80">Nombres</label>
-                                      <div className="relative">
-                                        <input
-                                          type="text"
-                                          value={userData.nombres}
-                                          onChange={(e) => setUserData({ ...userData, nombres: e.target.value })}
-                                          className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all placeholder-gray-400 shadow-sm"
-                                          placeholder="Ej: Juan Carlos"
-                                        />
-                                        {userData.nombres && (
-                                          <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* Campo Apellidos */}
-                                    <div className="space-y-2">
-                                      <label className="block text-sm font-medium text-white/80">Apellidos</label>
-                                      <div className="relative">
-                                        <input
-                                          type="text"
-                                          value={userData.apellidos}
-                                          onChange={(e) => setUserData({ ...userData, apellidos: e.target.value })}
-                                          className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all placeholder-gray-400 shadow-sm"
-                                          placeholder="Ej: Pérez Gómez"
-                                        />
-                                        {userData.apellidos && (
-                                          <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* Campo Género (si lo agregas) */}
-                                  </div>
-
-                                  {/* Columna derecha */}
-                                  <div className="space-y-6">
-                                    {/* Campo Fecha Nacimiento */}
-                                    <div className="space-y-2">
-                                      <label className="block text-sm font-medium text-white/80">Fecha de Nacimiento</label>
-                                      <div className="relative">
-                                        <input
-                                          type="date"
-                                          value={userData.fechaNacimiento ? formatDateToInput(userData.fechaNacimiento) : ''}
-                                          onChange={(e) => {
-                                            const date = e.target.value ? new Date(e.target.value) : null;
-                                            setUserData({ ...userData, fechaNacimiento: date });
-                                          }}
-                                          className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                        />
-                                        {userData.fechaNacimiento && (
-                                          <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* Campo Teléfono */}
-                                    <div className="space-y-2">
-                                      <label className="block text-sm font-medium text-white/80 flex items-center">
-                                        Teléfono
-                                        <span className="text-red-400 ml-1">*</span>
-                                      </label>
-                                      <div className="relative">
-                                        <input
-                                          type="tel"
-                                          value={userData.telefono}
-                                          onChange={(e) => setUserData({ ...userData, telefono: e.target.value })}
-                                          required
-                                          pattern="[0-9]{10,15}"
-                                          className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all placeholder-gray-400 shadow-sm"
-                                          placeholder="Ej: 0987654321"
-                                        />
-                                        {userData.telefono && (
-                                          <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* Campo Email */}
-                                    <div className="space-y-2">
-                                      <label className="block text-sm font-medium text-white/80 flex items-center">
-                                        Correo Electrónico
-                                        <span className="text-red-400 ml-1">*</span>
-                                      </label>
-                                      <div className="relative">
-                                        <input
-                                          type="email"
-                                          value={userData.email}
-                                          // ya no hace falta onChange porque el campo está deshabilitado
-                                          disabled
-                                          required
-                                          className="w-full bg-gray-200 text-gray-700 rounded-xl py-2.5 px-4 placeholder-gray-400 shadow-sm cursor-not-allowed"
-                                          placeholder="Ej: ejemplo@correo.com"
-                                        />
-                                        {userData.email && (
-                                          <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
-                                        )}
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                </div>
-
-                                {/* Nota de campos obligatorios */}
-                                <div className="mt-6 pt-4 border-t border-gray-600">
-                                  <p className="text-xs text-white/50">
-                                    <span className="text-red-400">*</span> Campos obligatorios
-                                  </p>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        <h2 className="text-2xl font-extrabold text-white drop-shadow-lg">Identificación</h2>
                       </div>
 
-                      {/* Sección de Vehículo - Diseño Mejorado */}
-                      {vehiculosUsuario.length > 0 && (
+                      <div className="space-y-6">
+                        {/* === Input de cédula === */}
                         <div>
-                          <h3 className="text-lg font-semibold text-white/90 mb-4">Selecciona uno de tus Vehículos Registrados</h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
-                            {vehiculosUsuario.map((vehiculo, index) => (
-                              <motion.div
-                                key={index}
-                                whileHover={{ y: -3 }}
-                                className={`relative overflow-hidden rounded-2xl p-5 border shadow-lg cursor-pointer transition-all duration-200 ${vehiculoSeleccionado === vehiculo.placa
-                                  ? 'border-cyan-400 bg-cyan-400/10 ring-2 ring-cyan-400/30'
-                                  : 'border-gray-600 bg-gray-800/40 hover:bg-gray-800/30'
-                                  }`}
-                                onClick={() => {
-                                  setVehiculoSeleccionado(vehiculo.placa);
-                                  setPlaca(vehiculo.placa);
-                                  setVehicleData({
-                                    placa: vehiculo.placa,
-                                    marca: vehiculo.marca || '',
-                                    modelo: vehiculo.modelo || '',
-                                    año: vehiculo.anio?.toString() || '',
-                                    color: vehiculo.color || '',
-                                    tipo: vehiculo.tipo || '',
-                                    chasis: vehiculo.chasis || '',
-                                    motor: vehiculo.motor || '',
-                                    cmv: vehiculo.cmv || '',
-                                    cilindraje: vehiculo.cilindraje?.toString() || '',
-                                  });
-                                  setMostrarNuevoVehiculo(false);
-                                }}
-                              >
-                                {/* Encabezado con placa y tipo */}
-                                <div className="flex justify-between items-start mb-4">
-                                  <div>
-                                    <h4 className="text-xl font-bold text-white tracking-wider">{vehiculo.placa}</h4>
-                                    <span
-                                      className={`text-xs font-medium px-2 py-1 rounded-full ${vehiculo.tipo === 'motocicleta'
-                                        ? 'bg-blue-500/20 text-blue-300'
-                                        : vehiculo.tipo === 'camioneta'
-                                          ? 'bg-green-500/20 text-green-300'
-                                          : 'bg-purple-500/20 text-purple-300'
-                                        }`}
-                                    >
-                                      {vehiculo.tipo || 'Vehículo'}
-                                    </span>
-                                  </div>
-
-                                  {vehiculoSeleccionado === vehiculo.placa && (
-                                    <div className="bg-cyan-400 text-gray-900 text-xs px-2 py-1 rounded-full flex items-center">
-                                      <Check className="h-3 w-3 mr-1" />
-                                      Seleccionado
-                                    </div>
-                                  )}
-                                </div>
-
-                                {/* Detalles del vehículo */}
-                                <div className="space-y-3">
-                                  <div>
-                                    <p className="text-xs text-white/60 mb-1">Marca/Modelo</p>
-                                    <p className="text-white font-medium truncate">
-                                      {vehiculo.marca || 'Sin marca'} {vehiculo.modelo && `- ${vehiculo.modelo}`}
-                                    </p>
-                                  </div>
-
-                                  <div className="grid grid-cols-2 gap-3">
-                                    <div>
-                                      <p className="text-xs text-white/60 mb-1">Año</p>
-                                      <p className="text-white font-medium">{vehiculo.anio || 'N/A'}</p>
-                                    </div>
-
-                                    <div>
-                                      <p className="text-xs text-white/60 mb-1">Color</p>
-                                      <div className="flex items-center gap-2">
-                                        <span
-                                          className="inline-block h-4 w-4 rounded-full border border-gray-600"
-                                          style={{ backgroundColor: getColorCode(vehiculo.color) }}
-                                        />
-                                        <span className="text-white font-medium capitalize truncate">
-                                          {vehiculo.color || 'N/A'}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* Efecto sutil de selección */}
-                                {vehiculoSeleccionado === vehiculo.placa && (
-                                  <div className="absolute inset-0 rounded-xl pointer-events-none border-2 border-cyan-400/50 animate-pulse-slow"></div>
-                                )}
-                              </motion.div>
-                            ))}
-                          </div>
-
-                          {/* Botón para nuevo vehículo */}
-                          <div className="mt-8 flex justify-center">
-                            <motion.button
-                              type="button"
-                              onClick={() => {
-                                setMostrarNuevoVehiculo(true);
-                                setShowVehicleForm(true); // Forzar mostrar el formulario
-                                setVehiculoSeleccionado('');
-                                setVehicleData({
-                                  placa: '',
-                                  marca: '',
-                                  modelo: '',
-                                  año: '',
-                                  color: '',
-                                  tipo: '',
-                                  chasis: '',
-                                  motor: '',
-                                  cmv: '',
-                                  cilindraje: '',
-                                });
-                                setPlaca('');
-                                setTimeout(() => {
-                                  const formElement = document.getElementById('nuevo-vehiculo-form');
-                                  if (formElement) formElement.scrollIntoView({ behavior: 'smooth' });
-                                }, 100);
+                          <label className="block text-sm font-medium text-white/80 mb-2">Cédula</label>
+                          <div className="relative">
+                            <input
+                              type="text"
+                              value={cedula}
+                              onChange={(e) => {
+                                setCedula(e.target.value);
+                                setErrorMsg(null); // limpiamos el error cuando el usuario vuelve a escribir
                               }}
-                              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-tr from-cyan-400 to-blue-500 text-white rounded-full hover:shadow-lg transition-all text-sm font-medium"
-                            >
-                              <PlusCircle className="h-4 w-4" />
-                              Agregar nuevo vehículo
-                            </motion.button>
-
-
-
+                              placeholder="Ej: 1712345678"
+                              className="w-full bg-white/90 text-gray-900 rounded-xl py-3 px-4 placeholder-gray-500 focus:ring-2 focus:ring-[#EC4899] transition-all shadow-sm"
+                              maxLength={10}
+                              disabled={cedulaBloqueada}
+                            />
+                            {cedula.length === 10 && (
+                              <div className="absolute right-3 top-3">
+                                {fetchingUserData ? (
+                                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#EC4899] border-t-transparent"></div>
+                                ) : cedulaValida ? (
+                                  <Check className="h-5 w-5 text-green-400" />
+                                ) : (
+                                  <span className="text-red-400">✖</span>
+                                )}
+                              </div>
+                            )}
                           </div>
+
+                          {/* Mensaje cuando la longitud es 10 pero la validación falla */}
+                          {cedula.length === 10 && !cedulaValida && (
+                            <p className="text-sm text-red-300 mt-2">Ingresa una cédula válida</p>
+                          )}
+
+                          {/* Aquí mostramos el error de “cédula corresponde a otra cuenta” siempre que errorMsg no sea null */}
+                          {errorMsg && (
+                            <p className="text-sm text-red-500 mt-2">{errorMsg}</p>
+                          )}
                         </div>
-                      )}
 
-                      {(vehiculosUsuario.length === 0 || mostrarNuevoVehiculo) && (
-                        <AnimatePresence>
+                      </div>
+
+                      {/* Subformulario de Usuario */}
+                      <AnimatePresence>
+                        {showUserForm && (
                           <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.4 }}
-                            className="mt-8"
+                            className="mt-8 overflow-hidden"
                           >
-                            {/* Aquí va tu formulario de registro de nuevo vehículo existente */}
-                            <div>
-                              <div className="flex items-center gap-3 mb-5">
+                            <div className="bg-gray-700/50 backdrop-blur-md rounded-2xl p-6 border border-gray-600 shadow-xl">
+                              {/* Encabezado con icono */}
+                              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-600">
                                 <div className="p-3 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 text-white shadow-inner">
-                                  <Car className="h-6 w-6" />
+                                  <User className="h-6 w-6" />
                                 </div>
-                                <h2 className="text-xl font-semibold text-white">Vehículo</h2>
-                              </div>
-
-                              <div className="space-y-6">
                                 <div>
-                                  <label className="block text-sm font-medium text-white/80 mb-2">Placa</label>
-                                  <div className="relative">
-                                    <input
-                                      type="text"
-                                      value={placa}
-                                      onChange={(e) => setPlaca(e.target.value.toUpperCase())}
-                                      placeholder="Ej: ABC1234"
-                                      className="w-full bg-white/90 text-gray-900 rounded-xl py-3 px-4 placeholder-gray-500 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                      maxLength={7}
-                                    />
-                                    {placa.length >= 6 && (
-                                      <div className="absolute right-3 top-3">
-                                        {placaValida ? (
-                                          <Check className="h-5 w-5 text-green-400" />
-                                        ) : (
-                                          <span className="text-red-400">✖</span>
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                  {placa.length >= 6 && !placaValida && (
-                                    <p className="text-sm text-red-300 mt-2">Formato de placa inválido</p>
-                                  )}
+                                  <h3 className="text-xl font-semibold text-white">Información Personal</h3>
+                                  <p className="text-sm text-white/60">Verifica y actualiza tus datos</p>
                                 </div>
                               </div>
 
-                              {/* Subformulario de Vehículo */}
-                              {(vehiculosUsuario.length === 0 || mostrarNuevoVehiculo) && (
-                                <AnimatePresence>
-                                  {showVehicleForm && (
-                                    <motion.div
-                                      id="nuevo-vehiculo-form"
-                                      initial={{ height: 0, opacity: 0 }}
-                                      animate={{ height: 'auto', opacity: 1 }}
-                                      exit={{ height: 0, opacity: 0 }}
-                                      transition={{ duration: 0.4 }}
-                                      className="mt-8 overflow-hidden"
-                                    >
-                                      <div className="bg-gray-700/50 backdrop-blur-md border border-gray-600 rounded-xl p-6 space-y-6">
-                                        <h3 className="text-lg font-semibold text-white/90 mb-2">Detalles del Vehículo</h3>
+                              {/* Grid de campos del formulario */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Columna izquierda */}
+                                <div className="space-y-6">
+                                  {/* Campo Nombres */}
+                                  <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-white/80">Nombres</label>
+                                    <div className="relative">
+                                      <input
+                                        type="text"
+                                        value={userData.nombres}
+                                        onChange={(e) => setUserData({ ...userData, nombres: e.target.value })}
+                                        className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all placeholder-gray-400 shadow-sm"
+                                        placeholder="Ej: Juan Carlos"
+                                      />
+                                      {userData.nombres && (
+                                        <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
+                                      )}
+                                    </div>
+                                  </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                          <div>
-                                            <label className="block text-sm font-medium text-white/80 mb-2">Marca</label>
-                                            <input
-                                              type="text"
-                                              value={vehicleData.marca}
-                                              placeholder="Ej. Chevrolet"
-                                              onChange={(e) => setVehicleData({ ...vehicleData, marca: e.target.value })}
-                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                            />
-                                          </div>
-                                          <div>
-                                            <label className="block text-sm font-medium text-white/80 mb-2">Modelo</label>
-                                            <input
-                                              type="text"
-                                              value={vehicleData.modelo}
-                                              placeholder="Ej: Aveo Emotion"
-                                              onChange={(e) => setVehicleData({ ...vehicleData, modelo: e.target.value })}
-                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                            />
-                                          </div>
-                                        </div>
+                                  {/* Campo Apellidos */}
+                                  <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-white/80">Apellidos</label>
+                                    <div className="relative">
+                                      <input
+                                        type="text"
+                                        value={userData.apellidos}
+                                        onChange={(e) => setUserData({ ...userData, apellidos: e.target.value })}
+                                        className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all placeholder-gray-400 shadow-sm"
+                                        placeholder="Ej: Pérez Gómez"
+                                      />
+                                      {userData.apellidos && (
+                                        <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
+                                      )}
+                                    </div>
+                                  </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                          <div>
-                                            <label className="block text-sm font-medium text-white/80 mb-2">Año</label>
-                                            <input
-                                              type="number"
-                                              placeholder="Ej: 2020"
-                                              value={vehicleData.año}
-                                              onChange={(e) =>
-                                                setVehicleData({ ...vehicleData, año: e.target.value })
-                                              }
-                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                            />
-                                          </div>
-                                          <div>
-                                            <label className="block text-sm font-medium text-white/80 mb-2">Color</label>
-                                            <input
-                                              type="text"
-                                              placeholder="Ej. Rojo"
-                                              value={vehicleData.color}
-                                              onChange={(e) =>
-                                                setVehicleData({ ...vehicleData, color: e.target.value })
-                                              }
-                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                            />
-                                          </div>
-                                          <div>
-                                            <label className="block text-sm font-medium text-white/80 mb-2">Tipo</label>
-                                            <select
-                                              value={vehicleData.tipo}
-                                              onChange={(e) =>
-                                                setVehicleData({ ...vehicleData, tipo: e.target.value })
-                                              }
-                                              className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
-                                            >
-                                              <option value="">Seleccionar</option>
-                                              <option value="automovil">Automóvil</option>
-                                              <option value="camioneta">Camioneta</option>
-                                              <option value="motocicleta">Motocicleta</option>
-                                              <option value="comercial">Comercial</option>
-                                            </select>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                              )}
+                                  {/* Campo Género (si lo agregas) */}
+                                </div>
+
+                                {/* Columna derecha */}
+                                <div className="space-y-6">
+                                  {/* Campo Fecha Nacimiento */}
+                                  <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-white/80">Fecha de Nacimiento</label>
+                                    <div className="relative">
+                                      <input
+                                        type="date"
+                                        value={userData.fechaNacimiento ? formatDateToInput(userData.fechaNacimiento) : ''}
+                                        onChange={(e) => {
+                                          const date = e.target.value ? new Date(e.target.value) : null;
+                                          setUserData({ ...userData, fechaNacimiento: date });
+                                        }}
+                                        className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                      />
+                                      {userData.fechaNacimiento && (
+                                        <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Campo Teléfono */}
+                                  <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-white/80 flex items-center">
+                                      Teléfono
+                                      <span className="text-red-400 ml-1">*</span>
+                                    </label>
+                                    <div className="relative">
+                                      <input
+                                        type="tel"
+                                        value={userData.telefono}
+                                        onChange={(e) => setUserData({ ...userData, telefono: e.target.value })}
+                                        required
+                                        pattern="[0-9]{10,15}"
+                                        className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all placeholder-gray-400 shadow-sm"
+                                        placeholder="Ej: 0987654321"
+                                      />
+                                      {userData.telefono && (
+                                        <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Campo Email */}
+                                  <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-white/80 flex items-center">
+                                      Correo Electrónico
+                                      <span className="text-red-400 ml-1">*</span>
+                                    </label>
+                                    <div className="relative">
+                                      <input
+                                        type="email"
+                                        value={userData.email}
+                                        // ya no hace falta onChange porque el campo está deshabilitado
+                                        disabled
+                                        required
+                                        className="w-full bg-gray-200 text-gray-700 rounded-xl py-2.5 px-4 placeholder-gray-400 shadow-sm cursor-not-allowed"
+                                        placeholder="Ej: ejemplo@correo.com"
+                                      />
+                                      {userData.email && (
+                                        <Check className="absolute right-3 top-3 h-5 w-5 text-green-400" />
+                                      )}
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                              {/* Nota de campos obligatorios */}
+                              <div className="mt-6 pt-4 border-t border-gray-600">
+                                <p className="text-xs text-white/50">
+                                  <span className="text-red-400">*</span> Campos obligatorios
+                                </p>
+                              </div>
                             </div>
                           </motion.div>
-                        </AnimatePresence>
-                      )}
+                        )}
+                      </AnimatePresence>
+                    </div>
 
-                      {/* Botón de Envío Mejorado */}
-                      <div className="flex justify-end pt-4">
-                        <motion.button
-                          whileHover={{ scale: 1.03 }}
-                          whileTap={{ scale: 0.97 }}
-                          type="submit"
-                          disabled={!showUserForm || !showVehicleForm}
-                          className={`py-3 px-8 rounded-full font-medium flex items-center gap-2 shadow-lg ${showUserForm && showVehicleForm
-                            ? 'bg-gradient-to-tr from-cyan-400 to-blue-500 text-white'
-                            : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                            }`}
-                        >
-                          Continuar
-                          <ChevronRight className="h-5 w-5" />
-                        </motion.button>
+                    {/* Sección de Vehículo - Diseño Mejorado */}
+                    {vehiculosUsuario.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-white/90 mb-4">Selecciona uno de tus Vehículos Registrados</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
+                          {vehiculosUsuario.map((vehiculo, index) => (
+                            <motion.div
+                              key={index}
+                              whileHover={{ y: -3 }}
+                              className={`relative overflow-hidden rounded-2xl p-5 border shadow-lg cursor-pointer transition-all duration-200 ${vehiculoSeleccionado === vehiculo.placa
+                                ? 'border-cyan-400 bg-cyan-400/10 ring-2 ring-cyan-400/30'
+                                : 'border-gray-600 bg-gray-800/40 hover:bg-gray-800/30'
+                                }`}
+                              onClick={() => {
+                                setVehiculoSeleccionado(vehiculo.placa);
+                                setPlaca(vehiculo.placa);
+                                setVehicleData({
+                                  placa: vehiculo.placa,
+                                  marca: vehiculo.marca || '',
+                                  modelo: vehiculo.modelo || '',
+                                  año: vehiculo.anio?.toString() || '',
+                                  color: vehiculo.color || '',
+                                  tipo: vehiculo.tipo || '',
+                                  chasis: vehiculo.chasis || '',
+                                  motor: vehiculo.motor || '',
+                                  cmv: vehiculo.cmv || '',
+                                  cilindraje: vehiculo.cilindraje?.toString() || '',
+                                });
+                                setMostrarNuevoVehiculo(false);
+                              }}
+                            >
+                              {/* Encabezado con placa y tipo */}
+                              <div className="flex justify-between items-start mb-4">
+                                <div>
+                                  <h4 className="text-xl font-bold text-white tracking-wider">{vehiculo.placa}</h4>
+                                  <span
+                                    className={`text-xs font-medium px-2 py-1 rounded-full ${vehiculo.tipo === 'motocicleta'
+                                      ? 'bg-blue-500/20 text-blue-300'
+                                      : vehiculo.tipo === 'camioneta'
+                                        ? 'bg-green-500/20 text-green-300'
+                                        : 'bg-purple-500/20 text-purple-300'
+                                      }`}
+                                  >
+                                    {vehiculo.tipo || 'Vehículo'}
+                                  </span>
+                                </div>
+
+                                {vehiculoSeleccionado === vehiculo.placa && (
+                                  <div className="bg-cyan-400 text-gray-900 text-xs px-2 py-1 rounded-full flex items-center">
+                                    <Check className="h-3 w-3 mr-1" />
+                                    Seleccionado
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Detalles del vehículo */}
+                              <div className="space-y-3">
+                                <div>
+                                  <p className="text-xs text-white/60 mb-1">Marca/Modelo</p>
+                                  <p className="text-white font-medium truncate">
+                                    {vehiculo.marca || 'Sin marca'} {vehiculo.modelo && `- ${vehiculo.modelo}`}
+                                  </p>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <p className="text-xs text-white/60 mb-1">Año</p>
+                                    <p className="text-white font-medium">{vehiculo.anio || 'N/A'}</p>
+                                  </div>
+
+                                  <div>
+                                    <p className="text-xs text-white/60 mb-1">Color</p>
+                                    <div className="flex items-center gap-2">
+                                      <span
+                                        className="inline-block h-4 w-4 rounded-full border border-gray-600"
+                                        style={{ backgroundColor: getColorCode(vehiculo.color) }}
+                                      />
+                                      <span className="text-white font-medium capitalize truncate">
+                                        {vehiculo.color || 'N/A'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Efecto sutil de selección */}
+                              {vehiculoSeleccionado === vehiculo.placa && (
+                                <div className="absolute inset-0 rounded-xl pointer-events-none border-2 border-cyan-400/50 animate-pulse-slow"></div>
+                              )}
+                            </motion.div>
+                          ))}
+                        </div>
+
+                        {/* Botón para nuevo vehículo */}
+                        <div className="mt-8 flex justify-center">
+                          <motion.button
+                            type="button"
+                            onClick={() => {
+                              setMostrarNuevoVehiculo(true);
+                              setShowVehicleForm(true); // Forzar mostrar el formulario
+                              setVehiculoSeleccionado('');
+                              setVehicleData({
+                                placa: '',
+                                marca: '',
+                                modelo: '',
+                                año: '',
+                                color: '',
+                                tipo: '',
+                                chasis: '',
+                                motor: '',
+                                cmv: '',
+                                cilindraje: '',
+                              });
+                              setPlaca('');
+                              setTimeout(() => {
+                                const formElement = document.getElementById('nuevo-vehiculo-form');
+                                if (formElement) formElement.scrollIntoView({ behavior: 'smooth' });
+                              }, 100);
+                            }}
+                            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-tr from-cyan-400 to-blue-500 text-white rounded-full hover:shadow-lg transition-all text-sm font-medium"
+                          >
+                            <PlusCircle className="h-4 w-4" />
+                            Agregar nuevo vehículo
+                          </motion.button>
+
+
+
+                        </div>
                       </div>
-                    </form>
-                  </div>
+                    )}
+
+                    {(vehiculosUsuario.length === 0 || mostrarNuevoVehiculo) && (
+                      <AnimatePresence>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.4 }}
+                          className="mt-8"
+                        >
+                          {/* Aquí va tu formulario de registro de nuevo vehículo existente */}
+                          <div>
+                            <div className="flex items-center gap-3 mb-5">
+                              <div className="p-3 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 text-white shadow-inner">
+                                <Car className="h-6 w-6" />
+                              </div>
+                              <h2 className="text-xl font-semibold text-white">Vehículo</h2>
+                            </div>
+
+                            <div className="space-y-6">
+                              <div>
+                                <label className="block text-sm font-medium text-white/80 mb-2">Placa</label>
+                                <div className="relative">
+                                  <input
+                                    type="text"
+                                    value={placa}
+                                    onChange={(e) => setPlaca(e.target.value.toUpperCase())}
+                                    placeholder="Ej: ABC1234"
+                                    className="w-full bg-white/90 text-gray-900 rounded-xl py-3 px-4 placeholder-gray-500 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                    maxLength={7}
+                                  />
+                                  {placa.length >= 6 && (
+                                    <div className="absolute right-3 top-3">
+                                      {placaValida ? (
+                                        <Check className="h-5 w-5 text-green-400" />
+                                      ) : (
+                                        <span className="text-red-400">✖</span>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                                {placa.length >= 6 && !placaValida && (
+                                  <p className="text-sm text-red-300 mt-2">Formato de placa inválido</p>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Subformulario de Vehículo */}
+                            {(vehiculosUsuario.length === 0 || mostrarNuevoVehiculo) && (
+                              <AnimatePresence>
+                                {showVehicleForm && (
+                                  <motion.div
+                                    id="nuevo-vehiculo-form"
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.4 }}
+                                    className="mt-8 overflow-hidden"
+                                  >
+                                    <div className="bg-gray-700/50 backdrop-blur-md border border-gray-600 rounded-xl p-6 space-y-6">
+                                      <h3 className="text-lg font-semibold text-white/90 mb-2">Detalles del Vehículo</h3>
+
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <div>
+                                          <label className="block text-sm font-medium text-white/80 mb-2">Marca</label>
+                                          <input
+                                            type="text"
+                                            value={vehicleData.marca}
+                                            placeholder="Ej. Chevrolet"
+                                            onChange={(e) => setVehicleData({ ...vehicleData, marca: e.target.value })}
+                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-white/80 mb-2">Modelo</label>
+                                          <input
+                                            type="text"
+                                            value={vehicleData.modelo}
+                                            placeholder="Ej: Aveo Emotion"
+                                            onChange={(e) => setVehicleData({ ...vehicleData, modelo: e.target.value })}
+                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                          />
+                                        </div>
+                                      </div>
+
+                                      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                        <div>
+                                          <label className="block text-sm font-medium text-white/80 mb-2">Año</label>
+                                          <input
+                                            type="number"
+                                            placeholder="Ej: 2020"
+                                            value={vehicleData.año}
+                                            onChange={(e) =>
+                                              setVehicleData({ ...vehicleData, año: e.target.value })
+                                            }
+                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-white/80 mb-2">Color</label>
+                                          <input
+                                            type="text"
+                                            placeholder="Ej. Rojo"
+                                            value={vehicleData.color}
+                                            onChange={(e) =>
+                                              setVehicleData({ ...vehicleData, color: e.target.value })
+                                            }
+                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-white/80 mb-2">Tipo</label>
+                                          <select
+                                            value={vehicleData.tipo}
+                                            onChange={(e) =>
+                                              setVehicleData({ ...vehicleData, tipo: e.target.value })
+                                            }
+                                            className="w-full bg-white/90 text-gray-900 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-[#EC4899] focus:bg-white transition-all shadow-sm"
+                                          >
+                                            <option value="">Seleccionar</option>
+                                            <option value="automovil">Automóvil</option>
+                                            <option value="camioneta">Camioneta</option>
+                                            <option value="motocicleta">Motocicleta</option>
+                                            <option value="comercial">Comercial</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            )}
+                          </div>
+                        </motion.div>
+                      </AnimatePresence>
+                    )}
+
+                    {/* Botón de Envío Mejorado */}
+                    <div className="flex justify-end pt-4">
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        type="submit"
+                        disabled={!showUserForm || !showVehicleForm}
+                        className={`py-3 px-8 rounded-full font-medium flex items-center gap-2 shadow-lg ${showUserForm && showVehicleForm
+                          ? 'bg-gradient-to-tr from-cyan-400 to-blue-500 text-white'
+                          : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                          }`}
+                      >
+                        Continuar
+                        <ChevronRight className="h-5 w-5" />
+                      </motion.button>
+                    </div>
+                  </form>
                 </div>
+              </div>
 
-              </motion.div>
-            </div>
+            </motion.div>
+          </div>
 
-            <AnimatePresence>
-              {showNotification && (
-                <Notification
-                  message={notificationMessage}
-                  onClose={() => setShowNotification(false)}
-                />
-              )}
+          <AnimatePresence>
+            {showNotification && (
+              <Notification
+                message={notificationMessage}
+                onClose={() => setShowNotification(false)}
+              />
+            )}
 
-            </AnimatePresence>
+          </AnimatePresence>
 
-          </main>
+        </main>
 
-        </div>
-        <NoPayChatLauncher />
+      </div>
+      <NoPayChatLauncher />
 
-      </BackgroundWithSideSvg>
+
       <Footer />
     </>
   );
