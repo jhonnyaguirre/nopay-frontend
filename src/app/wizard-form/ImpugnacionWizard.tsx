@@ -190,7 +190,6 @@ const ImpugnacionWizard = () => {
     value?: React.ReactNode;
   };
 
-
   function generarPromptIAOptimista({
     nombre,
     cedula,
@@ -208,22 +207,21 @@ const ImpugnacionWizard = () => {
     const hoy = new Date().toISOString().split("T")[0];
 
     let prompt = `Fecha de análisis: ${hoy}\n\n`;
-    prompt += `Estimada IA Analítica Jurídica:\n\n`;
-    prompt += `Eres una abogada ecuatoriana experta en derecho de tránsito. Tu misión es analizar y orientar la impugnación de multas de tránsito en Ecuador **basándote estrictamente en el COIP (especialmente Art. 644 y 641), la Ley Orgánica de Transporte Terrestre, Tránsito y Seguridad Vial (LOTTTSV), y los artículos sobre nulidades de actos administrativos (Art. 139 COIP)**. Cita los artículos exactos. Si el plazo ha caducado, menciona opciones legales válidas (prescripción, nulidades absolutas, recursos excepcionales) pero nunca confundas plazos ni artículos. No menciones el Art. 266 COIP ni recursos administrativos que no apliquen. El lenguaje debe ser natural, humano y esperanzador, pero riguroso y exacto.\n\n`;
+    prompt += `Eres una abogada ecuatoriana experta en tránsito, con orientación positiva y claridad didáctica. Analiza la impugnación de la multa de tránsito presentada a continuación, usando **únicamente** la legislación ecuatoriana vigente (COIP, Ley Orgánica de Transporte Terrestre, Tránsito y Seguridad Vial - LOTTTSV, Código Orgánico Administrativo - COA) y menciona siempre el artículo exacto.\n\n`;
 
-    prompt += `**DATOS DEL CIUDADANO**\n`;
-    prompt += `• Nombre: ${nombre}\n`;
-    prompt += `• Cédula: ${cedula}\n`;
-    prompt += `• Ubicación: ${direccion}, ${ciudad}, ${provincia}\n\n`;
+    prompt += `**Datos del ciudadano:**\n`;
+    prompt += `- Nombre: ${nombre}\n`;
+    prompt += `- Cédula: ${cedula}\n`;
+    prompt += `- Ubicación: ${direccion}, ${ciudad}, ${provincia}\n\n`;
 
-    prompt += `**DETALLES DE LA CITACIÓN**\n`;
-    prompt += `• Tipo de sanción: ${tipoMulta}\n`;
-    prompt += `• Agencia emisora: ${agencia}\n`;
-    prompt += `• Fecha citación: ${fechaCitacion} (Días transcurridos: ${Math.floor((new Date().getTime() - new Date(fechaCitacion).getTime()) / (1000 * 60 * 60 * 24))})\n`;
-    prompt += `• N° citación: ${numeroCitacion}\n`;
-    prompt += `• Vehículo implicado: ${vehiculoDescripcion}\n\n`;
+    prompt += `**Detalles de la citación:**\n`;
+    prompt += `- Tipo de sanción: ${tipoMulta}\n`;
+    prompt += `- Agencia emisora: ${agencia}\n`;
+    prompt += `- Fecha citación: ${fechaCitacion} (Días transcurridos: ${Math.floor((new Date().getTime() - new Date(fechaCitacion).getTime()) / (1000 * 60 * 60 * 24))})\n`;
+    prompt += `- N° citación: ${numeroCitacion}\n`;
+    prompt += `- Vehículo implicado: ${vehiculoDescripcion}\n\n`;
 
-    prompt += `**DOCUMENTACIÓN ADJUNTA**\n`;
+    prompt += `**Documentación adjunta:**\n`;
     archivos.forEach((file: FileWithPreview, idx: number) => {
       prompt += `▶ Documento ${idx + 1}: ${file.name}\n`;
       if (ocrResults[idx]) {
@@ -231,7 +229,7 @@ const ImpugnacionWizard = () => {
         prompt += `   ▸ Reconocimiento OCR (${confidence}% confianza):\n`;
         prompt += `   "${ocrResults[idx].text.trim().replace(/\n+/g, ' ')}"\n`;
         if (confidence < 70) {
-          prompt += `   ▸ Observación: La calidad de imagen sugiere revisión manual - ¡Oportunidad para complementar con mejor evidencia!\n`;
+          prompt += `   ▸ Observación: La calidad de imagen sugiere revisión manual - oportunidad de complementar con mejor evidencia.\n`;
         }
         if (ocrResults[idx].extractedData) {
           prompt += `   ▸ Datos estructurados: ${JSON.stringify(ocrResults[idx].extractedData)}\n`;
@@ -239,26 +237,26 @@ const ImpugnacionWizard = () => {
       }
     });
 
-    prompt += `\n**INSTRUCCIONES ESPECÍFICAS PARA EL ANÁLISIS**\n`;
-    prompt += `1. CALCULA EL PLAZO para impugnar según Art. 644 COIP (3 días hábiles desde la notificación). Si el plazo ha vencido, analiza posibles vías de nulidad, prescripción o excepciones legales (como lo previsto en el Art. 27 LOTTTTSV para prescripción).\n\n`;
-    prompt += `2. REVISA FORMALIDADES DE LA BOLETA: Evalúa si hay errores, datos ilegibles, falta de notificación adecuada, inconsistencias en placa, nombre, fecha, o documentos borrosos (usa Art. 139 COIP para nulidades formales si aplica).\n\n`;
-    prompt += `3. MENCIONA LAS ESTRATEGIAS LEGALES más viables y específicas:  
-  • Impugnación directa según Art. 644 COIP  
-  • Alegaciones de nulidad si hay vicios de forma/fondo (Art. 139 COIP)  
-  • Pronto pago con descuento solo si el usuario lo solicita (Art. 149 LOTTT)  
-  • Negociación/mediación si es permitido por la autoridad, pero dejando claro que esto no reemplaza la impugnación.\n\n`;
-    prompt += `4. FUNDAMENTA CADA SUGERENCIA con el artículo exacto y explica con claridad si aplica o no según el caso concreto.\n\n`;
+    prompt += `\n**Lineamientos para tu análisis jurídico:**\n`;
+    prompt += `1. Calcula con precisión si el plazo para impugnación (Art. 644 COIP - 3 días hábiles desde la notificación) está vigente o vencido. Si está vencido, busca alternativas jurídicas válidas (acción de nulidad por vicios de forma, prescripción Art. 27 LOTTTSV, recursos administrativos según COA) y especifica cuándo y cómo procede cada una.\n\n`;
 
-    prompt += `5. NUNCA menciones recursos que no existan en la ley ecuatoriana de tránsito ni inventes figuras legales. Sé rigurosa, clara, empática y humana, pero 100% alineada con la ley.\n\n`;
+    prompt += `2. Evalúa la validez formal de la boleta: identifica posibles vicios sustanciales (datos erróneos, falta de firma, placa incorrecta, errores en nombres, documentos ilegibles), y sustenta toda recomendación con el artículo exacto, especialmente Art. 139 COIP para nulidad de actuaciones defectuosas.\n\n`;
 
-    prompt += `6. Da una lista clara de pasos a seguir para el usuario según el resultado del análisis (si aún puede impugnar, cómo hacerlo; si ya no puede, qué vías alternativas existen).\n\n`;
+    prompt += `3. Solo menciona recursos administrativos (reposición, revisión) si la sanción aún no está firme y según lo permite el COA. No cites el Art. 149 LOTTTSV para recursos, pues corresponde solo a descuentos por pronto pago.\n\n`;
 
-    prompt += `Redacta como un abogado experto y humano, de forma clara, cálida, y que inspire confianza, pero siempre ajustado a la ley vigente. Puedes exceder el límite de 300 palabras si es necesario.\n\n`;
+    prompt += `4. En caso de haber vencido todos los plazos ordinarios, analiza la posibilidad de interponer acciones extraordinarias (acción de nulidad, revisión administrativa, prescripción), detallando bajo qué condiciones pueden prosperar, con base legal clara.\n\n`;
 
-    prompt += `¡Tu respuesta debe ser útil y servir de guía legal real!`;
+    prompt += `5. No generes falsas expectativas: aclara con honestidad los riesgos, probabilidades y posibles desenlaces. Explica al usuario los pasos concretos a seguir según el caso.\n\n`;
+
+    prompt += `6. Usa un lenguaje humano, cálido y empático, pero siempre legalmente riguroso, directo y orientado a soluciones reales. Puedes extenderte más de 300 palabras si es necesario para cubrir el análisis de todas las alternativas legales.\n\n`;
+
+    prompt += `7. No incluyas artículos que no sean relevantes o que se presten a confusión con delitos de otra materia. Menciona solo las figuras aplicables a tránsito, nulidades y procedimientos administrativos.\n\n`;
+
+    prompt += `Redacta como una abogada ecuatoriana experta, y ayuda al usuario a tomar la mejor decisión legal posible.`
 
     return prompt;
   }
+
 
 
   function SummaryItem({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
