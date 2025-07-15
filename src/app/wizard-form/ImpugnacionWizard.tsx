@@ -205,10 +205,12 @@ const ImpugnacionWizard = () => {
     archivos,
     ocrResults,
   }: GenerarPromptIAInput): string {
+
+
     const hoy = new Date().toISOString().split("T")[0];
 
     let prompt = `Fecha de análisis: ${hoy}\n\n`;
-    prompt += `Eres una abogada ecuatoriana experta en tránsito, con orientación positiva, honestidad y claridad didáctica. Analiza la impugnación de la multa de tránsito presentada a continuación, usando **exclusivamente** la legislación ecuatoriana vigente (COIP, Ley Orgánica de Transporte Terrestre, Tránsito y Seguridad Vial - LOTTTSV, Código Orgánico Administrativo - COA). **Cita siempre el artículo exacto** y asegúrate de no mencionar normas, plazos o recursos que no correspondan a la materia o situación concreta.\n\n`;
+    prompt += `Eres una abogada ecuatoriana experta en tránsito, con orientación positiva y claridad didáctica. Analiza la impugnación de la multa de tránsito presentada a continuación, usando **únicamente** la legislación ecuatoriana vigente (COIP, Ley Orgánica de Transporte Terrestre, Tránsito y Seguridad Vial - LOTTTSV, Código Orgánico Administrativo - COA) y menciona siempre el artículo exacto.\n\n`;
 
     prompt += `**Datos del ciudadano:**\n`;
     prompt += `- Nombre: ${nombre}\n`;
@@ -240,19 +242,19 @@ const ImpugnacionWizard = () => {
 
     prompt += `\n**Lineamientos para tu análisis jurídico:**\n`;
 
-    prompt += `1. Calcula y explica claramente si el plazo para impugnación (Art. 644 COIP – 3 días hábiles desde la notificación) está vigente o vencido, mostrando el cálculo de días hábiles de forma sencilla y explícita para el usuario. Si está vencido, identifica todas las **alternativas jurídicas válidas**: acción de nulidad por vicios de forma (Art. 139 COIP y Art. 109 COA), revisión administrativa extraordinaria (Art. 226 COA), prescripción (Art. 27 LOTTTSV). **Explica en qué consiste cada opción, cuándo y cómo procede, con claridad y exactitud legal.**\n\n`;
+    prompt += `1. Calcula con precisión si el plazo para impugnación (Art. 644 COIP - 3 días hábiles desde la notificación) está vigente o vencido. Si está vencido, busca alternativas jurídicas válidas (acción de nulidad por vicios de forma, prescripción Art. 27 LOTTTSV, recursos administrativos según COA) y especifica cuándo y cómo procede cada una.**\n\n`;
 
-    prompt += `2. Evalúa rigurosamente la validez formal de la boleta: identifica **todos los vicios sustanciales posibles** (errores en nombres, cédula, placa, falta de firma o autoridad competente, fechas inconsistentes, documentos ilegibles, omisión de motivación). Si detectas defectos, explica cómo estos pueden afectar la validez del acto según Art. 139 COIP y Art. 109 COA, y describe cómo el usuario puede fundamentar su reclamo.\n\n`;
+    prompt += `2. Evalúa la validez formal de la boleta: identifica posibles vicios sustanciales (datos erróneos, falta de firma, placa incorrecta, errores en nombres, documentos ilegibles), y sustenta toda recomendación con el artículo exacto, especialmente Art. 139 COIP para nulidad de actuaciones defectuosas.\n\n`;
 
-    prompt += `3. Solo menciona recursos administrativos ordinarios (reposición, apelación) si la sanción **aún no está firme** y siempre cita el artículo correcto del COA. **No confundas recursos ordinarios con recursos extraordinarios**. Nunca cites el Art. 149 LOTTTSV para recursos, pues solo aplica a descuentos por pronto pago y puede inducir a error.\n\n`;
+    prompt += `3. Solo menciona recursos administrativos (reposición, revisión) si la sanción aún no está firme y según lo permite el COA. No cites el Art. 149 LOTTTSV para recursos, pues corresponde solo a descuentos por pronto pago.\n\n`;
 
-    prompt += `4. Cuando los plazos ordinarios han vencido, analiza la viabilidad de acciones extraordinarias (nulidad, revisión administrativa extraordinaria, prescripción), **citando solo los artículos correctos y diferenciando claramente cada figura**, su objeto, requisitos, plazo legal y probabilidades reales de éxito.\n\n`;
+    prompt += `4. En caso de haber vencido todos los plazos ordinarios, analiza la posibilidad de interponer acciones extraordinarias (acción de nulidad, revisión administrativa, prescripción), detallando bajo qué condiciones pueden prosperar, con base legal clara.\n\n`;
 
-    prompt += `5. No generes falsas expectativas: **explica siempre los riesgos y limitaciones reales** para el usuario, incluyendo qué pasa si la documentación original es legible, si el vicio es leve o si la sanción está firme. Indica las consecuencias de intentar un recurso improcedente. Sé realista pero sin desalentar injustificadamente.\n\n`;
+    prompt += `5. No generes falsas expectativas: aclara con honestidad los riesgos, probabilidades y posibles desenlaces. Explica al usuario los pasos concretos a seguir según el caso.\n\n`;
 
-    prompt += `6. Usa un lenguaje humano, cálido, profesional y empático, pero absolutamente riguroso y didáctico. Si el análisis requiere más de 300 palabras para explicar todas las alternativas y sus consecuencias, extiéndete sin problema: **prioriza la claridad, la utilidad práctica y la transparencia legal**.\n\n`;
+    prompt += `6. Usa un lenguaje humano, cálido y empático, pero siempre legalmente riguroso, directo y orientado a soluciones reales. Puedes extenderte más de 300 palabras si es necesario para cubrir el análisis de todas las alternativas legales**.\n\n`;
 
-    prompt += `7. No incluyas artículos, figuras o recursos que no sean relevantes para tránsito, nulidades y procedimientos administrativos. **Evita confundir con artículos o figuras penales, civiles o de otra materia.**\n\n`;
+    prompt += `7. No incluyas artículos que no sean relevantes o que se presten a confusión con delitos de otra materia. Menciona solo las figuras aplicables a tránsito, nulidades y procedimientos administrativos.**\n\n`;
 
     prompt += `8. Antes de finalizar, resume tus conclusiones y sugiere al usuario el siguiente paso más adecuado, en función de sus posibilidades reales. Ofrece redactar modelos o acompañamiento si corresponde.\n\n`;
 
@@ -1778,7 +1780,7 @@ const ImpugnacionWizard = () => {
               )}
 
 
-              {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
+              {/* ————————————————————————————— STEP 6 (ANTES STEP 4) ————————————————————————————— */}
               {step === 6 && (
                 <>
                   {/* Mostrar pantalla de espera mientras se consulta la IA */}
