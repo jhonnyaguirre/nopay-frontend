@@ -190,6 +190,7 @@ const ImpugnacionWizard = () => {
     value?: React.ReactNode;
   };
 
+
   function generarPromptIAOptimista({
     nombre,
     cedula,
@@ -207,7 +208,7 @@ const ImpugnacionWizard = () => {
     const hoy = new Date().toISOString().split("T")[0];
 
     let prompt = `Fecha de análisis: ${hoy}\n\n`;
-    prompt += `Eres una abogada ecuatoriana experta en tránsito, con orientación positiva y claridad didáctica. Analiza la impugnación de la multa de tránsito presentada a continuación, usando **únicamente** la legislación ecuatoriana vigente (COIP, Ley Orgánica de Transporte Terrestre, Tránsito y Seguridad Vial - LOTTTSV, Código Orgánico Administrativo - COA) y menciona siempre el artículo exacto.\n\n`;
+    prompt += `Eres una abogada ecuatoriana experta en tránsito, con orientación positiva, honestidad y claridad didáctica. Analiza la impugnación de la multa de tránsito presentada a continuación, usando **exclusivamente** la legislación ecuatoriana vigente (COIP, Ley Orgánica de Transporte Terrestre, Tránsito y Seguridad Vial - LOTTTSV, Código Orgánico Administrativo - COA). **Cita siempre el artículo exacto** y asegúrate de no mencionar normas, plazos o recursos que no correspondan a la materia o situación concreta.\n\n`;
 
     prompt += `**Datos del ciudadano:**\n`;
     prompt += `- Nombre: ${nombre}\n`;
@@ -238,24 +239,30 @@ const ImpugnacionWizard = () => {
     });
 
     prompt += `\n**Lineamientos para tu análisis jurídico:**\n`;
-    prompt += `1. Calcula con precisión si el plazo para impugnación (Art. 644 COIP - 3 días hábiles desde la notificación) está vigente o vencido. Si está vencido, busca alternativas jurídicas válidas (acción de nulidad por vicios de forma, prescripción Art. 27 LOTTTSV, recursos administrativos según COA) y especifica cuándo y cómo procede cada una.\n\n`;
 
-    prompt += `2. Evalúa la validez formal de la boleta: identifica posibles vicios sustanciales (datos erróneos, falta de firma, placa incorrecta, errores en nombres, documentos ilegibles), y sustenta toda recomendación con el artículo exacto, especialmente Art. 139 COIP para nulidad de actuaciones defectuosas.\n\n`;
+    prompt += `1. Calcula y explica claramente si el plazo para impugnación (Art. 644 COIP – 3 días hábiles desde la notificación) está vigente o vencido, mostrando el cálculo de días hábiles de forma sencilla y explícita para el usuario. Si está vencido, identifica todas las **alternativas jurídicas válidas**: acción de nulidad por vicios de forma (Art. 139 COIP y Art. 109 COA), revisión administrativa extraordinaria (Art. 226 COA), prescripción (Art. 27 LOTTTSV). **Explica en qué consiste cada opción, cuándo y cómo procede, con claridad y exactitud legal.**\n\n`;
 
-    prompt += `3. Solo menciona recursos administrativos (reposición, revisión) si la sanción aún no está firme y según lo permite el COA. No cites el Art. 149 LOTTTSV para recursos, pues corresponde solo a descuentos por pronto pago.\n\n`;
+    prompt += `2. Evalúa rigurosamente la validez formal de la boleta: identifica **todos los vicios sustanciales posibles** (errores en nombres, cédula, placa, falta de firma o autoridad competente, fechas inconsistentes, documentos ilegibles, omisión de motivación). Si detectas defectos, explica cómo estos pueden afectar la validez del acto según Art. 139 COIP y Art. 109 COA, y describe cómo el usuario puede fundamentar su reclamo.\n\n`;
 
-    prompt += `4. En caso de haber vencido todos los plazos ordinarios, analiza la posibilidad de interponer acciones extraordinarias (acción de nulidad, revisión administrativa, prescripción), detallando bajo qué condiciones pueden prosperar, con base legal clara.\n\n`;
+    prompt += `3. Solo menciona recursos administrativos ordinarios (reposición, apelación) si la sanción **aún no está firme** y siempre cita el artículo correcto del COA. **No confundas recursos ordinarios con recursos extraordinarios**. Nunca cites el Art. 149 LOTTTSV para recursos, pues solo aplica a descuentos por pronto pago y puede inducir a error.\n\n`;
 
-    prompt += `5. No generes falsas expectativas: aclara con honestidad los riesgos, probabilidades y posibles desenlaces. Explica al usuario los pasos concretos a seguir según el caso.\n\n`;
+    prompt += `4. Cuando los plazos ordinarios han vencido, analiza la viabilidad de acciones extraordinarias (nulidad, revisión administrativa extraordinaria, prescripción), **citando solo los artículos correctos y diferenciando claramente cada figura**, su objeto, requisitos, plazo legal y probabilidades reales de éxito.\n\n`;
 
-    prompt += `6. Usa un lenguaje humano, cálido y empático, pero siempre legalmente riguroso, directo y orientado a soluciones reales. Puedes extenderte más de 300 palabras si es necesario para cubrir el análisis de todas las alternativas legales.\n\n`;
+    prompt += `5. No generes falsas expectativas: **explica siempre los riesgos y limitaciones reales** para el usuario, incluyendo qué pasa si la documentación original es legible, si el vicio es leve o si la sanción está firme. Indica las consecuencias de intentar un recurso improcedente. Sé realista pero sin desalentar injustificadamente.\n\n`;
 
-    prompt += `7. No incluyas artículos que no sean relevantes o que se presten a confusión con delitos de otra materia. Menciona solo las figuras aplicables a tránsito, nulidades y procedimientos administrativos.\n\n`;
+    prompt += `6. Usa un lenguaje humano, cálido, profesional y empático, pero absolutamente riguroso y didáctico. Si el análisis requiere más de 300 palabras para explicar todas las alternativas y sus consecuencias, extiéndete sin problema: **prioriza la claridad, la utilidad práctica y la transparencia legal**.\n\n`;
 
-    prompt += `Redacta como una abogada ecuatoriana experta, y ayuda al usuario a tomar la mejor decisión legal posible.`
+    prompt += `7. No incluyas artículos, figuras o recursos que no sean relevantes para tránsito, nulidades y procedimientos administrativos. **Evita confundir con artículos o figuras penales, civiles o de otra materia.**\n\n`;
+
+    prompt += `8. Antes de finalizar, resume tus conclusiones y sugiere al usuario el siguiente paso más adecuado, en función de sus posibilidades reales. Ofrece redactar modelos o acompañamiento si corresponde.\n\n`;
+
+    prompt += `**Importante:** No inventes plazos ni atribuyas plazos legales que no existen (por ejemplo, no digas que la nulidad prescribe en 3 años; detalla solo lo que la ley ecuatoriana efectivamente prevé para cada figura y cuándo es aplicable).\n\n`;
+
+    prompt += `Redacta como una abogada ecuatoriana experta, orientando siempre a la mejor decisión legal posible para el usuario.`
 
     return prompt;
   }
+
 
 
 
@@ -1529,249 +1536,249 @@ const ImpugnacionWizard = () => {
 
               {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
               {step === 5 && (
-                
-                    <motion.div
-                      key="step5"
-                      initial={{ opacity: 0, x: 60 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -60 }}
-                      transition={{ duration: 0.4 }}
-                    >
 
-                       
+                <motion.div
+                  key="step5"
+                  initial={{ opacity: 0, x: 60 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -60 }}
+                  transition={{ duration: 0.4 }}
+                >
 
-                      {/* Paso 5: Revisión Final */}
-                      <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
-                        {/* ✦ Fondos Decorativos Flotantes */}
-                        <div className="absolute inset-0 pointer-events-none">
-                          {/* Círculo radial suave */}
-                          <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
-                          {/* Forma abstracta irregular */}
-                          <svg
-                            className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
-                            viewBox="0 0 500 500"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <defs>
-                              <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
-                                <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
-                              </linearGradient>
-                            </defs>
-                            <path
-                              d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
-                              fill="url(#luxGradFinal)"
-                              transform="rotate(40 1182.228 1396.314)"
-                            />
-                          </svg>
+
+
+                  {/* Paso 5: Revisión Final */}
+                  <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
+                    {/* ✦ Fondos Decorativos Flotantes */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      {/* Círculo radial suave */}
+                      <div className="absolute -top-32 -left-32 w-64 h-64 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                      {/* Forma abstracta irregular */}
+                      <svg
+                        className="absolute bottom-0 right-0 w-96 h-96 opacity-20"
+                        viewBox="0 0 500 500"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <defs>
+                          <linearGradient id="luxGradFinal" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+                          </linearGradient>
+                        </defs>
+                        <path
+                          d="M367.952 256.814c250.946 24.661 375.994 152.533 375.142 383.617-1.277 346.625-356.944 302.013-358.51 751.042-1.565 449.029 478.798 368.77 478.798 730.552 0 241.188-89.933 378.432-269.798 411.73l1402.92 2.06V258.872l-1628.552-2.059Z"
+                          fill="url(#luxGradFinal)"
+                          transform="rotate(40 1182.228 1396.314)"
+                        />
+                      </svg>
+                    </div>
+
+                    {/* ✦ Contenedor Interior */}
+                    <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
+                      <div className="flex items-center gap-4 mb-8">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
+                          <Check className="w-6 h-6 text-white drop-shadow-sm" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
+                          Revisión Final
+                        </h2>
+                      </div>
+
+
+
+
+                      <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
+                        {/* Efecto decorativo */}
+                        <div className="absolute -top-6 -left-6 w-16 h-16 bg-cyan-500 opacity-10 rounded-full blur-xl pointer-events-none" />
+
+                        {/* Header */}
+                        <div className="flex items-center gap-4 mb-8 pb-6 border-b border-cyan-600/20">
+                          <div className="p-3 bg-cyan-500/10 rounded-lg backdrop-blur-sm border border-cyan-400/20">
+                            <ClipboardList className="h-6 w-6 text-cyan-400" />
+                          </div>
+                          <h3 className="text-xl sm:text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-md">
+                            Resumen de la Impugnación
+                          </h3>
                         </div>
 
-                        {/* ✦ Contenedor Interior */}
-                        <div className="relative z-10 bg-gray-800/60 rounded-3xl p-6 sm:p-8 space-y-8">
-                          <div className="flex items-center gap-4 mb-8">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center shadow-inner">
-                              <Check className="w-6 h-6 text-white drop-shadow-sm" />
+                        {/* Contenido */}
+                        <div className="space-y-8 text-white/90">
+
+                          {/* Datos Personales */}
+                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                            <div className="flex items-center gap-3 mb-4">
+                              <User className="h-5 w-5 text-cyan-400" />
+                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                Datos Personales
+                              </h4>
                             </div>
-                            <h2 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
-                              Revisión Final
-                            </h2>
-                          </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <SummaryItem
+                                label="Dirección"
+                                value={formData.direccion}
+                                icon={<MapPin className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Provincia"
+                                value={formData.provincia}
+                                icon={<Globe className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Ciudad"
+                                value={formData.ciudad}
+                                icon={<Building className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                            </div>
+                          </section>
 
+                          {/* Detalles de la Multa */}
+                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                            <div className="flex items-center gap-3 mb-4">
+                              <AlertTriangle className="h-5 w-5 text-cyan-400" />
+                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                Detalles de la Multa
+                              </h4>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                              <SummaryItem
+                                label="Tipo"
+                                value={formData.tipoMulta}
+                                icon={<List className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Agencia"
+                                value={formData.agencia}
+                                icon={<Shield className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="Fecha"
+                                value={formData.fechaCitacion}
+                                icon={<Calendar className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                              <SummaryItem
+                                label="N° Citación"
+                                value={formData.numeroCitacion}
+                                icon={<Hash className="h-4 w-4 text-cyan-400/80" />}
+                              />
+                            </div>
+                          </section>
 
+                          {/* Documentación Adjunta */}
+                          <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
+                            <div className="flex items-center gap-3 mb-4">
+                              <Paperclip className="h-5 w-5 text-cyan-400" />
+                              <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
+                                Documentación Adjunta
+                              </h4>
+                            </div>
 
-
-                          <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
-                            {/* Efecto decorativo */}
-                            <div className="absolute -top-6 -left-6 w-16 h-16 bg-cyan-500 opacity-10 rounded-full blur-xl pointer-events-none" />
-
-                            {/* Header */}
-                            <div className="flex items-center gap-4 mb-8 pb-6 border-b border-cyan-600/20">
-                              <div className="p-3 bg-cyan-500/10 rounded-lg backdrop-blur-sm border border-cyan-400/20">
-                                <ClipboardList className="h-6 w-6 text-cyan-400" />
+                            <div className="mb-5">
+                              <div className="inline-flex items-center bg-[#1e293b]/70 px-4 py-2 rounded-lg border border-cyan-500/30 shadow-sm">
+                                <Car className="h-5 w-5 text-cyan-400 mr-2" />
+                                <span className="text-cyan-200 font-medium">Vehículo:</span>
+                                <span className="text-white ml-2 font-semibold">
+                                  {vehiculosUsuario.find((v) => v.secuencial.toString() === formData.vehiculo)?.descripcion || "No seleccionado"}
+                                </span>
                               </div>
-                              <h3 className="text-xl sm:text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-md">
-                                Resumen de la Impugnación
-                              </h3>
                             </div>
 
-                            {/* Contenido */}
-                            <div className="space-y-8 text-white/90">
-
-                              {/* Datos Personales */}
-                              <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                                <div className="flex items-center gap-3 mb-4">
-                                  <User className="h-5 w-5 text-cyan-400" />
-                                  <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                    Datos Personales
-                                  </h4>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                  <SummaryItem
-                                    label="Dirección"
-                                    value={formData.direccion}
-                                    icon={<MapPin className="h-4 w-4 text-cyan-400/80" />}
-                                  />
-                                  <SummaryItem
-                                    label="Provincia"
-                                    value={formData.provincia}
-                                    icon={<Globe className="h-4 w-4 text-cyan-400/80" />}
-                                  />
-                                  <SummaryItem
-                                    label="Ciudad"
-                                    value={formData.ciudad}
-                                    icon={<Building className="h-4 w-4 text-cyan-400/80" />}
-                                  />
-                                </div>
-                              </section>
-
-                              {/* Detalles de la Multa */}
-                              <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                                <div className="flex items-center gap-3 mb-4">
-                                  <AlertTriangle className="h-5 w-5 text-cyan-400" />
-                                  <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                    Detalles de la Multa
-                                  </h4>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                                  <SummaryItem
-                                    label="Tipo"
-                                    value={formData.tipoMulta}
-                                    icon={<List className="h-4 w-4 text-cyan-400/80" />}
-                                  />
-                                  <SummaryItem
-                                    label="Agencia"
-                                    value={formData.agencia}
-                                    icon={<Shield className="h-4 w-4 text-cyan-400/80" />}
-                                  />
-                                  <SummaryItem
-                                    label="Fecha"
-                                    value={formData.fechaCitacion}
-                                    icon={<Calendar className="h-4 w-4 text-cyan-400/80" />}
-                                  />
-                                  <SummaryItem
-                                    label="N° Citación"
-                                    value={formData.numeroCitacion}
-                                    icon={<Hash className="h-4 w-4 text-cyan-400/80" />}
-                                  />
-                                </div>
-                              </section>
-
-                              {/* Documentación Adjunta */}
-                              <section className="bg-[#1e293b]/50 p-5 rounded-xl border border-cyan-600/30 backdrop-blur-sm">
-                                <div className="flex items-center gap-3 mb-4">
-                                  <Paperclip className="h-5 w-5 text-cyan-400" />
-                                  <h4 className="text-sm font-semibold text-cyan-300/90 uppercase tracking-wider">
-                                    Documentación Adjunta
-                                  </h4>
-                                </div>
-
-                                <div className="mb-5">
-                                  <div className="inline-flex items-center bg-[#1e293b]/70 px-4 py-2 rounded-lg border border-cyan-500/30 shadow-sm">
-                                    <Car className="h-5 w-5 text-cyan-400 mr-2" />
-                                    <span className="text-cyan-200 font-medium">Vehículo:</span>
-                                    <span className="text-white ml-2 font-semibold">
-                                      {vehiculosUsuario.find((v) => v.secuencial.toString() === formData.vehiculo)?.descripcion || "No seleccionado"}
-                                    </span>
-                                  </div>
-                                </div>
-
-                                <div className="space-y-3">
-                                  <h5 className="text-sm font-medium text-cyan-300/80">Archivos adjuntos:</h5>
-                                  {formData.archivos.length > 0 ? (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                      {formData.archivos.map((file, index) => (
-                                        <div
-                                          key={index}
-                                          className="flex items-center bg-[#1e293b]/70 p-3 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
-                                        >
-                                          <FileText className="h-5 w-5 text-cyan-400/80 mr-3" />
-                                          <span className="text-sm font-medium text-white/90 truncate">
-                                            {file.name}
-                                          </span>
-                                        </div>
-                                      ))}
+                            <div className="space-y-3">
+                              <h5 className="text-sm font-medium text-cyan-300/80">Archivos adjuntos:</h5>
+                              {formData.archivos.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                  {formData.archivos.map((file, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-center bg-[#1e293b]/70 p-3 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
+                                    >
+                                      <FileText className="h-5 w-5 text-cyan-400/80 mr-3" />
+                                      <span className="text-sm font-medium text-white/90 truncate">
+                                        {file.name}
+                                      </span>
                                     </div>
-                                  ) : (
-                                    <div className="text-center py-4 bg-[#1e293b]/40 rounded-lg">
-                                      <span className="text-cyan-400/50 text-sm">No hay archivos adjuntos</span>
-                                    </div>
-                                  )}
+                                  ))}
                                 </div>
-                              </section>
-                            </div>
-                          </div>
-
-
-
-                          <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
-                            <input
-                              id="terms"
-                              name="terms"
-                              type="checkbox"
-                              checked={formData.aceptaTerminos}
-                              onChange={(e) =>
-                                setFormData({ ...formData, aceptaTerminos: e.target.checked })
-                              }
-                              className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
-                            />
-                            <div className="ml-4 text-white text-sm">
-                              <label htmlFor="terms" className="font-medium leading-snug">
-                                Confirmo que toda la información proporcionada es verídica.
-                              </label>
-                              <p className="text-white/60 mt-1">
-                                Al enviar este formulario, acepto los términos, condiciones de
-                                impugnación y autorización de tratamiento de datos personales
-                                conforme a la normativa vigente.
-                              </p>
-                              {errors.aceptaTerminos && (
-                                <p className="mt-3 text-red-400 text-sm flex items-center">
-                                  <AlertCircle className="mr-1 w-4 h-4" />
-                                  {errors.aceptaTerminos}
-                                </p>
+                              ) : (
+                                <div className="text-center py-4 bg-[#1e293b]/40 rounded-lg">
+                                  <span className="text-cyan-400/50 text-sm">No hay archivos adjuntos</span>
+                                </div>
                               )}
                             </div>
-
-
-                            <input
-                              id="terms2"
-                              name="terms2"
-                              type="checkbox"
-                              checked={formData.aceptaTerminos}
-                              onChange={(e) =>
-                                setFormData({ ...formData, aceptaTerminos: e.target.checked })
-                              }
-                              className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
-                            />
-                            <div className="ml-4 text-white text-sm">
-                              <label htmlFor="terms" className="font-medium leading-snug">
-                                Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
-                              </label>
-                              <p className="text-white/60 mt-1">
-                                Al enviar este formulario, acepto los términos, condiciones de
-                                impugnación y autorización de tratamiento de datos personales
-                                conforme a la normativa vigente.
-                              </p>
-                              {errors.aceptaTerminos && (
-                                <p className="mt-3 text-red-400 text-sm flex items-center">
-                                  <AlertCircle className="mr-1 w-4 h-4" />
-                                  {errors.aceptaTerminos}
-                                </p>
-                              )}
-                            </div>
-
-
-                          </div>
- 
-
+                          </section>
                         </div>
                       </div>
 
-                    </motion.div>
-                 
+
+
+                      <div className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600 flex items-start shadow-lg">
+                        <input
+                          id="terms"
+                          name="terms"
+                          type="checkbox"
+                          checked={formData.aceptaTerminos}
+                          onChange={(e) =>
+                            setFormData({ ...formData, aceptaTerminos: e.target.checked })
+                          }
+                          className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
+                        />
+                        <div className="ml-4 text-white text-sm">
+                          <label htmlFor="terms" className="font-medium leading-snug">
+                            Confirmo que toda la información proporcionada es verídica.
+                          </label>
+                          <p className="text-white/60 mt-1">
+                            Al enviar este formulario, acepto los términos, condiciones de
+                            impugnación y autorización de tratamiento de datos personales
+                            conforme a la normativa vigente.
+                          </p>
+                          {errors.aceptaTerminos && (
+                            <p className="mt-3 text-red-400 text-sm flex items-center">
+                              <AlertCircle className="mr-1 w-4 h-4" />
+                              {errors.aceptaTerminos}
+                            </p>
+                          )}
+                        </div>
+
+
+                        <input
+                          id="terms2"
+                          name="terms2"
+                          type="checkbox"
+                          checked={formData.aceptaTerminos}
+                          onChange={(e) =>
+                            setFormData({ ...formData, aceptaTerminos: e.target.checked })
+                          }
+                          className="mt-1 h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-500 rounded bg-gray-800/50"
+                        />
+                        <div className="ml-4 text-white text-sm">
+                          <label htmlFor="terms" className="font-medium leading-snug">
+                            Confirmo que he leido y acepto los términos y condiciones de uso de NoPay Legal.
+                          </label>
+                          <p className="text-white/60 mt-1">
+                            Al enviar este formulario, acepto los términos, condiciones de
+                            impugnación y autorización de tratamiento de datos personales
+                            conforme a la normativa vigente.
+                          </p>
+                          {errors.aceptaTerminos && (
+                            <p className="mt-3 text-red-400 text-sm flex items-center">
+                              <AlertCircle className="mr-1 w-4 h-4" />
+                              {errors.aceptaTerminos}
+                            </p>
+                          )}
+                        </div>
+
+
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                </motion.div>
+
               )}
 
 
-               {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
+              {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
               {step === 6 && (
                 <>
                   {/* Mostrar pantalla de espera mientras se consulta la IA */}
@@ -1819,7 +1826,7 @@ const ImpugnacionWizard = () => {
                       transition={{ duration: 0.4 }}
                     >
 
-                       
+
 
                       {/* Paso 5: Revisión Final */}
                       <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
@@ -1857,7 +1864,7 @@ const ImpugnacionWizard = () => {
                               Análisis Final
                             </h2>
                           </div>
- 
+
 
                           <div className="mt-8">
                             <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
@@ -2038,7 +2045,7 @@ const ImpugnacionWizard = () => {
                   Siguiente
                   <ChevronRight className="w-5 h-5 ml-1" />
                 </button>
-              ) : step === 5 ? (
+              ) : step === 6 ? (
                 <button
                   onClick={nextStep}
                   type="button"
