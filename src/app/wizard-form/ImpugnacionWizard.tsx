@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Hash } from "lucide-react";
-
+import { marked } from 'marked';
 import {
   ChevronRight,
   ChevronLeft,
@@ -72,6 +72,8 @@ type FileWithPreview = File & {
   ocrResult?: OCRResult;
 };
 
+
+
 const Notification = ({
   message,
   onClose,
@@ -139,14 +141,17 @@ const ImpugnacionWizard = () => {
   const [ocrProgress, setOcrProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const [htmlIA, setHtmlIA] = useState('');
   const [pendingStep, setPendingStep] = useState<number | null>(null);
   const [isValidating, setIsValidating] = useState(true);
+  const [respuestaIA, setRespuestaIA] = useState<string>('');
+  const [cargandoIA, setCargandoIA] = useState(false);
+  const [errorIA, setErrorIA] = useState('');
 
   const [vehiculosUsuario, setVehiculosUsuario] = useState<
     { secuencial: number; descripcion: string }[]
   >([]);
-
+  const [promptIA, setPromptIA] = useState("");
 
   interface GenerarPromptIAInput {
     nombre: string;
@@ -325,6 +330,78 @@ const ImpugnacionWizard = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
+
+  // LLAMA A PASO 5 GENERANDO EL PROMPT PARA LA IA 
+  useEffect(() => {
+    if (step === 5) {
+      // Busca el nombre y cédula del usuario y el vehículo seleccionado
+      const usuarioSeleccionado = nombreParam || "";
+      const cedulaSeleccionada = cedula || "";
+      const vehiculoObj = vehiculosUsuario.find(
+        (v) => v.secuencial.toString() === formData.vehiculo
+      );
+      const vehiculoDescripcion = vehiculoObj ? vehiculoObj.descripcion : "No seleccionado";
+
+      // Genera el prompt y guárdalo en el estado
+      const prompt = generarPromptIAOptimista({
+        nombre: usuarioSeleccionado,
+        cedula: cedulaSeleccionada,
+        direccion: formData.direccion,
+        provincia: formData.provincia,
+        ciudad: formData.ciudad,
+        tipoMulta: formData.tipoMulta,
+        agencia: formData.agencia,
+        fechaCitacion: formData.fechaCitacion,
+        numeroCitacion: formData.numeroCitacion,
+        vehiculoDescripcion,
+        archivos: formData.archivos,
+        ocrResults: formData.ocrResults,
+      });
+      setPromptIA(prompt);
+
+
+      // NUEVO: Llama al backend de IA usando el prompt
+      setCargandoIA(true);
+      setRespuestaIA('');
+      setErrorIA('');
+      const fetchIA = async () => {
+        try {
+          const token = getWizardToken();
+          const res = await fetch(`${API_BASE_URL}/nopaychat`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ pregunta: prompt })
+          });
+          if (!res.ok) {
+            setErrorIA('No se pudo obtener la respuesta de la IA. Intenta más tarde.');
+            setCargandoIA(false);
+            return;
+          }
+          const data = await res.json();
+          // Ajusta según tu backend, aquí asumo que la respuesta está en data.respuesta
+          setRespuestaIA(data.respuesta || 'No se recibió respuesta de la IA.');
+        } catch (err) {
+          setErrorIA('Error al conectar con la IA. Intenta nuevamente.');
+        } finally {
+          setCargandoIA(false);
+        }
+      };
+      fetchIA();
+
+      // Opcional: imprime en consola
+      console.log("------ PROMPT IA ARMADO AL ENTRAR STEP 5 ------\n", prompt);
+    }
+  }, [step, nombreParam, cedula, vehiculosUsuario, formData]);
+
+
+  function formatRespuestaIA(text: string) {
+    return marked.parse(text);
+  }
+
+
 
   // —————————————————————————————
   // Fetch vehículos del usuario
@@ -1458,6 +1535,8 @@ const ImpugnacionWizard = () => {
 
               {/* ————————————————————————————— STEP 5 (ANTES STEP 4) ————————————————————————————— */}
               {step === 5 && (
+
+
                 <motion.div
                   key="step5"
                   initial={{ opacity: 0, x: 60 }}
@@ -1465,6 +1544,15 @@ const ImpugnacionWizard = () => {
                   exit={{ opacity: 0, x: -60 }}
                   transition={{ duration: 0.4 }}
                 >
+
+                  {promptIA && (
+                    <details className="mt-8">
+                      <summary className="cursor-pointer text-cyan-500 text-sm">Ver Prompt generado para IA</summary>
+                      <pre className="bg-black/60 p-4 rounded-xl text-xs text-green-200 mt-2 overflow-x-auto max-h-64">{promptIA}</pre>
+                    </details>
+                  )}
+
+
                   {/* Paso 5: Revisión Final */}
                   <div className="relative isolate overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-2xl border border-gray-700 shadow-2xl p-8">
                     {/* ✦ Fondos Decorativos Flotantes */}
@@ -1501,6 +1589,31 @@ const ImpugnacionWizard = () => {
                           Revisión Final
                         </h2>
                       </div>
+
+                      <div className="mt-8">
+                        <h3 className="text-cyan-400 text-lg font-bold mb-2 flex items-center gap-2">
+                          <ShieldCheck className="w-5 h-5" /> Diagnóstico IA Jurídica
+                        </h3>
+                        {cargandoIA && (
+                          <div className="bg-gray-800/80 text-cyan-300 p-4 rounded-lg animate-pulse">
+                            Consultando IA... Por favor espera...
+                          </div>
+                        )}
+                        {errorIA && (
+                          <div className="bg-red-700/60 text-red-200 p-4 rounded-lg">
+                            {errorIA}
+                          </div>
+                        )}
+                        {htmlIA && !cargandoIA && (
+                          <div
+                            className="bg-black/60 p-5 rounded-xl text-gray-200 mt-2 shadow-inner prose max-w-none"
+                            dangerouslySetInnerHTML={{ __html: htmlIA }}
+                          />
+                        )}
+
+                      </div>
+
+
 
                       <div className="bg-gradient-to-br from-[#13232e] via-[#202942]/90 to-[#294359]/70 rounded-3xl p-8 sm:p-10 mb-8 border border-cyan-600/50 shadow-2xl backdrop-blur-lg relative overflow-hidden">
                         {/* Efecto decorativo */}
