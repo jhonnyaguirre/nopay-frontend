@@ -128,6 +128,38 @@ const ImpugnacionWizard = () => {
     }
   }, []);
 
+  // ────────────────────────────────
+  // Normaliza fecha ‒ acepta:
+  //   • "YYYY-MM-DD"  (ya válido)
+  //   • "DD/MM/YYYY"  o "DD-MM-YYYY"
+  // Devuelve la cadena ISO "YYYY-MM-DD"   o   null si no reconoce patrón
+  // ────────────────────────────────
+  // helpers/fechas.ts  (o dentro del mismo componente)
+   const normalizeFecha = (fecha: string | null | undefined): string | null => {
+    if (!fecha) return null;
+
+    // 2025-07-17
+    const iso = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+    // 17/07/2025  ó 17-07-2025
+    const dmy = /^(\d{2})[\/\-](\d{2})[\/\-](\d{4})$/;
+
+    let m: RegExpMatchArray | null;
+
+    if (iso.test(fecha)) return fecha;     // ya está OK
+
+    if ((m = fecha.match(dmy))) {
+      const [, dd, mm, yyyy] = m;
+      return `${yyyy}-${mm}-${dd}`;        // → 2025-07-17
+    }
+
+    return null;                           // formato desconocido
+  };
+
+
+
+
+
   const router = useRouter();
 
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -647,7 +679,15 @@ const ImpugnacionWizard = () => {
       case 2:
         if (!formData.tipoMulta) newErrors.tipoMulta = "Seleccione el tipo de multa";
         if (!formData.agencia) newErrors.agencia = "Seleccione la agencia";
-        if (!formData.fechaCitacion) newErrors.fechaCitacion = "Ingrese la fecha";
+        //if (!formData.fechaCitacion) newErrors.fechaCitacion = "Ingrese la fecha";
+        const fechaOK = normalizeFecha(formData.fechaCitacion);
+        if (!formData.fechaCitacion) {
+          newErrors.fechaCitacion = "Ingrese la fecha";
+        } else if (!fechaOK) {
+          newErrors.fechaCitacion = "Formato inválido. Use AAAA-MM-DD o DD/MM/AAAA";
+        }
+
+
         if (!formData.numeroCitacion) newErrors.numeroCitacion = "Ingrese el número";
         break;
       case 3:
@@ -739,7 +779,18 @@ const ImpugnacionWizard = () => {
       const formDataToSend = new FormData();
       formDataToSend.append("secuencial_usuario", secuencialUser);
       formDataToSend.append("secuencial_vehiculo", formData.vehiculo);
-      formDataToSend.append("fecha_citacion", formData.fechaCitacion);
+      //formDataToSend.append("fecha_citacion", formData.fechaCitacion);
+
+      const fechaNorm = normalizeFecha(formData.fechaCitacion);
+      if (!fechaNorm) {
+        setErrors((prev) => ({ ...prev, fechaCitacion: "Formato inválido. Use AAAA-MM-DD o DD/MM/AAAA" }));
+        setStep(2);               // volvemos al paso donde se ingresa la fecha
+        return;                   // cancelamos el envío
+      }
+      formDataToSend.append("fecha_citacion", fechaNorm);
+
+
+
       formDataToSend.append("numero_citacion", formData.numeroCitacion);
       formDataToSend.append("observacion", "Impugnación tránsito");
       formDataToSend.append("secuencia_estado", "1");
