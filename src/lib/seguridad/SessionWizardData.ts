@@ -6,6 +6,7 @@ export type WizardSessionData = {
   apellidos: string;
   displayName?: string;
   photoURL?: string;
+   email?: string;
 };
   
   export class SessionWizardData {

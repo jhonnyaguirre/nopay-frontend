@@ -119,8 +119,8 @@ export default function CargaDocumentosServicio() {
         }
         setDocumentosRequeridos(Object.values(agrupados));
 
-        console.log("🔍 Token:", token);
-        console.log("🔍 secuencialUsuario:", secuencialUsuario);
+        //console.log("🔍 Token:", token);
+        //console.log("🔍 secuencialUsuario:", secuencialUsuario);
 
         // --- Documentos ya cargados ---
         const urlCargados = `${API_BASE_URL}/usuario-documentos/usuario/${secuencialUsuario}`;
@@ -133,7 +133,7 @@ export default function CargaDocumentosServicio() {
 
         const parsedRes: any[] = await res.json();
 
-        console.log("🧾 Respuesta RAW de documentos cargados:", JSON.stringify(parsedRes, null, 2));
+        //console.log("🧾 Respuesta RAW de documentos cargados:", JSON.stringify(parsedRes, null, 2));
 
         const documentosNormalizados = (
           parsedRes
@@ -160,7 +160,7 @@ export default function CargaDocumentosServicio() {
             .filter((d) => d !== null)
         ) as DocumentoCargado[];
 
-        console.log("🧾 Documentos cargados NORMALIZADOS:", documentosNormalizados);
+        //console.log("🧾 Documentos cargados NORMALIZADOS:", documentosNormalizados);
         setDocumentosCargados(documentosNormalizados);
       } catch (err: any) {
         console.error("❌ Error en fetch de documentos:", err);

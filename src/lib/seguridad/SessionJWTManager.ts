@@ -8,7 +8,7 @@ export class SessionJWTManager {
     }
 
     static obtener(): string | null {
-        //console.log("TOKEN LEIDO:", localStorage.getItem(this.TOKEN_KEY));
+        ////console.log("TOKEN LEIDO:", localStorage.getItem(this.TOKEN_KEY));
         return localStorage.getItem(this.TOKEN_KEY);
     }
 

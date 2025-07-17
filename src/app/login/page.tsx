@@ -63,7 +63,7 @@ export default function LoginPage() {
 
     setLoadingLogin(true);
     try {
-      console.log("Se llama al servicio: " + `${API_BASE_URL}/creaUsuarios/login`);
+      //console.log("Se llama al servicio: " + `${API_BASE_URL}/creaUsuarios/login`);
       const res = await fetch(`${API_BASE_URL}/creaUsuarios/login`, {
         //const res = await fetch(`http://localhost:8080/creaUsuarios/login`, {
         //const res = await fetch(`${API_BASE_URL}/creaUsuarios/login`, {
@@ -72,21 +72,21 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      console.log("se ha dado paso 1")
+      //console.log("se ha dado paso 1")
       if (res.status === 200) {
-        console.log("se ha dado paso 2")
+        //console.log("se ha dado paso 2")
         const { token, secuencial } = await res.json();
 
         // Guardar JWT en sesión/frontend
-        console.log("se ha dado paso 3")
+        //console.log("se ha dado paso 3")
         setWizardToken(token);
         //setGlobalToken(token);
-        console.log("se ha dado paso 4")
+        //console.log("se ha dado paso 4")
         const secuencialUsuario = secuencial || 0;
-        console.log("se ha dado paso 5")
+        //console.log("se ha dado paso 5")
         // Paso opcional: crear sesión en backend local si tienes otro endpoint
         await crearSesionJWT(email, "0", token); // si tu backend quiere cedula y secuencial, ajusta
-        console.log("se ha dado paso 6")
+        //console.log("se ha dado paso 6")
         // Construir perfil mínimo a partir del email
         const nombres = email.split("@")[0];
         SessionWizardData.guardar({
@@ -96,11 +96,12 @@ export default function LoginPage() {
           apellidos: "",
           displayName: nombres,
           photoURL: "",
+          email: email,
         });
 
-        console.log("se ha dado paso 7")
+        //console.log("se ha dado paso 7")
         setUserProfile({ name: nombres, photoUrl: "" });
-        console.log("se ha dado paso 8")
+        //console.log("se ha dado paso 8")
         // Redirigir a formulario principal (ajusta la ruta según tu flujo)
         router.push("/register-form");
         return;
@@ -132,7 +133,7 @@ export default function LoginPage() {
       const userData = result.user;
 
       const nonce = createSessionNonce();
-      //console.log("🔐 sessionNonce generado:", nonce);
+      ////console.log("🔐 sessionNonce generado:", nonce);
       const facebookPhotoURL = `https://graph.facebook.com/${userData.providerData[0]?.uid
         }/picture?type=large&width=200&height=200`;
 
@@ -186,9 +187,9 @@ export default function LoginPage() {
       setUser(userData);
 
       const nonce = createSessionNonce();
-      //console.log("🔐 sessionNonce generado:", nonce);
-      //console.log("🔐 SE PASA A GENERAR EL CONSUMO");
-      console.log("Se llama al servicio: " + `${API_BASE_URL}/generaToken/loginGoogle`);
+      ////console.log("🔐 sessionNonce generado:", nonce);
+      ////console.log("🔐 SE PASA A GENERAR EL CONSUMO");
+      //console.log("Se llama al servicio: " + `${API_BASE_URL}/generaToken/loginGoogle`);
       const tokenResponse = await fetch(`${API_BASE_URL}/generaToken/loginGoogle`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -219,7 +220,7 @@ export default function LoginPage() {
       }
 
       await crearSesionJWT(safeCedula, safeSecuencial, backendToken);
-      //console.log("✅ JWT personalizado creado y guardado");
+      ////console.log("✅ JWT personalizado creado y guardado");
 
       const [nombres, ...apellidos] = (userData.displayName || "").split(" ");
       SessionWizardData.guardar({

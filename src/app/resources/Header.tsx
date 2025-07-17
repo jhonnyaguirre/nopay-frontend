@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation';
 
 import { getUserProfile, onUserProfileChange, removeUserProfileListener } from '../../lib/seguridad/SessionUser';
 import { Button } from '../../components/ui/Button';
+import { useLogout } from 'lib/seguridad/prevalidadorToken';
 
 export const Header = () => {
   const router = useRouter();
@@ -89,21 +90,11 @@ export const Header = () => {
     setOpenSubMenu(null);
     setIsMobileMenuOpen(false);
   };
+  
+ const logout = useLogout(); 
   const handleLogout = () => {
-    // 🔐 Eliminar todos los datos relacionados con la sesión
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userPhotoUrl');
-    localStorage.removeItem('authToken');         // token general
-    localStorage.removeItem('authTokenWizard');   // token del wizard
-    localStorage.removeItem('sessionNonce');      // clave única de sesión
-    localStorage.removeItem('sessionWizardData'); // datos del wizard si usas SessionWizardData.guardar()
-
-    // 🧠 Limpiar visualmente el estado del usuario
-    setUserProfile({ name: '', photoUrl: '' });
-
-    // 🚪 Redirigir a la pantalla inicial
-    closeAllMenus();
-    //router.push('/');
+     logout(); 
+     router.replace('/login');
   };
 
 

@@ -110,9 +110,9 @@ export default function ServiciosDashboard() {
 
     // Obtener secuencial del usuario
     useEffect(() => {
-        console.log("se ha mandado a consutlar los datos"); 
+        //console.log("se ha mandado a consutlar los datos"); 
         const wizardData = SessionWizardData.obtener();
-        console.log("se ha mandado a consutlar los datos" + wizardData?.secuencial?.toString()); 
+        //console.log("se ha mandado a consutlar los datos" + wizardData?.secuencial?.toString()); 
         setSecuencialUser(wizardData?.secuencial?.toString() ?? "");
         if (wizardData) {
             setSecuencialUser(wizardData.secuencial?.toString() || "");
@@ -137,7 +137,7 @@ export default function ServiciosDashboard() {
                     return;
                 }
                 const url = `${API_BASE_URL}/servicios-requeridos/${secuencialUser?secuencialUser:wizardData?.secuencial?.toString()}`;
-                console.log("🔍 Consultando URL:", url + ", tken: " + token);
+                //console.log("🔍 Consultando URL:", url + ", tken: " + token);
                 const res = await fetch(
                     `${API_BASE_URL}/servicios-requeridos/${secuencialUser?secuencialUser:wizardData?.secuencial?.toString()}`,
                     {
@@ -146,7 +146,7 @@ export default function ServiciosDashboard() {
                     }
                 );
 
-                console.log(`SE LLAMó A CONSUMIR ${API_BASE_URL}/servicios-requeridos/${secuencialUser}`);
+                //console.log(`SE LLAMó A CONSUMIR ${API_BASE_URL}/servicios-requeridos/${secuencialUser}`);
 
                 if (res.status === 401 || res.status === 403) {
                     setError("El tiempo de sesión ha expiradoasdasdas. Serás redirigido al inicio.");
@@ -215,9 +215,9 @@ export default function ServiciosDashboard() {
 
             try {
                 const token = getWizardToken();
-                //console.log("EMPEZAMOS");
+                ////console.log("EMPEZAMOS");
                 const url = `${API_BASE_URL}/servicios-requeridos/${expandedRow}/detalle`;
-                console.log("🔍 Consultando URL:", url + ", tken: " + token);
+                //console.log("🔍 Consultando URL:", url + ", tken: " + token);
 
                 const res = await fetch(
                     `${API_BASE_URL}/servicios-requeridos/${expandedRow}/detalle`,
@@ -228,7 +228,7 @@ export default function ServiciosDashboard() {
 
 
                 );
-                //console.log("ASE MANDA A CONSUTLAR: " + res);
+                ////console.log("ASE MANDA A CONSUTLAR: " + res);
 
                 if (res.status === 401 || res.status === 403) {
                     setDetalleError("El tiempo de sesión ha expirado. Redirigiendo…");

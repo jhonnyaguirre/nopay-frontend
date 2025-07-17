@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Car, ChevronRight, Check } from 'lucide-react';
@@ -31,8 +31,11 @@ import BackgroundWithSideSvg from 'app/resources/BackgroundWithSideSvg';
 import { getUserProfile, setUserProfile } from 'lib/seguridad/SessionUser';
 import { API_BASE_URL } from 'config/apiConfig';
 import NoPayBackground from 'components/NoPayBackground';
+import { isJWTValid, useLogout } from 'lib/seguridad/prevalidadorToken';
+
 
 // [Tus imports y funciones de validación se mantienen igual...]
+
 
 const Notification = ({ message, onClose }: { message: string; onClose: () => void }) => {
   return (
@@ -51,7 +54,7 @@ const Notification = ({ message, onClose }: { message: string; onClose: () => vo
           <Check className="h-5 w-5 text-white" />
         </motion.div>
         <div className="flex-1">
-          <h3 className="font-semibold text-white">¡Éxito!</h3>
+          <h3 className="font-semibold text-white">¡Notificación!</h3>
           <p className="text-white/90 mt-1 text-sm">{message}</p>
         </div>
         <button
@@ -89,7 +92,7 @@ const AdvancedForm = () => {
     if (!regex.test(placa)) return false;
     return provinciasValidas.includes(placa.charAt(0));
   };
-
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const validarCedulaEcuador = (cedula: string) => {
     if (!/^\d{10}$/.test(cedula)) return false;
 
@@ -158,15 +161,69 @@ const AdvancedForm = () => {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState('');
   const [fetchingUserData, setFetchingUserData] = useState(false);
+  const [showSessionExpired, setShowSessionExpired] = useState(false);
+  const [showCedulaDuplicada, setShowCedulaDuplicada] = useState(false);
 
-  //  useEffect(() => {
-  // Solo actualizar showVehicleForm si NO estamos mostrando un nuevo vehículo
-  //  if (!mostrarNuevoVehiculo) {
-  //  setShowVehicleForm(placaValida);
-  //}
-  //}, [placa, placaValida, mostrarNuevoVehiculo]);
+  const logout = useLogout();
 
-  // Reemplaza ambos useEffect por este:
+
+  const validateTokenAndAuth = async () => {
+    const token = getWizardToken();
+    if (!token) {
+      setLoading(false);
+      router.replace("/login");
+      return;
+    }
+    try {
+      const isValid = await isJWTValid(token);
+      if (!isValid) {
+        setShowSessionExpired(true);
+        setTimeout(() => {
+          logout();
+          router.replace('/login');
+        }, 2000);
+      }
+      setLoading(false);
+    } catch (e) {
+      logout();
+      router.replace('/login');
+    }
+  };
+
+  useEffect(() => {
+    // Validar apenas monta
+    validateTokenAndAuth();
+
+    // Sensado continuo cada 2 minutos
+    intervalRef.current = setInterval(validateTokenAndAuth, 2 * 60 * 1000);
+
+    // Validar cada vez que el usuario vuelve al tab
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") {
+        validateTokenAndAuth();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // Limpieza profesional
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+    // No depende de router, ni nada más.
+  }, []); // <--- SOLO al montar/desmontar
+
+
+  useEffect(() => {
+    const onStorageChange = (e: StorageEvent) => {
+      if (e.key === 'authTokenWizard') { // O el nombre que usas
+        validateTokenAndAuth();
+      }
+    };
+    window.addEventListener("storage", onStorageChange);
+    return () => window.removeEventListener("storage", onStorageChange);
+  }, []);
+
   useEffect(() => {
     // Si estoy en "nuevo vehículo" o la placa es válida, muestro el form
     setShowVehicleForm(mostrarNuevoVehiculo || placaValida);
@@ -176,15 +233,15 @@ const AdvancedForm = () => {
 
   useEffect(() => {
     const token = getWizardToken();
-    console.log("TOKEN ENVIADO para 1:", token); // <-- Asegúrate de que aquí hay un valor válido
+    ////console.log("TOKEN ENVIADO para 1:", token); // <-- Asegúrate de que aquí hay un valor válido
     try {
       if (!token) {
-        console.warn("⛔ No hay token. Redirigiendo a login...");
+        console.warn("⛔ No hay token. Redirigiendo a loginHHH...");
         setLoading(false); // 👈 Agrega esto
         router.replace('/login');
       } else {
-        console.log("TOKEN ENVIADO para 2:", token);
-        setLoading(false); // 👈 Y si hay token, también termina el loading
+        //console.log("TOKEN ENVIADO para 2:", token);
+        // setLoading(false); // 👈 Y si hay token, también termina el loading
       }
     } catch (error) {
       ////console.error("❌ Error en  fetch line 156:", error);
@@ -199,7 +256,7 @@ const AdvancedForm = () => {
   // Efectos y funciones se mantienen iguales
   useEffect(() => {
     const token = getWizardToken();
-    //console.log("TOKEN ENVIADO para 2:", token); // <-- Asegúrate de que aquí hay un valor válido
+    ////console.log("TOKEN ENVIADO para 2:", token); // <-- Asegúrate de que aquí hay un valor válido
     try {
       if (!token) {
         ////console.warn("🚫 No hay token, se cancela fetchUserData");
@@ -233,6 +290,7 @@ const AdvancedForm = () => {
         const debeConsultar = omitValidacionInicial || (cedula.length === 10 && cedulaValida);
         if (!debeConsultar) {
           setShowUserForm(false);
+          setErrorMsg("Revisa la identificación digitada");
           return;
         }
 
@@ -242,36 +300,18 @@ const AdvancedForm = () => {
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           const wizardData = SessionWizardData.obtener();
 
-          //console.log('este valor es antes que llame a función de cedula: ' + cedula)
           const esCedulaValida = true;
-          /*
-            cedula &&
-              typeof cedula === 'string' &&
-              cedula.trim() !== '' &&
-              cedula !== 'null' &&
-              cedula !== 'undefined' &&
-              !emailRegex.test(cedula); // ← Asegúrate de que no sea un email
-  
-  
-            if (!esCedulaValida) {
-              setCedula("");
-              // si quieres que, tras esto, no siga el flujo de validación,
-              // puedes hacer return o cualquier otra lógica:
-              return;
-            }
-              */
-          //console.log('este valor se mantiene en la  función de cedula: ' + cedula)
 
           if (esCedulaValida) {
 
             const url = `${API_BASE_URL}/usuariosid/${cedula ? cedula : wizardData?.cedula.trim()}`;
 
 
-            console.log("🔍 Consultando URL ACA:", url);
+            //console.log("🔍 Consultando URL ACA:", url);
 
             let response: Response;
             try {
-              console.log("🔍 CONCHA 1");
+              //console.log("🔍 CONCHA 1");
               response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -280,62 +320,84 @@ const AdvancedForm = () => {
                 }
               });
             } catch (err: any) {
-              console.log("🔍 CONCHA 2");
-              //console.error("❌ Error de red o fetch fallido:", err.message || err);
+              //console.log("🔍 CONCHA 2");
+              console.error("❌ Error de red o fetch fallido:", err.message || err);
               if (!emailRegex.test(cedula))
                 setCedula("");
 
               setFetchingUserData(false);
               setShowUserForm(false);
+              setErrorMsg("Revisa la identificación digitada");
               return;
             }
 
 
             if (!response.ok) {
               if (response.status === 403) {
-                console.log("🔍 CONCHA 3");
+                //console.log("🔍 CONCHA 3");
                 //console.warn("🔐 Acceso denegado (403). Probablemente token inválido o expirado.");
                 return;
               } else {
-                console.log("🔍 CONCHA 4");
+                //console.log("🔍 CONCHA 4");
                 ////console.error(`⚠️ Error HTTP inesperado: ${response.status}`);
                 //return;
               }
             }
 
-            console.log('VAMOSSS');
+            //console.log('VAMOSSS');
             let data: any = { cedula: '', email: '' }; // la declaras afuera
 
 
-            console.log("entra a cambiar 000");
+            //console.log("entra a cambiar 000");
             data = await response.json();
-            console.log("🔍 Datos del response:", data);
+            //console.log("🔍 Datos del response:", data);
 
             if (!data.cedula) {
               // Si ocurre error parseando JSON, data sigue como { cedula: '', email: '' }
-              console.log("entra a cambiar 111");
+              //console.log("entra a cambiar 111");
               data = { cedula: '', email: '' };
             }
 
+            //console.log("entra a cambiar 2222");
             // ✅ Sobrescribir cédula si viene desde backend (cuando se consultó por correo)
             if (data.cedula && data.cedula !== cedula) {
-              console.log("🆕 Cédula corregida desde backend yyyy:", data.cedula);
-              //console.log("🆕 secuencial desde backend:", data.secuencial);
+              //console.log("🆕 Cédula corregida desde backend yyyy:", data.cedula);
+              ////console.log("🆕 secuencial desde backend:", data.secuencial);
 
-              //console.log(" usaurio cargados:", data);
+              ////console.log(" usaurio cargados:", data);
               setCedula(data.cedula);
-              //console.log('se pasó y se bloquro ' + cedula);
-              //console.log('se pasó y se bloquro ' + data.cedula);
+              ////console.log('se pasó y se bloquro ' + cedula);
+              ////console.log('se pasó y se bloquro ' + data.cedula);
 
 
               setCedulaBloqueada(true); // 🔒 Bloquear edición
 
             }
 
+            if (
+              wizardData?.cedula !== data.email &&
+              (typeof data.email === "string" && data.email.length > 3)
+              && wizardData?.cedula !== data.cedula
 
-            console.log("el email con el que hace login es : " + wizardData?.cedula);
-            // console.log("el email que devuelve desde el backend es : " + data.email?data.email:'');
 
+            ) {
+               
+
+               
+              const userCedula = wizardData?.cedula?.trim().toLowerCase() || '';
+               
+              const backendEmail = data.email?.trim().toLowerCase() || '';
+               
+              // Sólo mostramos el error si ambos valores existen y son distintos:
+              if (userCedula && backendEmail && userCedula !== backendEmail) {
+                setErrorMsg("La cédula consultada corresponde a otra cuenta.");
+              }
+
+
+              return;
+            }
+
+             
             if (data.eamil)
               if (
 
@@ -343,62 +405,49 @@ const AdvancedForm = () => {
                 (wizardData?.cedula ?? '').toUpperCase() !== data.email.toUpperCase()
               ) {
 
-                console.log("entra a7");
-                // setErrorMsg("La cédula consultada corresponde a otra cuenta.");
+                //console.log("entra a7");
+                // 
                 // setCedula("");
                 //return;
               }
 
-            console.log("entra a8");
+             
 
             if (wizardData?.cedula) {
               setCedula(wizardData.cedula.trim());
-              console.log("📥 Se cargó cédula desde wizardData: " + wizardData.cedula + " - " + cedula);
+              //console.log("📥 Se cargó cédula desde wizardData: " + wizardData.cedula + " - " + cedula);
             }
 
+
             let emailFinall = "";
-            console.log("entra a1");
+            //console.log("entra a1");
 
             if (data.email) {
-              console.log("entra a2");
+              //console.log("entra a2");
               emailFinall = data.email;
             } else if (wizardData?.cedula) {
-              console.log("entra a3");
+              //console.log("entra a3");
               emailFinall = wizardData.cedula;
               //data.email =  wizardData.cedula;
             }
 
             if (wizardData && data.email != null) {
-              console.log("entra a4");
-              //console.log("cadena de compa 1" + wizardData.cedula)
-              //console.log("cadena de compa 2" + data.email)
+              //console.log("entra a4");
+              ////console.log("cadena de compa 1" + wizardData.cedula)
+              ////console.log("cadena de compa 2" + data.email)
 
 
               setCedula(wizardData.cedula);//?wizardData.cedula:data.email);
 
-              /*
-              if (!(wizardData.cedula === data.email && !emailRegex.test(wizardData.cedula) )) {
-                //console.log("wizardData.cedula: " + wizardData.cedula)
-                //console.log("data.email: " + data.email)
-                //console.log("data.cedula " + data.cedula)
-                //console.log("wizardData.cedula" + wizardData.cedula)
-                //console.log("TODA LA DATA" + wizardData)
-                //console.log("TODA LA DATA" + data)
-                //console.log("se compara y sale")
-                setErrorMsg("La cédula consultada corresponde a otra cuenta.");
-                setCedula("");
-                // Podemos abortar el resto:
-                return;
-              }
-                */
+
 
             }
-            //console.log('Se manda a setear los valores')
+
             setCedula(data.cedula);
-            console.log("entra a5");
+            //console.log("entra a5");
             const secuencialFinal = wizardData?.secuencial?.toString() ?? data.secuencial?.toString() ?? '';
 
-            console.log("se ha guardado los datos de manera correcta nclutendo secuencial: " + data.secuencial);
+            //console.log("se ha guardado los datos de manera correcta nclutendo secuencial: " + data.secuencial);
 
             SessionWizardData.guardar({
               cedula,
@@ -407,7 +456,7 @@ const AdvancedForm = () => {
               apellidos: data.apellidos,
             });
 
-            console.log("se ha guardado los datos de manera correcta nclutendo secuencial: " + data.secuencial);
+            //console.log("se ha guardado los datos de manera correcta nclutendo secuencial: " + data.secuencial);
 
 
             setUserData({
@@ -430,7 +479,7 @@ const AdvancedForm = () => {
             setShowUserForm(true);
           }
         } catch (error) {
-          ////console.error('Error al obtener datos del usuario:', error);
+          //console.log("entra a cambiar 3333" + error);
           setShowUserForm(true);
         } finally {
           setFetchingUserData(false);
@@ -440,7 +489,7 @@ const AdvancedForm = () => {
       fetchUserData();
 
     } catch (error) {
-      ////console.error("❌ Error en  fetch line 271:", error);
+      //console.log("entra a cambiar 4444" + error);
     }
 
 
@@ -457,10 +506,10 @@ const AdvancedForm = () => {
       const token = getWizardToken();
       const usuarioId = userData.secuencial;
 
-      //console.log("✅ Consultando vehículos para ID:", usuarioId);
+      ////console.log("✅ Consultando vehículos para ID:", usuarioId);
 
       if (usuarioId === '0' || !usuarioId || typeof usuarioId !== 'string' || usuarioId.trim() === '' || isNaN(Number(usuarioId))) {
-        //console.log("⛔️ Secuencial inválido, no se consultan vehículos");
+        ////console.log("⛔️ Secuencial inválido, no se consultan vehículos");
         setVehiculosUsuario([]); // 🔁 Limpia la lista
         return;
       }
@@ -486,7 +535,7 @@ const AdvancedForm = () => {
         }
 
         const data = await res.json();
-        //console.log("🚗 Vehículos cargados:", data);
+        ////console.log("🚗 Vehículos cargados:", data);
         setVehiculosUsuario(data);
       } catch (err: any) {
         ////console.error("❌ Error cargando vehículos:", err.message || err);
@@ -518,68 +567,6 @@ const AdvancedForm = () => {
     }
   }, []);
 
-  /*
-    useEffect(() => {
-      const fetchUserData = async () => {
-        if (cedula.length === 10 && cedulaValida) {
-          setFetchingUserData(true);
-          try {
-            const token = getWizardToken();
-            if (!token) {
-              //console.warn('⛔ No hay token. Redirigiendo a login...');
-              router.replace('/login');
-              return;
-            }
-  
-            const response = await fetch(`${API_BASE_URL}/usuariosid/${cedula}`, {
-              method: 'GET',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              }
-            });
-  
-            if (!response.ok) {
-              if (response.status === 403) {
-                //console.warn("🔐 Acceso denegado (403). Probablemente token inválido o expirado.");
-                // Opcional: puedes redirigir o mostrar un mensaje
-                return;
-              } else {
-                //console.error(`⚠️ Error HTTP inesperado: ${response.status}`);
-                return;
-              }
-            }
-  
-            const data = await response.json();
-  
-            setUserData({
-              nombres: data.nombres || '',
-              apellidos: data.apellidos || '',
-              genero: data.desSexo === 'HOMBRE' ? 'masculino' :
-                data.desSexo === 'MUJER' ? 'femenino' : '',
-              fechaNacimiento: data.fechaNacim ? new Date(Number(data.fechaNacim)) : null,
-              email: data.email || '',
-              telefono: data.telefono || ''
-            });
-  
-            setShowUserForm(true);
-          } catch (error) {
-            //console.error('Error al obtener datos del usuario:', error);
-            setShowUserForm(true);
-          } finally {
-            setFetchingUserData(false);
-          }
-        } else {
-          setShowUserForm(false);
-        }
-      };
-  
-      fetchUserData();
-    }, [cedula]);
-  
-    */
-
-
 
   const handleFormSubmit = async (e: React.FormEvent) => {
 
@@ -604,7 +591,7 @@ const AdvancedForm = () => {
     }
 
     const token = getWizardToken();
-    //console.log("TOKEN 4:", token); // <-- Asegúrate de que aquí hay un valor válido
+    ////console.log("TOKEN 4:", token); // <-- Asegúrate de que aquí hay un valor válido
     if (!token) {
       setAuthError('No hay token de autenticación disponible');
       return;
@@ -635,7 +622,7 @@ const AdvancedForm = () => {
     };
 
     // ▶️ Aquí imprimes en consola todo el body que vas a mandar:
-    //console.log("Enviando al backend payload de registro:", payload);
+    ////console.log("Enviando al backend payload de registro:", payload);
 
 
 
@@ -662,11 +649,11 @@ const AdvancedForm = () => {
       console.time('⏳ crearSesionJWT');
 
       const nonce = createSessionNonce(); // 🔐 Genera y guarda la clave única de sesión
-      //console.log("sessionNonce generado:", nonce);
+      ////console.log("sessionNonce generado:", nonce);
 
       try {
         await crearSesionJWT(cedula, result.secuencial_usuario, token);
-        //console.log("JWT recibido y almacenado localmente");
+        ////console.log("JWT recibido y almacenado localmente");
       } catch (error) {
         ////console.error("Error al registrar sesión:", error);
       }
@@ -702,18 +689,6 @@ const AdvancedForm = () => {
 
 
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B]">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="h-16 w-16 border-4 border-white/30 border-t-white rounded-full"
-        />
-      </div>
-    );
-  }
-
   if (authError) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] p-4">
@@ -747,8 +722,46 @@ const AdvancedForm = () => {
     );
   }
 
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B]">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="h-16 w-16 border-4 border-white/30 border-t-white rounded-full"
+        />
+      </div>
+    );
+  }
+
+
+
+
   return (
     <>
+
+
+
+      <AnimatePresence>
+        {showSessionExpired && (
+          <Notification
+            message="Tu sesión ha expirado, por favor inicia sesión nuevamente."
+            onClose={() => setShowSessionExpired(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCedulaDuplicada && (
+          <Notification
+            message="La cédula ingresada pertenece a otra cuenta"
+            onClose={() => setShowSessionExpired(false)}
+          />
+        )}
+      </AnimatePresence>
+
+
       <NoPayBackground />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pb-28">
         <Header />

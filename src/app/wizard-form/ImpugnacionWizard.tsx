@@ -53,6 +53,7 @@ import CargaDocumentosServicio from "app/documentos/page";
 import { API_BASE_URL, valorImpugnacionGl } from "config/apiConfig";
 import { getWizardToken } from "lib/seguridad/sessionUtils";
 import NoPayBackground from "components/NoPayBackground";
+import { isJWTValid, useLogout } from "lib/seguridad/prevalidadorToken";
 
 // ** Importamos el componente de carga de documentos como un nuevo step **
 
@@ -148,11 +149,65 @@ const ImpugnacionWizard = () => {
   const [respuestaIA, setRespuestaIA] = useState<string>('');
   const [cargandoIA, setCargandoIA] = useState(false);
   const [errorIA, setErrorIA] = useState('');
-
+  const [loading, setLoading] = useState(true);
   const [vehiculosUsuario, setVehiculosUsuario] = useState<
     { secuencial: number; descripcion: string }[]
   >([]);
   const [promptIA, setPromptIA] = useState("");
+
+  const [showSessionExpired, setShowSessionExpired] = useState(false);
+  const logout = useLogout();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const validateTokenAndAuth = async () => {
+    const token = getWizardToken();
+    if (!token) {
+      setLoading(false);
+      router.replace("/login");
+      return;
+    }
+    try {
+      const isValid = await isJWTValid(token);
+      if (!isValid) {
+        setShowSessionExpired(true);
+        setTimeout(() => {
+          logout();
+          router.replace('/login');
+        }, 2000);
+      }
+      setLoading(false);
+    } catch (e) {
+      logout();
+      router.replace('/login');
+    }
+  };
+
+  useEffect(() => {
+    // Validar apenas monta
+    validateTokenAndAuth();
+
+    // Sensado continuo cada 2 minutos
+    intervalRef.current = setInterval(validateTokenAndAuth, 2 * 60 * 1000);
+
+    // Validar cada vez que el usuario vuelve al tab
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") {
+        validateTokenAndAuth();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // Limpieza profesional
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+    // No depende de router, ni nada más.
+  }, []); // <--- SOLO al montar/desmontar
+
+
+
+
 
   interface GenerarPromptIAInput {
     nombre: string;
@@ -382,7 +437,7 @@ const ImpugnacionWizard = () => {
       fetchIA();
 
       // Opcional: imprime en consola
-      console.log("------ PROMPT IA ARMADO AL ENTRAR STEP 5 ------\n", prompt);
+      //console.log("------ PROMPT IA ARMADO AL ENTRAR STEP 5 ------\n", prompt);
     }
   }, [step, nombreParam, cedula, vehiculosUsuario, formData]);
 
@@ -425,11 +480,11 @@ const ImpugnacionWizard = () => {
         const res = await fetch(`${API_BASE_URL}/vehiculos/${secuencialUser}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!res.ok) console.log("NOOO HA PASADO CORRECTAMENTE TODO");
+        //if (!res.ok) //console.log("NOOO HA PASADO CORRECTAMENTE TODO");
         //throw new Error("Error al obtener vehículos");
-
-        console.log("HA PASADO CORRECTAMENTE TODO" + token);
         const data = await res.json();
+        //console.log("HA PASADO CORRECTAMENTE TODO" + token);
+
         setVehiculosUsuario(data);
       } catch (err) {
         //console.error("Error cargando vehículos:", err);
@@ -676,7 +731,7 @@ const ImpugnacionWizard = () => {
         ocrResults: formData.ocrResults,
       });
       // Imprime el prompt en consola
-      console.log("----- PROMPT IA ARMADO -----\n", promptIA);
+      //console.log("----- PROMPT IA ARMADO -----\n", promptIA);
 
 
       const formDataToSend = new FormData();
@@ -713,7 +768,9 @@ const ImpugnacionWizard = () => {
       try {
         responseData = await res.json();
       } catch {
-        // Si no hay body JSON
+
+
+        setStep(1);
         responseData = null;
       }
 
@@ -732,14 +789,13 @@ const ImpugnacionWizard = () => {
         // Si el backend devuelve un error custom en JSON, úsalo; si no, mensaje genérico
         const customError =
           (responseData && (responseData.error || responseData.mensaje)) ||
-          "No se pudo enviar la impugnación. Intenta nuevamente.";
+          "No se pudo enviar la impugnación. Revisa los datos ingresados e Intenta nuevamente.";
         setNotificationMessage(customError);
         setShowNotification(true);
+        setStep(1);
         return;
       }
 
-      // Aquí res.ok === true (HTTP 201)
-      setStep(7);
 
       const descripcionVehiculo =
         vehiculosUsuario.find(
@@ -753,9 +809,11 @@ const ImpugnacionWizard = () => {
         servicio: responseData.cabeceraId?.toString() || "",
         valor: responseData.costo?.toString() || valorImpugnacionGl,
       });
-
+      setStep(7);
       router.push("/resumenPago");
     } catch (error: any) {
+
+      setStep(1);
       // Manejo de errores de red y excepciones no previstas
       setNotificationMessage(
         error.message ||
@@ -833,8 +891,8 @@ const ImpugnacionWizard = () => {
                 </div>
                 {stepNumber < 7 && (
                   <div className={`w-3 sm:w-5 h-0.5 rounded-full ${step > stepNumber
-                      ? "bg-[#E6EEF6]"
-                      : "bg-[#F3F5F7]"
+                    ? "bg-[#E6EEF6]"
+                    : "bg-[#F3F5F7]"
                     }`}></div>
                 )}
               </div>

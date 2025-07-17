@@ -15,7 +15,7 @@ export default function Page() {
       secuencialServicio={secuencialServicio}
       onClose={() => {
         // Acción al cerrar, como redirigir o navegar
-        console.log('cerrado');
+        //console.log('cerrado');
       }}
     />
   );
