@@ -97,25 +97,7 @@ export const Header = () => {
      router.replace('/login');
   };
 
-
-  useEffect(() => {
-    let logoutTriggered = false;
-
-    const interval = setInterval(() => {
-      const authToken = localStorage.getItem('authToken');
-      const sessionNonce = localStorage.getItem('sessionNonce');
-
-      if (!authToken || !sessionNonce && !logoutTriggered) {
-        console.warn('⚠️ Sesión inactiva detectada. Cerrando sesión automáticamente...');
-        logoutTriggered = true;
-        handleLogout();
-      }
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-
+ 
 
 
   const menuItems = [
