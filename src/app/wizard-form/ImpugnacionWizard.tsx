@@ -135,7 +135,7 @@ const ImpugnacionWizard = () => {
   // Devuelve la cadena ISO "YYYY-MM-DD"   o   null si no reconoce patrón
   // ────────────────────────────────
   // helpers/fechas.ts  (o dentro del mismo componente)
-   const normalizeFecha = (fecha: string | null | undefined): string | null => {
+  const normalizeFecha = (fecha: string | null | undefined): string | null => {
     if (!fecha) return null;
 
     // 2025-07-17
@@ -606,49 +606,136 @@ const ImpugnacionWizard = () => {
     };
   };
 
+  // —————————————————————————————
+  // Helper: comprime imagen a JPEG <= maxSizeBytes
+  // —————————————————————————————
+  async function compressImage(
+    file: File,
+    maxSizeBytes: number
+  ): Promise<File> {
+    if (!file.type.startsWith("image/")) {
+      throw new Error("No es un archivo de imagen");
+    }
+
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("No se pudo obtener contexto de canvas");
+    ctx.drawImage(bitmap, 0, 0);
+
+    let quality = 0.9;
+    let blob: Blob | null = null;
+
+    while (quality > 0.1) {
+      blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob((b) => resolve(b), "image/jpeg", quality)
+      );
+      if (!blob) break;
+      if (blob.size <= maxSizeBytes) break;
+      quality -= 0.1;
+    }
+
+    if (!blob || blob.size > maxSizeBytes) {
+      throw new Error(
+        `No se pudo comprimir imagen por debajo de ${(maxSizeBytes / 1024 / 1024).toFixed(1)} MB`
+      );
+    }
+
+    return new File(
+      [blob],
+      file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+      { type: "image/jpeg" }
+    );
+  }
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    const files = Array.from(e.target.files).filter((f) => f.type.startsWith("image/"));
-    if (files.length === 0) {
-      setNotificationMessage("Solo se aceptan imágenes (JPG, PNG)");
+
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+    const rawFiles = Array.from(e.target.files);
+    const validFiles: File[] = [];
+    const errors: string[] = [];
+
+    // 1) Filtrar tipos y tamaños
+    for (let file of rawFiles) {
+      const isImage = file.type.startsWith("image/");
+      const isPdf = file.type === "application/pdf";
+
+      if (!isImage && !isPdf) {
+        errors.push(`${file.name}: solo imágenes o PDF.`);
+        continue;
+      }
+
+      if (file.size > MAX_SIZE) {
+        if (isImage) {
+          // Intentar comprimir
+          try {
+            file = await compressImage(file, MAX_SIZE);
+          } catch (err: any) {
+            errors.push(`${file.name}: ${err.message}`);
+            continue;
+          }
+        } else {
+          errors.push(`${file.name}: supera 5 MB y no es imagen.`);
+          continue;
+        }
+      }
+
+      validFiles.push(file);
+    }
+
+    if (errors.length > 0) {
+      setNotificationMessage(errors.join(" "));
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
-      return;
     }
+    if (validFiles.length === 0) return;
+
     setIsProcessing(true);
     try {
       const processedFiles: FileWithPreview[] = [];
       const ocrResults: OCRResult[] = [];
-      for (const file of files) {
+
+      for (const file of validFiles) {
         const fileWithPreview = file as FileWithPreview;
         fileWithPreview.preview = URL.createObjectURL(file);
         processedFiles.push(fileWithPreview);
-        const result = await processImageWithOCR(file);
-        ocrResults.push(result);
+
+        if (file.type.startsWith("image/")) {
+          const result = await processImageWithOCR(file);
+          ocrResults.push(result);
+        } else {
+          // Para PDF, no OCR: meter un placeholder vacío
+          ocrResults.push({ text: "", confidence: 0, extractedData: {} });
+        }
       }
+
       setFormData((prev) => {
         const newFiles = [...prev.archivos, ...processedFiles];
-        const newOcrResults = [...prev.ocrResults, ...ocrResults];
-        const lastResult = ocrResults[ocrResults.length - 1]?.extractedData;
+        const newOcrs = [...prev.ocrResults, ...ocrResults];
+        const last = newOcrs[newOcrs.length - 1]?.extractedData || {};
         return {
           ...prev,
           archivos: newFiles,
-          ocrResults: newOcrResults,
-          numeroCitacion: lastResult?.citationNumber || prev.numeroCitacion,
-          vehiculo: lastResult?.licensePlate || prev.vehiculo,
-          fechaCitacion: lastResult?.date || prev.fechaCitacion,
-          agencia: lastResult?.agency || prev.agencia,
+          ocrResults: newOcrs,
+          numeroCitacion: last.citationNumber || prev.numeroCitacion,
+          vehiculo: last.licensePlate || prev.vehiculo,
+          fechaCitacion: last.date || prev.fechaCitacion,
+          agencia: last.agency || prev.agencia,
         };
       });
     } catch (error) {
-      //console.error("Error procesando archivos:", error);
-      setNotificationMessage("Error procesando imágenes");
+      console.error("Error procesando archivos:", error);
+      setNotificationMessage("Error procesando archivos");
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
     } finally {
       setIsProcessing(false);
     }
   };
+
 
   const removeFile = (index: number) => {
     setFormData((prev) => {

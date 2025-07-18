@@ -167,9 +167,9 @@ export default function CargaDocumentosServicio() {
 
         if (err.message === "SESION_EXPIRED") {
           toast.error("Tu sesión ha caducado. Por favor inicia sesión nuevamente.");
-       //   setWizardToken("");
-        //  setGlobalToken("");
-         // SessionWizardData.limpiar?.();
+          //   setWizardToken("");
+          //  setGlobalToken("");
+          // SessionWizardData.limpiar?.();
           router.push("/login");
           return;
         }
@@ -241,28 +241,99 @@ export default function CargaDocumentosServicio() {
     );
   };
 
-  // 5) Subir un archivo nuevo (o reemplazar)
-  const handleUpload = async (secuencialDocumento: number, lado: string, file: File) => {
+  // —————————————————————————————
+  // Helper: comprime imagen a JPEG <= maxSizeBytes
+  // —————————————————————————————
+  async function compressImage(
+    file: File,
+    maxSizeBytes: number
+  ): Promise<File> {
+    if (!file.type.startsWith("image/")) {
+      throw new Error("No es un archivo de imagen");
+    }
+
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("No se pudo obtener contexto de canvas");
+    ctx.drawImage(bitmap, 0, 0);
+
+    let quality = 0.9;
+    let blob: Blob | null = null;
+
+    while (quality > 0.1) {
+      blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob((b) => resolve(b), "image/jpeg", quality)
+      );
+      if (!blob) break;
+      if (blob.size <= maxSizeBytes) break;
+      quality -= 0.1;
+    }
+
+    if (!blob || blob.size > maxSizeBytes) {
+      throw new Error(
+        `No se pudo comprimir imagen por debajo de ${(maxSizeBytes / 1024 / 1024).toFixed(1)} MB`
+      );
+    }
+
+    return new File(
+      [blob],
+      file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+      { type: "image/jpeg" }
+    );
+  }
+
+  // —————————————————————————————
+  // Función handleUpload mejorada
+  // —————————————————————————————
+  const handleUpload = async (
+    secuencialDocumento: number,
+    lado: string,
+    file: File
+  ) => {
     if (!secuencialUsuario) {
-      console.error("⛔ Usuario no disponible");
       return toast.error("Usuario no disponible");
     }
     const token = getWizardToken();
     if (!token) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      return toast.error("El archivo supera los 5MB.");
-    }
-    if (!file.type.match(/^image\//) && !file.type.match(/pdf/)) {
-      return toast.error("Tipo de archivo no permitido.");
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+    const isImage = file.type.startsWith("image/");
+    const isPdf = file.type === "application/pdf";
+
+    // Validar tipos
+    if (!isImage && !isPdf) {
+      return toast.error("Solo se permiten imágenes o PDF.");
     }
 
+    let fileToUpload = file;
+
+    // Si es imagen y >5MB, comprimir
+    if (isImage && file.size > MAX_SIZE) {
+      toast.info("Comprimiendo imagen...");
+      try {
+        fileToUpload = await compressImage(file, MAX_SIZE);
+        toast.success("Imagen comprimida correctamente");
+      } catch (err: any) {
+        console.error(err);
+        return toast.error(err.message);
+      }
+    }
+
+    // Validar tamaño final
+    if (fileToUpload.size > MAX_SIZE) {
+      return toast.error("El archivo supera los 5 MB.");
+    }
+
+    // Construir y enviar FormData
     const formData = new FormData();
     formData.append("secuencial_usuario", `${secuencialUsuario}`);
     formData.append("secuencial_documento", `${secuencialDocumento}`);
-    formData.append("lado", lado || ""); // aunque no importe, que el backend reciba algo
+    formData.append("lado", lado || "");
     formData.append("usuariocrea", "NoPayFront");
-    formData.append("file", file);
+    formData.append("file", fileToUpload, fileToUpload.name);
 
     try {
       setLoading(true);
@@ -271,36 +342,35 @@ export default function CargaDocumentosServicio() {
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
+      if (!res.ok) throw new Error(await res.text());
 
-      if (!res.ok) {
-        throw new Error(await res.text());
-      }
-
-      // Simular que ya subió: generamos la URL temporal con URL.createObjectURL
+      // Actualizar estado con URL temporal
       const nuevoDocumento: DocumentoCargado = {
         secuencial_documento: secuencialDocumento,
-        ruta_archivo: URL.createObjectURL(file),
-        nombre_archivo: file.name,
+        ruta_archivo: URL.createObjectURL(fileToUpload),
+        nombre_archivo: fileToUpload.name,
         lado: lado || undefined,
         fecha_carga: new Date().toISOString(),
         id_unico: `${secuencialDocumento}-${lado || "unico"}`,
       };
-
-      // Si existía antes, lo reemplazamos; si no, lo agregamos
       setDocumentosCargados((prev) => {
-        // Filtramos cualquiera con el mismo secuencial_documento
-        const sinElViejo = prev.filter((d) => d.secuencial_documento !== secuencialDocumento);
-        return [...sinElViejo, nuevoDocumento];
+        const sinViejo = prev.filter(
+          (d) => d.secuencial_documento !== secuencialDocumento
+        );
+        return [...sinViejo, nuevoDocumento];
       });
 
       toast.success("Archivo subido con éxito");
     } catch (err) {
-      console.error("❌ Error al subir archivo:", err);
+      console.error("Error al subir archivo:", err);
       toast.error("Error al subir archivo");
     } finally {
       setLoading(false);
     }
   };
+
+
+
   const todosDocumentosCompletos = documentosRequeridos.every((doc) =>
     documentoEstaCompleto(doc)
   );
