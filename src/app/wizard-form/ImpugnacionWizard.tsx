@@ -446,7 +446,7 @@ const ImpugnacionWizard = () => {
       const fetchIA = async () => {
         try {
           const token = getWizardToken();
-          const res = await fetch(`${API_BASE_URL}/nopaychat`, {
+          const res = await fetch(`${API_BASE_URL}/nopaychatService`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
