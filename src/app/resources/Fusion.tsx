@@ -1,359 +1,187 @@
 'use client';
 
-import NoPayBackground from 'components/NoPayBackground';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, ShieldCheck, Zap, Gavel, Check, X, PiggyBank, Calculator, ArrowRight } from 'lucide-react';
-import Image from 'next/image';
+import {
+  ArrowRight,
+  Sparkles,
+  Mail,
+  ShieldCheck,
+  Clock3,
+  Scale,
+  Car,
+  Landmark,
+  UserCheck,
+} from 'lucide-react';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import NoPayBackground from 'components/NoPayBackground';
 
-export default function LegalCalculatorSection() {
-  const [fineAmount, setFineAmount] = useState(2000);
-  const [probableSavings, setProbableSavings] = useState(0);
-  const [showDetails, setShowDetails] = useState(false);
+export default function EliteLegalFooterFusion() {
+  const benefits = [
+    { icon: Clock3, title: 'Rápido', text: 'Empieza tu trámite en minutos.' },
+    { icon: ShieldCheck, title: 'Seguro', text: 'Tus datos se manejan con privacidad.' },
+    { icon: Scale, title: 'Legaltech', text: 'IA + enfoque legal profesional.' },
+  ];
 
-  const successRate = 0.92;
-  const averageReduction = 0.85;
-  const serviceFee = 0.15;
-
-  useEffect(() => {
-    const potentialReduction = fineAmount * averageReduction;
-    const fee = potentialReduction * serviceFee;
-    const netSavings = potentialReduction - fee;
-    setProbableSavings(Math.round(netSavings * successRate));
-  }, [fineAmount]);
-
-  const handleFineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFineAmount(parseInt(e.target.value));
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-EC', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+  const services = [
+    { icon: Car, title: 'Impugnar multa', href: '/Servicios/Impugnacion' },
+    { icon: Landmark, title: 'Registrar marca', href: '/Servicios/Marcas' },
+    { icon: UserCheck, title: 'Permiso de salida', href: '/Servicios/PermisoSalida' },
+  ];
 
   return (
-    <section className="relative py-16 md:py-24 min-h-screen bg-gradient-to-br from-[#FFD76F] via-[#F46C1D] to-[#D82465] text-white overflow-hidden">
-      <NoPayBackground />
-
-      <svg
-        className="absolute right-0 top-0 w-0 sm:w-1/3 md:w-[45%] lg:w-[55%] h-full object-cover z-0 pointer-events-none"
-        viewBox="0 0 600 800"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
+    <section className="relative w-full bg-white">
+      {/* CONTENEDOR DEL FONDO CON MÁSCARA 
+          Esto hace que el NoPayBackground no se corte, sino que aparezca 
+          gradualmente siguiendo la forma de la curva.
+      */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent, black 150px)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 150px)',
+        }}
       >
+        <div className="absolute inset-0 opacity-40">
+          <NoPayBackground />
+        </div>
+      </div>
 
-        <defs>
-          <linearGradient id="shapeGradient" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#7F1D1D" />
-            <stop offset="50%" stopColor="#EC4899" />
-            <stop offset="100%" stopColor="#F59E0B" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M600,0 C520,120 580,240 480,320 C370,400 440,540 340,640 C240,740 360,840 200,900 C100,940 0,960 0,1080 L600,1080 Z"
-          fill="url(#shapeGradient)"
-        />
-      </svg>
+      <div className="relative overflow-hidden bg-[#f8fafc]">
+        
+        {/* CURVA INTEGRADORA (Sincronizada con el fondo blanco de arriba) */}
+        <div className="absolute top-0 left-0 w-full z-20 leading-none">
+          <svg
+            viewBox="0 0 1200 120"
+            preserveAspectRatio="none"
+            className="relative block w-full h-[60px] md:h-[100px]"
+          >
+            <path
+              d="M0,0 C300,120 400,-20 600,60 C800,140 900,20 1200,80 L1200,0 L0,0 Z"
+              fill="white" 
+            />
+          </svg>
+        </div>
 
+        {/* CAPAS DE DISEÑO INTERNAS */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#D82465_0%,#F46C1D_40%,#f8fafc_85%)] opacity-[0.16]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-transparent h-40" />
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 10 L60 30 L80 30 L70 50 L80 70 L60 70 L50 90 L40 70 L20 70 L30 50 L20 30 L40 30 Z' fill='%23000000'/%3E%3C/svg%3E")`,
+              backgroundSize: '80px',
+            }}
+          />
+        </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-16 sm:h-20 md:h-24 bg-white rounded-t-[100%] z-10" />
-
-
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-28">
-
-        {/* Calculator Section */}
-        <motion.div
-          className="max-w-6xl mx-auto"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-center mb-12">
-            <motion.div
-              className="inline-flex items-center gap-2 bg-white/20 px-6 py-2 rounded-full mb-6"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <Calculator className="h-5 w-5" />
-              <span className="text-xs font-medium">Calculadora de Ahorro</span>
-            </motion.div>
-
-            <motion.h2
-              className="text-2xl sm:text-2xl md:text-3xl font-bold leading-tight mb-4"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="bg-gradient-to-r from-white to-[#FDE68A] bg-clip-text text-transparent">
-                Descubre tu ahorro potencial
-              </span>
-            </motion.h2>
-
-            <motion.p
-              className="text-base text-white/90 text-sm max-w-2xl mx-auto"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              Nuestra tecnología analiza tu caso y estima cuánto podrías ahorrar
-            </motion.p>
-          </div>
-
-          {/* Calculator Card */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 shadow-xl overflow-hidden">
-            <div className="grid md:grid-cols-2 gap-8 p-6 md:p-8">
-              {/* Input Section */}
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-white/80 font-medium mb-3">
-                    Valor de tu multa
-                    <span className="float-right font-bold">{formatCurrency(fineAmount)}</span>
-                  </label>
-                  <input
-                    type="range"
-                    min="100"
-                    max="5000"
-                    step="100"
-                    value={fineAmount}
-                    onChange={handleFineChange}
-                    className="w-full h-2 bg-white/30 rounded-full appearance-none outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md hover:[&::-webkit-slider-thumb]:scale-125 transition-all"
-                  />
-                  <div className="flex justify-between text-xs text-white/60 mt-1">
-                    <span className="text-sm">$100</span>
-                    <span className="text-sm">$5,000</span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setShowDetails(!showDetails)}
-                  className="text-xs text-white/80 hover:text-white flex items-center gap-2 transition-colors"
-                >
-                  {showDetails ? (
-                    <>
-                      <X className="h-4 w-4" />
-                      Ocultar detalles
-                    </>
-                  ) : (
-                    <>
-                      <Calculator className="h-4 w-4" />
-                      Ver detalles de cálculo
-                    </>
-                  )}
-                </button>
-
-                {showDetails && (
-                  <motion.div
-                    className="bg-white/5 p-4 rounded-lg border border-white/10 text-sm"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-white/90 text-xs mb-2">Nuestro cálculo considera:</p>
-                    <ul className="space-y-2">
-                      <li className="flex items-start gap-2 text-white/70 text-xs">
-                        <Check className="h-4 w-4 text-[#F59E0B] mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">85% de reducción promedio en multas</span>
-                      </li>
-                      <li className="flex items-start gap-2 text-white/70 text-xs">
-                        <Check className="h-4 w-4 text-[#F59E0B] mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">15% de honorarios por servicio exitoso</span>
-                      </li>
-                      <li className="flex items-start gap-2 text-white/70 text-xs">
-                        <Check className="h-4 w-4 text-[#F59E0B] mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">92% de tasa de éxito en apelaciones</span>
-                      </li>
-                    </ul>
-                  </motion.div>
-                )}
-              </div>
-
-              {/* Result Section */}
-              <div className="bg-gradient-to-br from-[#7F1D1D]/50 to-[#EC4899]/50 p-6 rounded-xl border border-white/10 flex flex-col">
-                <div className="flex items-center gap-3 mb-4">
-                  <PiggyBank className="h-6 w-6 text-[#FDE68A]" />
-                  <h3 className="text-lg font-bold">Tu ahorro estimado</h3>
-                </div>
-
-                <div className="text-3xl md:text-4xl font-extrabold mb-4">
-                  {formatCurrency(probableSavings)}
-                </div>
-
-                <div className="h-px bg-white/20 my-4"></div>
-
-                <p className="text-white/80 text-xs mb-6">
-                  Basado en nuestro histórico de casos con 92% de éxito
-                </p>
-
-                <Link href="/Servicios" passHref>
-                  <motion.button
-                    className="w-full bg-white text-[#7F1D1D] hover:bg-[#EC4899] hover:text-white py-3 px-6 rounded-lg font-semibold text-sm shadow-md transition-all flex justify-center items-center gap-2"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Iniciar mi apelación <ArrowRight className="h-4 w-4" />
-                  </motion.button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Case Studies */}
-
-
-        {/* Comparison Section */}
-        <motion.div
-          className="mt-24 max-w-4xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="text-center mb-12">
-            <motion.h3
-              className="text-2xl md:text-3xl font-bold mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="inline-block bg-white text-[#7F1D1D] px-6 py-2 rounded-full shadow-lg">
-                Comparación
-              </span>
-            </motion.h3>
-            <p className="text-white/90 text-sm max-w-2xl mx-auto">
-              Descubre la diferencia entre nuestro servicio y el método tradicional
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <motion.div
-              className="bg-white/5 p-6 rounded-xl border border-[#F59E0B]/30"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Zap className="h-6 w-6 text-[#F59E0B]" />
-                <h4 className="text-lg font-bold">Con nuestro servicio</h4>
-              </div>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-white/90">
-                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                  <span className="text-sm">Resolución en 48 horas promedio</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/90">
-                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                  <span className="text-sm">95% de éxito en apelaciones</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/90">
-                  <Check className="h-5 w-5 text-[#F59E0B] flex-shrink-0" />
-                  <span className="text-sm">Proceso 100% digital sin papeleo</span>
-                </li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              className="bg-white/5 p-6 rounded-xl border border-white/10"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Gavel className="h-6 w-6 text-white/70" />
-                <h4 className="text-lg font-bold">Método tradicional</h4>
-              </div>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-white/70">
-                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                  <span className="text-sm">2-6 meses de espera</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/70">
-                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                  <span className="text-sm">Solo 30% de éxito</span>
-                </li>
-                <li className="flex items-start gap-2 text-white/70">
-                  <X className="h-5 w-5 text-red-300 flex-shrink-0" />
-                  <span className="text-sm">Trámites presenciales y burocráticos</span>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Partners Section */}
-        <motion.div
-          className="mt-24 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        {/* CONTENIDO PRINCIPAL */}
+        <div className="relative z-30 max-w-7xl px-6 mx-auto pt-28 pb-14 md:pt-40 md:pb-20 flex flex-col items-center">
           <motion.div
-            className="inline-flex items-center gap-2 bg-white/10 px-5 py-2 rounded-full mb-8"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md border border-slate-200 px-4 py-1.5 rounded-full mb-6 shadow-sm"
           >
-            <ShieldCheck className="h-5 w-5 text-white" />
-            <span className="font-medium text-sm">Conectado con instituciones oficiales</span>
+            <Sparkles className="h-3.5 w-3.5 text-rose-500 fill-rose-500" />
+            <span className="text-[10px] md:text-xs font-black text-slate-600 uppercase tracking-[0.28em]">
+              Tu próximo trámite puede ser más simple
+            </span>
           </motion.div>
 
-          <div className="relative z-20 flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-10 max-w-6xl mx-auto">
-            {[
-              {
-                logo: 'https://www.gob.ec/sites/default/files/styles/medium/public/2018-09/logo-ant%5B1%5D.png',
-                alt: 'Agencia Nacional de Tránsito',
-                link: 'https://www.gob.ec/ant'
-              },
-              {
-                logo: 'https://procesosjudiciales.funcionjudicial.gob.ec/assets/logos/logoCJ_negro.png',
-                alt: 'Función Judicial',
-                link: 'https://www.funcionjudicial.gob.ec/'
-              },
-              {
-                logo: 'https://www.emov.gob.ec/wp-content/uploads/2022/01/CABECERA_EMOV_2019-02-1.png',
-                alt: 'EMOV EP',
-                link: 'https://www.emov.gob.ec/'
-              }
-            ].map((partner, i) => (
-              <motion.a
-                key={i}
-                href={partner.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/5 p-2 sm:p-3 rounded-lg hover:bg-white/10 transition-all w-32 sm:w-36 md:w-40 flex justify-center items-center"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.4 }}
-              >
-                <Image
-                  src={partner.logo}
-                  alt={partner.alt}
-                  width={120}
-                  height={60}
-                  className="h-10 sm:h-12 object-contain"
+          <motion.h2
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.05 }}
+            className="text-center text-4xl md:text-[5rem] font-[950] text-slate-950 leading-[0.95] mb-6 tracking-[-0.06em]"
+          >
+            Resuelve lo legal.
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F46C1D] via-[#D82465] to-purple-600">
+              Sin perder tiempo.
+            </span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-center text-slate-500 max-w-2xl text-base md:text-xl leading-relaxed mb-10"
+          >
+            Empieza con el servicio que necesitas y deja que NoPay te guíe paso a paso:
+            multas, marcas, permisos y soluciones legales digitales.
+          </motion.p>
+
+          {/* Formulario / CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="w-full max-w-2xl mb-10"
+          >
+            <div className="flex flex-col md:flex-row items-center gap-3 p-2 bg-white/70 backdrop-blur-3xl border border-slate-200 rounded-2xl md:rounded-full shadow-xl shadow-slate-200/50 transition-all hover:border-rose-200">
+              <div className="flex items-center flex-1 px-4 w-full">
+                <Mail className="w-5 h-5 text-slate-400 mr-2" />
+                <input
+                  type="email"
+                  placeholder="Tu correo para orientación inicial"
+                  className="w-full py-3 bg-transparent border-none outline-none text-slate-900 text-base placeholder:text-slate-400"
                 />
-              </motion.a>
-            ))}
+              </div>
+
+              <Link
+                href="/Servicios"
+                className="w-full md:w-auto bg-slate-950 text-white hover:bg-rose-600 font-black px-8 py-3 rounded-xl md:rounded-full transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-slate-900/20"
+              >
+                Resolver mi caso <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Grid de Beneficios */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl mb-8">
+            {benefits.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.08 * index }}
+                  className="rounded-[2rem] bg-white/70 border border-slate-100 p-5 shadow-sm text-center"
+                >
+                  <div className="mx-auto mb-3 w-11 h-11 rounded-2xl bg-slate-950 text-white flex items-center justify-center">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-base font-black text-slate-950">{item.title}</h3>
+                  <p className="text-sm text-slate-500 mt-1 leading-relaxed">{item.text}</p>
+                </motion.div>
+              );
+            })}
           </div>
 
-        </motion.div>
+          {/* Links Rápidos */}
+          <div className="flex flex-wrap justify-center gap-3">
+            {services.map((service) => {
+              const Icon = service.icon;
+              return (
+                <Link
+                  key={service.title}
+                  href={service.href}
+                  className="group inline-flex items-center gap-2 rounded-full bg-white/75 border border-slate-200 px-5 py-3 text-sm font-black text-slate-700 hover:text-[#D82465] hover:border-rose-200 transition-all shadow-sm"
+                >
+                  <Icon className="w-4 h-4" />
+                  {service.title}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

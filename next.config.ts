@@ -1,5 +1,3 @@
-// next.config.ts
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -15,8 +13,19 @@ const nextConfig: NextConfig = {
       'www.pcisecuritystandards.org',
       'datafast.com.ec',
       'img.favpng.com',
-      'graph.facebook.com', 'lh3.googleusercontent.com','upload.wikimedia.org',
+      'graph.facebook.com',
+      'lh3.googleusercontent.com',
+      'upload.wikimedia.org',
     ],
+  },
+  // ✅ AÑADIDO: Proxy para evitar CORS al consultar el servicio de citaciones
+  async rewrites() {
+    return [
+      {
+        source: '/api/citaciones/:path*',
+        destination: 'http://localhost:8085/ant/citaciones/:path*',
+      },
+    ];
   },
 };
 

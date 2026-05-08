@@ -2,9 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, ShieldCheck, Landmark, Zap } from 'lucide-react';
+import { FileText, ShieldCheck, Landmark, Zap, X } from 'lucide-react';
 
-const RegistroMarcasOverlay = () => {
+interface RegistroMarcasOverlayProps {
+  onClose?: () => void;
+}
+
+const RegistroMarcasOverlay = ({ onClose }: RegistroMarcasOverlayProps) => {
   const [step, setStep] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -52,6 +56,15 @@ const RegistroMarcasOverlay = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
     >
+      {/* Botón de cierre (posicionado fuera del teléfono pero dentro del contenedor) */}
+      <button
+        onClick={onClose}
+        className="absolute -top-2 -right-2 z-10 p-1.5 bg-gray-800/90 backdrop-blur-sm rounded-full border border-gray-600 text-white hover:bg-gray-700 transition-all duration-200 focus:outline-none shadow-lg"
+        aria-label="Cerrar"
+      >
+        <X className="w-4 h-4" />
+      </button>
+
       <motion.div
         className="relative w-full aspect-[9/18] bg-gradient-to-br from-gray-900 to-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden border-[10px] border-gray-700 flex flex-col"
         initial={{ scale: 0.92, opacity: 0 }}
@@ -129,4 +142,6 @@ const RegistroMarcasOverlay = () => {
   );
 };
 
-export default RegistroMarcasOverlay;
+export default function Page() {
+  return <RegistroMarcasOverlay />;
+}

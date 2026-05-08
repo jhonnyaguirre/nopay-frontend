@@ -1,199 +1,202 @@
 'use client';
 
-
+import Image from 'next/image';
 import Link from 'next/link';
-import { ReactElement } from 'react';
-import React, { useState, useEffect, useMemo, Children } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Scale, Car, FileText, BookOpen, Landmark, Factory, Home, Plane, Zap, ChevronRight, UserCheck, Copyright, LucideIcon } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  BadgeCheck,
+  Car,
+  Landmark,
+  UserCheck,
+  Sparkles,
+  ChevronRight,
+  Clock3,
+  ShieldCheck,
+  Scale,
+  ArrowRight,
+  Bot,
+  CheckCircle2,
+  FileCheck2,
+  UsersRound,
+  LockKeyhole,
+  WandSparkles,
+} from 'lucide-react';
+
 import { Header } from 'app/resources/Header';
 import Footer from 'app/resources/Footer';
 import NoPayChatLauncher from 'app/resources/NoPayChatLauncher';
-import NoPayBackground from 'components/NoPayBackground';
+
+import {
+  valorImpugnacionGl,
+  valorRegistroMarcaPhase1,
+  valorPermisoSalida,
+} from 'config/apiConfig';
 
 interface Service {
   title: string;
   description: string;
   href: string;
-  color: string;
-  icon: React.ReactElement; // <--- CORRECTO
+  gradient: string;
+  soft: string;
+  price: string | number;
+  icon: React.ReactElement;
+  label: string;
 }
- 
 
-const services = [
+interface StepItem {
+  icon: React.ReactElement;
+  title: string;
+  text: string;
+}
+
+const services: Service[] = [
   {
-    title: 'Apelación Inteligente',
-    description: 'Sistema AI para impugnar multas automáticamente',
+    title: 'Impugnación de multas',
+    label: 'Tránsito',
+    description:
+      'Impugna tu multa de tránsito con un proceso claro, rápido y guiado por NoPay.',
     href: '/Servicios/Impugnacion',
-    color: '#3b82f6',
-    icon: <Car className="w-5 h-5" />,
+    gradient: 'from-rose-600 via-fuchsia-600 to-amber-500',
+    soft: 'bg-rose-50 text-rose-600',
+    price: valorImpugnacionGl,
+    icon: <Car className="h-5 w-5" />,
   },
   {
-    title: 'Matriculación vehicular',
-    description: 'Gestión completa de trámites de matriculación vehicular',
-    href: '/Servicios/Matriculacion',
-    color: '#f59e0b',
-    icon: <FileText className="w-5 h-5" />,
-  },
-  {
-    title: 'Asesor Legal AI',
-    description: 'Chatbot jurídico entrenado en la constitución Ecuatoriana',
-    href: '/Servicios/AsesoriaLegal',
-    color: '#10b981',
-    icon: <Scale className="w-5 h-5" />,
-  },
-  {
-    title: 'Contratos Automatizados',
-    description: 'Generación instantánea de documentos legales',
-    href: '/Servicios/DocumentosLegales',
-    color: '#6366f1',
-    icon: <BookOpen className="w-5 h-5" />,
-  },
-  {
-    title: 'Registro de Marcas',
-    description: 'Protege tu marca con nuestro servicio especializado',
+    title: 'Registro de marcas',
+    label: 'Negocios',
+    description:
+      'Protege y registra tu marca con una experiencia legal simple, segura y profesional.',
     href: '/Servicios/Marcas',
-    color: '#ec4899',
-    icon: <Landmark className="w-5 h-5" />,
+    gradient: 'from-lime-400 via-rose-500 to-violet-600',
+    soft: 'bg-fuchsia-50 text-fuchsia-600',
+    price: valorRegistroMarcaPhase1,
+    icon: <Landmark className="h-5 w-5" />,
   },
   {
-    title: 'Startup Legal Express',
-    description: 'Constitución de empresas en 24h',
-    href: '/Servicios/ConstitucionEmpresasPage',
-    color: '#14b8a6',
-    icon: <Factory className="w-5 h-5" />,
-  },
-  {
-    title: 'Propiedad Intelectual',
-    description: 'Tokenización de bienes inmuebles',
-    href: '/Servicios/PropiedadIntelectual',
-    color: '#6366f1',
-    icon: <Copyright className="w-5 h-5" />,
-  },
-  {
-    title: 'Permisos de Salida de Menores',
-    description: 'Tramita los permisos necesarios para viajes de menores',
+    title: 'Permiso de salida',
+    label: 'Familia',
+    description:
+      'Gestiona permisos de salida del país para menores con claridad, orden y respaldo.',
     href: '/Servicios/PermisoSalida',
-    color: '#ec4899',
-    icon: <UserCheck className="w-5 h-5" />,
+    gradient: 'from-violet-600 via-fuchsia-600 to-rose-500',
+    soft: 'bg-violet-50 text-violet-600',
+    price: valorPermisoSalida,
+    icon: <UserCheck className="h-5 w-5" />,
   },
-  {
-    title: 'Regularización de Propiedades',
-    description: 'Soluciones legales para regularizar tu propiedad',
-    href: '/Servicios/Inmuebles',
-    color: '#14b8a6',
-    icon: <Home className="w-5 h-5" />,
-  },
-  {
-    title: 'Migración',
-    description: 'Asesoría completa para tus procesos migratorios',
-    href: '/Servicios/TramitesMigratorios',
-    color: '#0ea5e9',
-    icon: <Plane className="w-5 h-5" />,
-  }
 ];
 
+const steps: StepItem[] = [
+  {
+    icon: <FileCheck2 className="h-5 w-5" />,
+    title: 'Subes tu caso',
+    text: 'Completa la información clave y adjunta tus documentos desde una experiencia guiada.',
+  },
+  {
+    icon: <Bot className="h-5 w-5" />,
+    title: 'NoPay ordena y analiza',
+    text: 'La IA estructura datos, identifica escenarios y reduce la complejidad operativa.',
+  },
+  {
+    icon: <UsersRound className="h-5 w-5" />,
+    title: 'Expertos revisan',
+    text: 'Profesionales legales acompañan los puntos importantes del proceso.',
+  },
+];
 
+const trustItems = [
+  {
+    icon: <ShieldCheck className="h-5 w-5" />,
+    title: 'IA + humanos',
+    text: 'Automatización con respaldo profesional.',
+  },
+  {
+    icon: <LockKeyhole className="h-5 w-5" />,
+    title: 'Privacidad',
+    text: 'Datos tratados con enfoque seguro.',
+  },
+  {
+    icon: <Clock3 className="h-5 w-5" />,
+    title: 'Menos fricción',
+    text: 'Procesos más claros y rápidos.',
+  },
+  {
+    icon: <Scale className="h-5 w-5" />,
+    title: 'Enfoque legal',
+    text: 'Soluciones pensadas para trámites reales.',
+  },
+];
 
-type TechCardProps = {
+const upcoming = ['Laborales', 'Migratorios', 'Familia', 'Tránsito'];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 26, filter: 'blur(8px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+type ServiceCardProps = {
   service: Service;
   index: number;
 };
 
-
-const TechCard: React.FC<TechCardProps> = ({ service, index }) => {
-  const [hovered, setHovered] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), index * 80);
-    return () => clearTimeout(timer);
-  }, [index]);
-
+const ServiceCard: React.FC<ServiceCardProps> = ({ service, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={isVisible ? { opacity: 1, y: 0 } : {}}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="h-full"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
-      <Link href={service.href} className="block h-full group">
-        <div className="
-          relative h-full bg-white rounded-xl md:rounded-2xl border border-gray-100
-          shadow-sm hover:shadow-xl overflow-hidden group transition-all duration-300
-        ">
-          {/* Barra vertical de color NoPay a la izquierda */}
+      <Link href={service.href} className="group block h-full">
+        <div className="relative h-full overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.055)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_rgba(15,23,42,0.10)]">
           <div
-            className="absolute top-0 left-0 w-1 h-full rounded-l-xl"
-            style={{
-              background: `linear-gradient(to bottom, ${service.color}, #EC4899 90%)`,
-            }}
-          />
-          {/* Glow gradiente al hacer hover */}
-          <div
-            className={`
-              absolute inset-0 pointer-events-none transition-opacity duration-300
-              ${hovered ? 'opacity-20' : 'opacity-0'}
-            `}
-            style={{
-              background: `linear-gradient(135deg, ${service.color}10 30%, #EC489922 100%)`,
-            }}
+            className={`absolute -right-24 -top-24 h-52 w-52 rounded-full bg-gradient-to-br ${service.gradient} opacity-[0.07] blur-3xl transition-opacity duration-300 group-hover:opacity-[0.14]`}
           />
 
-          {/* Contenido */}
-          <div className="flex flex-col h-full px-6 py-6 md:px-7 md:py-7 z-10 relative">
-            {/* Icono con fondo suave NoPay */}
-            <motion.div
-              className="
-                mb-4 rounded-lg shadow-inner w-11 h-11 flex items-center justify-center
-                bg-gradient-to-br from-pink-100 to-pink-200
-              "
-              style={{
-                background: hovered
-                  ? `linear-gradient(135deg, ${service.color}30 50%, #EC489955 100%)`
-                  : `linear-gradient(135deg, #fce7f3 0%, #f3e8ff 100%)`
-              }}
-              animate={{
-                rotate: hovered ? 7 : 0,
-                scale: hovered ? 1.09 : 1,
-              }}
-              transition={{ duration: 0.21 }}
-            >
-              {service.icon}
-            
-            </motion.div>
+          <div className="relative z-10 flex h-full flex-col">
+            <div className="mb-7 flex items-start justify-between gap-4">
+              <div
+                className={`flex h-12 w-12 items-center justify-center rounded-2xl ${service.soft}`}
+              >
+                {service.icon}
+              </div>
 
-            {/* Título */}
-            <h3 className="text-base md:text-lg font-semibold text-gray-800 group-hover:text-pink-600 transition-colors mb-2"
-              style={{
-                letterSpacing: "-0.5px",
-              }}>
+              <span
+                className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] ${service.soft}`}
+              >
+                {service.label}
+              </span>
+            </div>
+
+            <h3 className="mb-3 text-2xl font-black leading-[0.95] tracking-[-0.045em] text-slate-950">
               {service.title}
             </h3>
 
-            {/* Descripción */}
-            <p className="text-gray-600 text-xs md:text-sm leading-relaxed mb-6 flex-grow">{service.description}</p>
+            <p className="mb-8 text-sm leading-relaxed text-slate-500 md:text-[15px]">
+              {service.description}
+            </p>
 
-            {/* Botón animado */}
-            <motion.div
-              className="mt-auto flex items-center gap-1 font-medium cursor-pointer"
-              animate={{
-                color: hovered ? service.color : '#6b7280'
-              }}
-              transition={{ duration: 0.22 }}
-            >
-              <span className="text-sm">Explorar</span>
-              <motion.div
-                animate={{
-                  x: hovered ? 8 : 0
-                }}
-                transition={{ duration: 0.18 }}
-              >
-                <ChevronRight className="w-4 h-4 ml-0.5" />
-              </motion.div>
-            </motion.div>
+            <div className="mt-auto flex items-end justify-between border-t border-slate-100 pt-5">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-300">
+                  Desde
+                </p>
+                <p className="text-3xl font-black tracking-[-0.04em] text-slate-950">
+                  ${service.price}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-1 text-sm font-black text-slate-500 transition-colors group-hover:text-rose-600">
+                Iniciar
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </div>
+            </div>
           </div>
         </div>
       </Link>
@@ -201,12 +204,8 @@ const TechCard: React.FC<TechCardProps> = ({ service, index }) => {
   );
 };
 
-
-
 export default function ServiciosPage() {
   const [mounted, setMounted] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.03]);
 
   useEffect(() => {
     setMounted(true);
@@ -214,134 +213,349 @@ export default function ServiciosPage() {
 
   return (
     <>
-      <main className="relative min-h-screen w-full overflow-hidden white">
-        <NoPayBackground />
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
+
+        * {
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-black,
+        .font-bold {
+          text-rendering: geometricPrecision;
+        }
+      `}</style>
+
+      <main className="relative min-h-screen w-full overflow-hidden bg-white font-['Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] antialiased selection:bg-rose-500 selection:text-white">
         <Header />
 
-        <motion.div style={{ scale }} className="relative z-10">
-          <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            {/* Hero Section */}
+        <section className="relative min-h-[82svh] w-full overflow-hidden bg-[#020617]">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/servicios.png"
+              alt="NoPay LegalTech con inteligencia artificial y expertos legales"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[68%_center] md:object-center"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/95 via-[#020617]/72 to-[#020617]/22" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/30 via-transparent to-white" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(216,36,101,0.22),transparent_32%),radial-gradient(circle_at_42%_76%,rgba(245,158,11,0.14),transparent_34%),radial-gradient(circle_at_6%_66%,rgba(127,29,29,0.22),transparent_34%)]" />
+          </div>
+
+          <div className="relative z-10 mx-auto flex min-h-[82svh] max-w-7xl items-center px-5 pb-28 pt-32 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={mounted ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
+              initial={{ opacity: 0, y: 28, filter: 'blur(10px)' }}
+              animate={mounted ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-[720px]"
             >
               <motion.div
-                className="inline-flex items-center px-4 py-2 rounded-full bg-gray-800/50 border border-gray-700 text-gray-300 text-sm font-mono mb-6"
-                initial={{ opacity: 0 }}
-                animate={mounted ? { opacity: 1 } : {}}
-                transition={{ delay: 0.2 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={mounted ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.1 }}
+                className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-2xl"
               >
-                <span className="h-2 w-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
-                LEGALTECH PLATFORM
+                <Sparkles className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/80 md:text-xs">
+                  LegalTech impulsada por IA
+                </span>
               </motion.div>
 
               <motion.h1
-                className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500"
-                initial={{ opacity: 0 }}
-                animate={mounted ? { opacity: 1 } : {}}
-                transition={{ delay: 0.3 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={mounted ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.18 }}
+                className="text-[3.25rem] font-black leading-[0.9] tracking-[-0.06em] text-white sm:text-6xl md:text-7xl lg:text-[5.7rem]"
               >
-                <span className="block">Plataforma</span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">Jurídica Digital</span>
+                Tus trámites legales,
+                <span className="block bg-gradient-to-r from-[#FACC15] via-[#F59E0B] to-[#EAB308] bg-clip-text text-transparent drop-shadow-[0_8px_24px_rgba(234,179,8,0.2)]">
+                  en manos de NoPay.
+                </span>
               </motion.h1>
 
               <motion.p
-                className="text-lg text-gray-400 max-w-3xl mx-auto"
-                initial={{ opacity: 0 }}
-                animate={mounted ? { opacity: 1 } : {}}
-                transition={{ delay: 0.4 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={mounted ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.28 }}
+                className="mt-8 max-w-xl text-base font-light leading-relaxed text-slate-300 sm:text-lg md:text-xl"
               >
-                Integramos inteligencia artificial, blockchain y biometría para transformar tus procesos legales
+                Delegas el proceso. Nuestra inteligencia artificial organiza el caso y
+                expertos legales humanos acompañan la revisión para que avances con más
+                claridad, seguridad y tranquilidad.
               </motion.p>
-            </motion.div>
 
-            {/* Grid de servicios */}
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-              initial={{ opacity: 0 }}
-              animate={mounted ? { opacity: 1 } : {}}
-              transition={{ delay: 0.5 }}
-            >
-              <AnimatePresence>
-                {services.map((service, idx) => (
-                  <TechCard key={idx} service={service} index={idx} />
-                ))}
-              </AnimatePresence>
-            </motion.div>
-
-            {/* CTA Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={mounted ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.8 }}
-              className="mt-20"
-            >
-
-
-
-              <div className="relative rounded-2xl overflow-hidden border-0 shadow-2xl group"
-                style={{
-                  background: "rgba(255,255,255,0.88)", // glass blanco
-                  boxShadow: "0 6px 40px 8px #EC489950, 0 1.5px 8px #F59E0B22",
-                  backdropFilter: "blur(16px)",
-                }}
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={mounted ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.38 }}
+                className="mt-10 flex flex-col gap-3 sm:flex-row"
               >
-                {/* Borde gradiente animado */}
-                <div className="pointer-events-none absolute inset-0 z-10 rounded-2xl"
-                  style={{
-                    padding: 2,
-                    background: "linear-gradient(90deg, #7F1D1D, #EC4899, #F59E0B)",
-                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    maskComposite: "exclude",
-                    opacity: 0.85
-                  }}
-                ></div>
+                <Link
+                  href="#servicios"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 text-sm font-black text-slate-950 shadow-[0_24px_70px_rgba(255,255,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.01]"
+                >
+                  Delegar mi trámite
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
 
-                {/* Fondo suave, textura opcional */}
-                <div className="absolute inset-0 z-0 bg-white/60" />
-                {/* Si quieres puedes dejar la textura noise, pero muy sutil */}
-                <div className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay"></div>
+                <Link
+                  href="#como-funciona"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-7 py-4 text-sm font-black text-white shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-2xl transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
+                >
+                  Ver cómo funciona
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </motion.div>
 
-                <div className="relative z-20 p-8 sm:p-12 text-center">
-                  <h2
-                    className="text-3xl sm:text-4xl font-bold mb-4"
-                    style={{
-                      background: "linear-gradient(90deg, #7F1D1D, #EC4899 60%, #F59E0B 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      letterSpacing: "-0.5px"
-                    }}
-                  >
-                    ¿Listo para el futuro del derecho?
-                  </h2>
-                  <p className="text-gray-700 mb-8 max-w-2xl mx-auto">
-                    Únete a cientos de clientes que ya automatizaron sus procesos legales con nuestra plataforma.
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={mounted ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.5 }}
+                className="mt-10 flex flex-wrap gap-2"
+              >
+                {['IA aplicada al caso', 'Revisión humana', 'Proceso seguro', 'Menos estrés legal'].map(
+                  (item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-white/70 backdrop-blur-xl"
+                    >
+                      {item}
+                    </span>
+                  )
+                )}
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="relative z-10 mx-auto max-w-7xl px-4 pb-20 pt-20 sm:px-6 lg:px-8">
+          <motion.section
+            id="como-funciona"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            className="mx-auto max-w-6xl"
+          >
+            <div className="mb-10 text-center">
+              <p className="mb-3 text-[11px] font-black uppercase tracking-[0.28em] text-rose-600">
+                IA + expertos legales
+              </p>
+              <h2 className="text-4xl font-black leading-[0.95] tracking-[-0.06em] text-slate-950 sm:text-5xl">
+                No solo te guiamos.
+                <span className="block bg-gradient-to-r from-lime-400 via-rose-500 to-violet-600 bg-clip-text text-transparent">
+                  Nos encargamos contigo.
+                </span>
+              </h2>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-500">
+                La plataforma reduce el trabajo pesado, ordena el caso y conecta
+                el proceso con intervención humana cuando corresponde.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, y: 22 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ delay: index * 0.08, duration: 0.5 }}
+                  className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.055)]"
+                >
+                  <div className="mb-6 flex items-center justify-between">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white">
+                      {step.icon}
+                    </div>
+                    <span className="text-xs font-black text-slate-300">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  <h3 className="mb-2 text-xl font-black tracking-[-0.035em] text-slate-950">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-slate-500">
+                    {step.text}
                   </p>
-                  <motion.button
-                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg bg-gradient-to-r from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white font-bold shadow-lg hover:scale-105 transition-all outline-none focus:ring-2 focus:ring-[#EC4899]/60"
-                    whileHover={{ scale: 1.05, boxShadow: "0 0 32px #EC4899bb" }}
-                    whileTap={{ scale: 0.98 }}
-                    animate={{
-                      boxShadow: ["0 0 24px #EC489980", "0 0 40px #F59E0B80"],
-                      filter: ["brightness(1.08)", "brightness(1.0)"],
-                    }}
-                    transition={{ repeat: Infinity, duration: 2, repeatType: "reverse" }}
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  >
-                    <Zap className="w-5 h-5" />
-                    Comenzar ahora
-                  </motion.button>
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
 
-                </div>
+          <motion.section
+            id="servicios"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            className="mx-auto mt-24 max-w-6xl"
+          >
+            <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="mb-3 text-[11px] font-black uppercase tracking-[0.28em] text-rose-600">
+                  Servicios disponibles
+                </p>
+                <h2 className="text-4xl font-black leading-[0.95] tracking-[-0.06em] text-slate-950 sm:text-5xl">
+                  Delega el trámite que
+                  <span className="block bg-gradient-to-r from-rose-600 via-fuchsia-600 to-amber-500 bg-clip-text text-transparent">
+                    necesitas resolver.
+                  </span>
+                </h2>
               </div>
 
+              <p className="max-w-xl text-sm leading-relaxed text-slate-500 sm:text-base">
+                Empezamos con servicios de alta demanda donde la tecnología puede
+                ahorrar tiempo, ordenar evidencia y reducir confusión.
+              </p>
+            </div>
 
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {services.map((service, index) => (
+                <ServiceCard key={service.title} service={service} index={index} />
+              ))}
+            </div>
+          </motion.section>
 
-            </motion.div>
-          </section>
-        </motion.div>
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            className="mx-auto mt-24 max-w-6xl"
+          >
+            <div className="relative overflow-hidden rounded-[2.4rem] bg-[#020617] px-7 py-10 shadow-[0_30px_90px_rgba(15,23,42,0.18)] sm:px-10 lg:px-12">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(216,36,101,0.34),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(245,158,11,0.24),transparent_34%)]" />
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(2,6,23,0.45),rgba(2,6,23,0.96))]" />
+
+              <div className="relative z-10 grid gap-8 lg:grid-cols-[1fr_0.85fr] lg:items-center">
+                <div>
+                  <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1.5">
+                    <WandSparkles className="h-4 w-4 text-amber-300" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                      Nueva experiencia legal
+                    </span>
+                  </div>
+
+                  <h2 className="max-w-3xl text-3xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-4xl lg:text-5xl">
+                    La inteligencia artificial llegó a los servicios legales.
+                  </h2>
+
+                  <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/68">
+                    NoPay no reemplaza abogados: potencia el trabajo legal con
+                    automatización, análisis y una experiencia digital mucho más clara
+                    para el usuario.
+                  </p>
+                </div>
+
+                <div className="rounded-[2rem] border border-white/10 bg-white/10 p-5 backdrop-blur-xl">
+                  <div className="rounded-[1.5rem] bg-white p-5">
+                    <p className="mb-4 text-xs font-black uppercase tracking-[0.22em] text-slate-400">
+                      Modelo NoPay
+                    </p>
+
+                    <div className="space-y-3">
+                      {[
+                        'IA para reducir complejidad',
+                        'Expertos legales para dar respaldo',
+                        'Plataforma para delegar el proceso',
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm font-bold text-slate-600"
+                        >
+                          <CheckCircle2 className="h-4 w-4 text-rose-600" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            className="mx-auto mt-24 max-w-6xl"
+          >
+            <div className="rounded-[2rem] border border-slate-200/80 bg-white p-7 shadow-[0_18px_60px_rgba(15,23,42,0.055)] sm:p-8">
+              <div className="grid gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+                <div>
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-4 py-1.5">
+                    <Sparkles className="h-4 w-4 text-amber-500" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-600">
+                      Próximamente
+                    </span>
+                  </div>
+
+                  <h2 className="text-3xl font-black tracking-[-0.045em] text-slate-950">
+                    Nuevas soluciones legales en camino.
+                  </h2>
+                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-500 sm:text-base">
+                    NoPay crecerá por etapas, priorizando servicios donde podamos
+                    combinar tecnología, eficiencia y respaldo humano.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {upcoming.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-slate-100 bg-slate-50/60 px-5 py-4 text-sm font-black text-slate-600"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            className="mx-auto mt-24 max-w-4xl text-center"
+          >
+            <div className="relative overflow-hidden rounded-[2.2rem] border border-slate-200/80 bg-white px-7 py-10 shadow-[0_18px_60px_rgba(15,23,42,0.055)]">
+              <div className="absolute -top-24 left-1/2 h-52 w-52 -translate-x-1/2 rounded-full bg-gradient-to-r from-rose-500 via-fuchsia-500 to-amber-400 opacity-[0.10] blur-3xl" />
+
+              <BadgeCheck className="relative z-10 mx-auto mb-5 h-8 w-8 text-rose-600" />
+
+              <h2 className="relative z-10 text-3xl font-black leading-[0.98] tracking-[-0.05em] text-slate-950 sm:text-4xl">
+                Deja que NoPay se encargue del proceso.
+              </h2>
+
+              <p className="relative z-10 mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-500">
+                Impulsado por IA. Respaldado por expertos legales. Diseñado para
+                personas que quieren resolver, no perderse en trámites.
+              </p>
+
+              <div className="relative z-10 mt-7">
+                <Link
+                  href="#servicios"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] px-8 py-4 text-sm font-black text-white shadow-[0_18px_45px_rgba(236,72,153,0.28)] transition-all hover:-translate-y-0.5 hover:shadow-[0_24px_65px_rgba(236,72,153,0.36)]"
+                >
+                  Elegir un servicio
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </motion.section>
+        </section>
 
         <NoPayChatLauncher />
       </main>

@@ -6,9 +6,10 @@ export type WizardSessionData = {
   apellidos: string;
   displayName?: string;
   photoURL?: string;
-   email?: string;
-};
-  
+  email?: string;
+  celular?: string;
+  fechaNacimiento?: string;
+};  
   export class SessionWizardData {
     private static readonly WIZARD_KEY = 'wizardData';
   

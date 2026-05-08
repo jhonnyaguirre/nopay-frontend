@@ -5,34 +5,45 @@ import { FileText, ShieldCheck, PhoneCall, Lock, Globe, Clock, UserCheck } from 
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Header } from 'app/resources/Header';
 import Footer from 'app/resources/Footer';
+ 
 import { useState, useEffect, useMemo } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import React from 'react';
 import NoPayBackground from 'components/NoPayBackground';
 
 export default function PoliticasPrivacidad() {
   const { scrollYProgress } = useScroll();
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.03]);
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-
    
+   const [mounted, setMounted] = useState(false);
+const [screen, setScreen] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+
+useEffect(() => {
+  setMounted(true);
+
+  const updateScreen = () => {
+    const width = window.innerWidth;
+
+    if (width <= 767) {
+      setScreen('mobile');
+    } else if (width >= 768 && width <= 1023) {
+      setScreen('tablet');
+    } else {
+      setScreen('desktop');
+    }
+  };
+
+  updateScreen();
+  window.addEventListener('resize', updateScreen);
+
+  return () => window.removeEventListener('resize', updateScreen);
+}, []);
+
+const isMobile = screen === 'mobile';
+const isTablet = screen === 'tablet';
    
 
   // Partículas mejoradas con física más realista
-  const particleCount = isMobile ? 15 : isTablet ? 25 : 40;
-  const particles = useMemo(() => {
-    return Array.from({ length: particleCount }).map(() => ({
-      size: Math.random() * (isMobile ? 4 : 8) + 3,
-      xPct: Math.random() * 100,
-      yPct: Math.random() * 100,
-      xOffset: Math.random() * (isMobile ? 40 : 120) - (isMobile ? 20 : 60),
-      yOffset: Math.random() * (isMobile ? 40 : 120) - (isMobile ? 20 : 60),
-      duration: Math.random() * 25 + 15,
-      delay: Math.random() * 5,
-      opacity: Math.random() * 0.3 + 0.1
-    }));
-  }, [particleCount, isMobile]);
+   
 
   const policyItems = [
     { title: "1. Responsable del Tratamiento", text: "El responsable del tratamiento de los datos personales es NoPay Legal, plataforma digital operada por Softcorp, dedicada a la automatización de trámites legales y recursos administrativos.", icon: <UserCheck className="text-pink-600" /> },
@@ -45,6 +56,19 @@ export default function PoliticasPrivacidad() {
     { title: "8. Conservación de Datos", text: "Se conservan mientras sean necesarios para la finalidad y obligaciones legales.", icon: <Clock className="text-pink-600" /> },
     { title: "9. Cambios a la Política", text: "Podemos actualizar esta política y notificaremos a los usuarios sobre cambios relevantes.", icon: <FileText className="text-pink-600" /> }
   ];
+  
+  if (!mounted) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#f8f9fa] to-[#e9ecef]">
+      <Header />
+      <div className="container mx-auto px-4 py-16">
+        <div className="h-10 w-72 mx-auto rounded-xl bg-gray-200 animate-pulse mb-6" />
+        <div className="h-5 w-full max-w-2xl mx-auto rounded-lg bg-gray-100 animate-pulse" />
+      </div>
+      <Footer />
+    </div>
+  );
+}
 
   return (
     <div className="relative flex flex-col min-h-screen bg-gradient-to-br from-[#f8f9fa] to-[#e9ecef] overflow-x-hidden">
@@ -253,7 +277,7 @@ export default function PoliticasPrivacidad() {
                       <Clock className="h-4 w-4 md:h-5 md:w-5 text-pink-700" />
                     </motion.div>
                     <p className="font-medium text-sm md:text-base text-gray-800">
-                      Última actualización: <span className="text-pink-600 font-semibold">Mayo 2025</span>
+                      Última actualización: <span className="text-pink-600 font-semibold">Mayo 2026</span>
                     </p>
                   </div>
                   <motion.button

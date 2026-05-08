@@ -1,129 +1,262 @@
 'use client';
 
-import Image from "next/image";
-import { Scale, ChevronRight, PhoneCall, Mail, FileText, Lock, MessageCircle, MapPin } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import {
+  Scale,
+  ChevronRight,
+  Mail,
+  MessageCircle,
+  ShieldCheck,
+  Twitter,
+  Linkedin,
+  Github,
+  Instagram,
+  Send,
+  CheckCircle,
+  Lock,
+  Award,
+  MapPin,
+} from 'lucide-react';
 
-const Footer: React.FC = () => {
+const EliteFooter = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
 
-  const quickLinks = [
-    { href: "/Servicios/Impugnacion", label: "Apelación de Multas de Tránsito" },
-    { href: "/Servicios/Matriculacion", label: "Matriculación vehicular" },
-    { href: "/Servicios/Marcas", label: "Registra tu Marca" },
-    { href: "/Servicios/PermisoSalida", label: "Permisos de Salida para Menores" },
-    { href: "/Servicios", label: "Explora todos los servicios" },
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail('');
+
+      setTimeout(() => {
+        setSubscribed(false);
+      }, 3000);
+    }
+  };
+
+  const services = [
+    { name: 'Apelación de Multas', href: '/Servicios/Impugnacion' },
+    { name: 'Permisos de Salida', href: '/Servicios/PermisoSalida' },
+    { name: 'Registro de Marcas', href: '/Servicios/Marcas' },
+    { name: 'Matriculación Vehicular', href: '/Servicios/Matriculacion' },
   ];
 
-  const legalLinks = [
-    { href: "/terminos-condiciones", label: "Términos de Servicio" },
-    { href: "/politicas-privacidad", label: "Política de Privacidad" },
-    { href: "/politicas-envio-entrega", label: "Política de Envío" },
-    { href: "/contacto", label: "Contacto" },
+  const company = [
+    { name: 'Servicios', href: '/Servicios' },
+    { name: 'Contacto', href: '/contacto' },
+    { name: 'Seguridad de Datos', href: '/SeguridadDatos' },
+    { name: 'Acceso Abogados', href: '/logInSocio' },
+  ];
+
+  const legal = [
+    { name: 'Términos y Condiciones', href: '/terminos-condiciones' },
+    { name: 'Políticas de Privacidad', href: '/politicas-privacidad' },
+    { name: 'Política de Envío', href: '/politicas-envio-entrega' },
+     
+  ];
+
+  const socialLinks = [
+    { name: 'Twitter', href: '#', icon: <Twitter size={17} /> },
+    { name: 'LinkedIn', href: '#', icon: <Linkedin size={17} /> },
+    { name: 'Instagram', href: '#', icon: <Instagram size={17} /> },
+    { name: 'GitHub', href: '#', icon: <Github size={17} /> },
+    {
+      name: 'WhatsApp',
+      href: 'https://wa.me/593979937186',
+      icon: <MessageCircle size={17} />,
+      external: true,
+    },
   ];
 
   return (
-    <footer className="bg-white text-gray-800 border-t border-gray-200">
-      <div className="w-full overflow-hidden">
-        <svg
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-          className="w-full h-16 md:h-24"
-        >
-          <path
-            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-            opacity=".15"
-            className="fill-[#EC4899]"
-          ></path>
-        </svg>
-      </div>
+    <footer className="relative w-full border-t border-slate-200/80 bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 lg:py-16">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-5">
+            <Link href="/" className="inline-flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white">
+                <Scale className="h-5 w-5 text-rose-600" />
+              </div>
 
-      <div className="container mx-auto px-6 pt-8 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <Scale className="h-8 w-8 text-[#7F1D1D]" />
-              <div className="text-xl font-bold text-[#7F1D1D]">NoPay</div>
-            </div>
-            <p className="text-sm text-gray-600">
-              Plataforma líder en apelaciones automatizadas con tecnología de punta y expertise legal.
+              <div className="leading-none">
+                <div className="flex items-center gap-2">
+                  <span className="text-[23px] font-black tracking-tight text-slate-950">
+                    NoPay
+                  </span>
+                  <span className="hidden rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 sm:inline-flex">
+                    Legal AI
+                  </span>
+                </div>
+                <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                  Justicia más simple
+                </p>
+              </div>
+            </Link>
+
+            <p className="mt-5 max-w-md text-sm leading-7 text-slate-500">
+              Tecnología legal pensada para simplificar trámites, reducir errores y acercar soluciones jurídicas digitales de forma clara, segura y profesional.
             </p>
+
+            <div className="mt-7 max-w-md rounded-[24px] border border-slate-200 bg-slate-50/70 p-4">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                Novedades legales
+              </p>
+
+              <form onSubmit={handleSubscribe} className="mt-3 flex flex-col gap-3 sm:flex-row">
+                <div className="relative flex-1">
+                  <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="tu@email.com"
+                    required
+                    className="h-11 w-full rounded-2xl border border-slate-200 bg-white pl-10 pr-4 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-slate-300 focus:ring-4 focus:ring-slate-100"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 text-sm font-bold text-white transition hover:bg-slate-800"
+                >
+                  {subscribed ? <CheckCircle size={17} /> : <Send size={17} />}
+                  {subscribed ? 'Listo' : 'Suscribirme'}
+                </button>
+              </form>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-500">
+                <Lock size={14} className="text-emerald-600" />
+                Datos protegidos
+              </div>
+
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-500">
+                <ShieldCheck size={14} className="text-indigo-500" />
+                Procesos guiados
+              </div>
+
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-500">
+                <Award size={14} className="text-rose-500" />
+                Legaltech Ecuador
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h4 className="text-base font-semibold mb-6 text-[#EC4899] border-b border-[#EC4899]/30 pb-2">Enlaces Rápidos</h4>
-            <ul className="space-y-3">
-              {quickLinks.map(({ href, label }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    className="text-sm text-gray-600 hover:text-[#EC4899] transition-colors flex items-center gap-2 group"
-                  >
-                    <ChevronRight className="h-4 w-4 text-[#EC4899]/50 group-hover:text-[#EC4899] transition-colors" />
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-1 gap-9 sm:grid-cols-3">
+              <FooterColumn title="Servicios" items={services} />
+              <FooterColumn title="Empresa" items={company} />
+              <FooterColumn title="Legal" items={legal} />
+            </div>
 
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-[#EC4899] border-b border-[#EC4899]/30 pb-2">Legal</h4>
-            <ul className="space-y-3">
-              {legalLinks.map(({ href, label }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    className="text-sm text-gray-600 hover:text-[#EC4899] transition-colors flex items-center gap-2 group"
-                  >
-                    <ChevronRight className="h-4 w-4 text-[#EC4899]/50 group-hover:text-[#EC4899] transition-colors" />
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="mt-10 rounded-[24px] border border-slate-200 bg-white p-5">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-sm font-bold text-slate-900">
+                    ¿Necesitas ayuda con un trámite?
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Escríbenos y te orientamos sobre el mejor camino para iniciar.
+                  </p>
+                </div>
 
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-[#EC4899] border-b border-[#EC4899]/30 pb-2">Contacto</h4>
-            <ul className="space-y-4 text-sm text-gray-600">
-
-              <li className="flex items-start gap-2">
-                <PhoneCall className="h-5 w-5 text-green-600 mt-1" />
-                <a
-                  href="https://wa.me/593979937186?text=Hola,%20quiero%20asistencia%20con%20un%20tema%20legal."
+                <Link
+                  href="https://wa.me/593979937186"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-green-700"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-800 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                 >
-                  WhatsApp: +593 97 9937186
-                </a>
-              </li>
-              <li className="flex items-start gap-2">
-                <Mail className="h-5 w-5 text-blue-600 mt-1" />
-                <a href="mailto:info@nopay.ec" className="hover:text-blue-700">
-                  softcorpecu@gmail.com
-                </a>
-              </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="h-5 w-5 text-yellow-600 mt-1" />
-                <span>Av. Ordoñes Lasso, Cuenca, Ecuador</span>
-              </li>
-            </ul>
+                  <MessageCircle size={17} />
+                  Contactar por WhatsApp
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-200 my-8"></div>
+        <div className="my-10 border-t border-slate-200/80" />
 
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-xs text-gray-500">
-            © {currentYear} NoPay by Softcorp. Todos los derechos reservados.
-          </p>
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-2 text-xs text-slate-400 sm:flex-row sm:items-center sm:gap-3">
+            <span>© {currentYear} NoPay — Softcorp EC</span>
+            <span className="hidden sm:inline">•</span>
+
+            <span className="inline-flex items-center gap-1.5">
+              <MapPin size={13} />
+              Cuenca, Ecuador
+            </span>
+
+            <span className="hidden sm:inline">•</span>
+
+            <a
+              href="mailto:softcorpecu@gmail.com"
+              className="transition hover:text-slate-700"
+            >
+              softcorpecu@gmail.com
+            </a>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {socialLinks.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
+                aria-label={item.name}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700"
+              >
+                {item.icon}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
   );
 };
 
-export default Footer;
+type FooterItem = {
+  name: string;
+  href: string;
+};
+
+const FooterColumn = ({
+  title,
+  items,
+}: {
+  title: string;
+  items: FooterItem[];
+}) => {
+  return (
+    <div>
+      <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-400">
+        {title}
+      </h4>
+
+      <ul className="space-y-3">
+        {items.map((item) => (
+          <li key={item.name}>
+            <Link
+              href={item.href}
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition hover:text-slate-950"
+            >
+              <ChevronRight
+                size={14}
+                className="opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100"
+              />
+              {item.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default EliteFooter;
