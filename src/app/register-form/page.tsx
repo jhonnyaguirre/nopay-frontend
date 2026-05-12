@@ -18,11 +18,11 @@ import { crearSesionJWT } from 'lib/seguridad/JwtSessionService';
 import { SessionWizardData } from 'lib/seguridad/SessionWizardData';
 import { getColorCode } from 'utils/ColorUtils';
 import { getUserProfile, setUserProfile } from 'lib/seguridad/SessionUser';
-import { API_BASE_URL, valorImpugnacionGl } from 'config/apiConfig';
+import { API_BASE_URL, SCRAP_API_BASE_URL, valorImpugnacionGl } from 'config/apiConfig';
 import NoPayBackground from 'components/NoPayBackground';
 import { isJWTValid, useLogout } from 'lib/seguridad/prevalidadorToken';
 
-const CITACIONES_API_URL = '/api/citaciones';
+const CITACIONES_API_URL = `${SCRAP_API_BASE_URL}/ant/citaciones`;
 
 // -------------------- Utilidades puras --------------------
 const cn = (...classes: Array<string | false | null | undefined>) =>
