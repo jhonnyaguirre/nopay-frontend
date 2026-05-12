@@ -1,5 +1,5 @@
 //export const API_BASE_URL = "http://localhost:8080";
-export const API_BASE_URL = "http://181.233.51.147:18180";
+export const API_BASE_URL = "https://api.nopaylegal.com";
 export const valorImpugnacionGl = "25.00";
 export const valorPermisoSalida = "30.00";
 export const valorRegistroMarcaPhase1 = "89.99";
