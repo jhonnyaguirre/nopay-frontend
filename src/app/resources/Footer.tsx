@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+ 
+import { VERSION_APP  } from "config/apiConfig";
 import {
   Scale,
   ChevronRight,
@@ -183,7 +185,12 @@ const EliteFooter = () => {
 
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-2 text-xs text-slate-400 sm:flex-row sm:items-center sm:gap-3">
-            <span>© {currentYear} NoPay — Softcorp EC</span>
+            <span>
+			  © {currentYear} NoPay — Softcorp EC
+			  <span className="ml-2 rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-slate-500">
+				{VERSION_APP}
+			  </span>
+			</span>
             <span className="hidden sm:inline">•</span>
 
             <span className="inline-flex items-center gap-1.5">
