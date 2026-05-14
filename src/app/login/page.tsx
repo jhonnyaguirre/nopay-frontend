@@ -107,6 +107,9 @@ export default function LoginPage() {
       facebookProvider.addScope("email");
 
       const result = await signInWithPopup(auth, facebookProvider);
+	  console.log("Firebase userData:", userData);
+console.log("Token backend status:", tokenResponse.status);
+console.log("Token backend response:", await tokenResponse.clone().text());
       const userData = result.user;
 
       createSessionNonce();
@@ -158,6 +161,9 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
+	  console.log("Firebase userData:", userData);
+console.log("Token backend status:", tokenResponse.status);
+console.log("Token backend response:", await tokenResponse.clone().text());
       const userData = result.user;
 
       setUser(userData);
