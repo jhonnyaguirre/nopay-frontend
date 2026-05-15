@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   valorRegistroMarcaPhase1,
@@ -17,117 +17,56 @@ import {
   UserCheck,
   Sparkles,
   Bell,
-  Scale,
-  MapPin,
-  Clock3,
   ShieldCheck,
-  Building2,
+  Clock3,
+  Star,
 } from 'lucide-react';
 import Link from 'next/link';
 
-const SITE_URL = 'https://nopaylegal.com';
-const LOGO_URL = 'https://nopaylegal.com/images/logo.png';
-
-type ServiceItem = {
-  id: number;
-  title: string;
-  seoTitle: string;
-  price: number | string | null;
-  desc: string;
-  seoDesc: string;
-  keywords: string[];
-  color: string;
-  icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
-  href: string;
-  cta: string;
-  estimatedTime: string;
-  special?: boolean;
-};
-
-const services: ServiceItem[] = [
+const services = [
   {
     id: 1,
-    title: 'Impugnación de Multas de Tránsito',
-    seoTitle: 'Impugnar multa de tránsito en Ecuador',
+    title: 'Impugnación de Multas',
+    subtitle: 'de Tránsito',
     price: valorImpugnacionGl,
-    desc: 'Impugna tu multa de tránsito con un proceso claro, rápido y guiado.',
-    seoDesc:
-      'Servicio legal online para impugnar multas de tránsito en Ecuador. Sube tu citación, recibe orientación inicial y avanza con respaldo profesional.',
-    keywords: [
-      'impugnar multa Ecuador',
-      'impugnación de multas de tránsito',
-      'multa de tránsito Quito',
-      'multa de tránsito Guayaquil',
-      'multa de tránsito Cuenca',
-    ],
+    desc: 'Impugna tu multa con un proceso claro, rápido y guiado.',
     color: 'from-blue-600 to-indigo-600',
+    glow: 'shadow-blue-500/20',
     icon: <Car />,
     href: '/Servicios/Impugnacion',
-    cta: 'Impugnar multa',
-    estimatedTime: 'Respuesta inicial en 24h',
   },
   {
     id: 2,
-    title: 'Registro de Marcas',
-    seoTitle: 'Registrar marca en Ecuador',
+    title: 'Registro',
+    subtitle: 'de Marcas',
     price: valorRegistroMarcaPhase1,
-    desc: 'Protege y registra tu marca con una experiencia legal simple y segura.',
-    seoDesc:
-      'Servicio digital para iniciar el registro de marca en Ecuador, revisar disponibilidad, preparar información y avanzar con asesoría legal.',
-    keywords: [
-      'registrar marca Ecuador',
-      'registro de marca Guayaquil',
-      'registro de marca Quito',
-      'registro de marca Cuenca',
-      'proteger marca Ecuador',
-    ],
+    desc: 'Protege tu marca con una experiencia legal simple y segura.',
     color: 'from-pink-600 to-purple-600',
+    glow: 'shadow-pink-500/20',
     icon: <Landmark />,
     href: '/Servicios/Marcas',
-    cta: 'Registrar marca',
-    estimatedTime: 'Evaluación inicial guiada',
   },
   {
     id: 3,
-    title: 'Permiso de Salida de Menores',
-    seoTitle: 'Permiso de salida de menores Ecuador',
+    title: 'Permisos de Salida',
+    subtitle: 'para Menores',
     price: valorPermisoSalida,
-    desc: 'Tramitación guiada de permisos de viaje para menores según el tipo de caso.',
-    seoDesc:
-      'Diagnóstico legal digital para permiso de salida del país de menores en Ecuador, con ruta notarial o judicial según corresponda.',
-    keywords: [
-      'permiso de salida de menores Ecuador',
-      'permiso salida menor Quito',
-      'permiso salida menor Guayaquil',
-      'permiso salida menor Cuenca',
-      'autorización viaje menor Ecuador',
-    ],
+    desc: 'Genera documentos y minutas para permisos de salida del país.',
     color: 'from-purple-500 to-pink-500',
+    glow: 'shadow-purple-500/20',
     icon: <UserCheck />,
     href: '/Servicios/PermisoSalida',
-    cta: 'Evaluar permiso',
-    estimatedTime: 'Diagnóstico en minutos',
   },
   {
     id: 4,
-    title: 'Constitución de SAS',
-    seoTitle: 'Crear SAS en Ecuador online',
+    title: 'Nuevos',
+    subtitle: 'Servicios',
     price: null,
-    desc: 'Muy pronto podrás iniciar la creación de tu SAS con una experiencia digital.',
-    seoDesc:
-      'Servicio legal digital para constitución de SAS en Ecuador. Ideal para emprendedores que buscan formalizar su negocio de manera ordenada.',
-    keywords: [
-      'crear SAS Ecuador',
-      'constituir SAS online',
-      'crear empresa Ecuador',
-      'SAS Ecuador requisitos',
-      'constitución de empresa Ecuador',
-    ],
+    desc: 'Cada trimestre lanzamos nuevas soluciones legales digitales.',
     color: 'from-amber-400 to-orange-600',
-    icon: <Building2 />,
+    glow: 'shadow-amber-500/20',
+    icon: <Sparkles />,
     href: '/Novedades',
-    cta: 'Recibir novedades',
-    estimatedTime: 'Próximamente',
     special: true,
   },
 ];
@@ -135,6 +74,7 @@ const services: ServiceItem[] = [
 export default function ServicesPureLightAuto() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const currentService = services[index];
   const isSpecial = currentService.special === true;
@@ -150,10 +90,7 @@ export default function ServicesPureLightAuto() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      next();
-    }, 5200);
-
+    const timer = window.setInterval(next, 4800);
     return () => window.clearInterval(timer);
   }, [next]);
 
@@ -163,360 +100,284 @@ export default function ServicesPureLightAuto() {
     return `Q${quarter} ${now.getFullYear()}`;
   };
 
-  const serviceSchema = useMemo(
-    () => ({
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      name: 'Servicios legales digitales de NoPay en Ecuador',
-      description:
-        'Servicios LegalTech para impugnación de multas, registro de marcas, permiso de salida de menores y constitución de SAS en Ecuador.',
-      url: SITE_URL,
-      itemListElement: services.map((service, position) => ({
-        '@type': 'ListItem',
-        position: position + 1,
-        item: {
-          '@type': 'Service',
-          name: service.seoTitle,
-          description: service.seoDesc,
-          url: `${SITE_URL}${service.href}`,
-          provider: {
-            '@type': 'LegalService',
-            name: 'NoPay',
-            url: SITE_URL,
-            logo: LOGO_URL,
-            areaServed: {
-              '@type': 'Country',
-              name: 'Ecuador',
-            },
-          },
-          areaServed: [
-            { '@type': 'City', name: 'Quito' },
-            { '@type': 'City', name: 'Guayaquil' },
-            { '@type': 'City', name: 'Cuenca' },
-            { '@type': 'Country', name: 'Ecuador' },
-          ],
-          offers: service.price
-            ? {
-                '@type': 'Offer',
-                price: String(service.price),
-                priceCurrency: 'USD',
-                availability: 'https://schema.org/InStock',
-                url: `${SITE_URL}${service.href}`,
-              }
-            : undefined,
-        },
-      })),
-    }),
-    []
-  );
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    });
+  };
 
   return (
     <section
       id="servicios-legales-nopay"
       aria-labelledby="servicios-nopay-title"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-white py-20"
+      className="relative overflow-hidden bg-white px-5 py-16 md:px-8 md:py-20 lg:py-24"
     >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(serviceSchema),
-        }}
-      />
-
-      <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden="true">
-        <div className="absolute -left-[5%] -top-[10%] h-[40vw] w-[40vw] rounded-full bg-slate-50 blur-[120px]" />
-        <div className="absolute right-[-5%] top-[20%] h-[35vw] w-[35vw] rounded-full bg-blue-50 blur-[100px]" />
-        <div className="absolute bottom-[-10%] left-[20%] h-[28vw] w-[28vw] rounded-full bg-rose-50 blur-[110px]" />
+      {/* Fondo blanco puro sin bordes - eliminados los círculos difuminados */}
+      
+      {/* Elementos mágicos sutiles: partículas brillantes flotantes */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute left-[10%] top-[20%] h-1 w-1 rounded-full bg-amber-300/30 blur-[1px] animate-pulse" />
+        <div className="absolute right-[15%] top-[40%] h-1.5 w-1.5 rounded-full bg-rose-300/20 blur-[1px] animate-pulse [animation-delay:1s]" />
+        <div className="absolute bottom-[25%] left-[20%] h-2 w-2 rounded-full bg-indigo-300/20 blur-[1px] animate-pulse [animation-delay:2s]" />
+        <div className="absolute bottom-[15%] right-[25%] h-1 w-1 rounded-full bg-purple-300/30 blur-[1px] animate-pulse [animation-delay:0.5s]" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-8 md:px-12">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="order-2 flex flex-col space-y-10 lg:order-1">
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
+          {/* Columna izquierda: texto y controles */}
+          <div className="order-2 lg:order-1">
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 12 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.55 }}
-              className="flex w-fit items-center gap-2 rounded-full border border-slate-100 bg-white px-4 py-1.5 shadow-sm"
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-6 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-md"
             >
-              <BadgeCheck className="h-4 w-4 text-blue-600" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                Servicios legales online en Ecuador
+              <BadgeCheck className="h-4 w-4 text-rose-500" aria-hidden="true" />
+              <span className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
+                Servicios legales digitales
               </span>
             </motion.div>
 
-            <div className="space-y-5">
-              <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">
-                LegalTech · Trámites digitales · Asesoría guiada
-              </p>
-
-              <h2
-                id="servicios-nopay-title"
-                className="max-w-3xl text-5xl font-[900] leading-[0.92] tracking-tight text-slate-950 md:text-[5.5rem]"
-              >
-                Servicios legales
-                <span className="block bg-gradient-to-r from-rose-600 via-fuchsia-600 to-amber-500 bg-clip-text text-transparent">
-                  simples y digitales
-                </span>
-              </h2>
-
-              <p className="max-w-xl text-lg font-medium leading-relaxed text-slate-500 md:text-xl">
-                Inicia trámites legales en Ecuador con una experiencia clara, rápida y mobile-first:
-                multas de tránsito, marcas, permisos de salida de menores y nuevos servicios para
-                emprendedores.
-              </p>
-            </div>
-
             <AnimatePresence mode="wait">
-              <motion.article
+              <motion.div
                 key={currentService.id}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
-                transition={{ duration: 0.5, ease: 'circOut' }}
-                className="space-y-6"
+                initial={{ opacity: 0, x: direction >= 0 ? -18 : 18, filter: 'blur(5px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: direction >= 0 ? 18 : -18, filter: 'blur(5px)' }}
+                transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                className="space-y-5"
               >
-                <h3 className="text-4xl font-[900] leading-[0.95] tracking-tight text-slate-900 md:text-6xl">
-                  {currentService.title.split(' ')[0]} <br />
-                  <span
-                    className={`bg-gradient-to-r ${currentService.color} bg-clip-text text-transparent`}
-                  >
-                    {currentService.title.split(' ').slice(1).join(' ')}
-                  </span>
-                </h3>
-
-                <p className="max-w-xl text-base font-medium leading-relaxed text-slate-500 md:text-lg">
-                  {currentService.seoDesc}
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-slate-400">
+                  Servicio {String(index + 1).padStart(2, '0')} / {services.length}
                 </p>
 
-                <div className="flex flex-wrap gap-2">
-                  {currentService.keywords.slice(0, 4).map((keyword) => (
-                    <span
-                      key={keyword}
-                      className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-500"
-                    >
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
+                <h2
+                  id="servicios-nopay-title"
+                  className="max-w-xl text-[2.45rem] font-black leading-[0.96] tracking-[-0.055em] text-slate-950 sm:text-[3rem] md:text-[3.55rem] lg:text-[4rem]"
+                >
+                  {currentService.title}
+                  <span
+                    className={`block bg-gradient-to-r ${currentService.color} bg-clip-text text-transparent`}
+                  >
+                    {currentService.subtitle}
+                  </span>
+                </h2>
 
-                <div className="grid max-w-xl gap-3 sm:grid-cols-3">
-                  <InfoPill icon={<Clock3 />} label={currentService.estimatedTime} />
-                  <InfoPill icon={<MapPin />} label="Cobertura Ecuador" />
-                  <InfoPill icon={<ShieldCheck />} label="Proceso guiado" />
+                <p className="max-w-md text-base font-medium leading-relaxed text-slate-500 md:text-lg">
+                  {currentService.desc}
+                </p>
+
+                <div className="flex flex-wrap gap-2.5">
+                  <InfoPill icon={<Clock3 />} text={isSpecial ? 'Próximamente' : 'Inicio rápido'} />
+                  <InfoPill icon={<ShieldCheck />} text="Proceso guiado" />
+                  <InfoPill icon={<Sparkles />} text="IA + expertos" />
                 </div>
-              </motion.article>
+              </motion.div>
             </AnimatePresence>
 
-            <div className="flex items-center gap-8 pt-2">
+            <div className="mt-8 flex items-center gap-6">
               <div className="flex gap-3">
-                <NavButton onClick={prev} icon={<ChevronLeft size={24} />} label="Servicio anterior" />
-                <NavButton onClick={next} icon={<ChevronRight size={24} />} label="Siguiente servicio" />
+                <NavButton onClick={prev} icon={<ChevronLeft size={22} />} label="Servicio anterior" />
+                <NavButton onClick={next} icon={<ChevronRight size={22} />} label="Siguiente servicio" />
               </div>
 
-              <div className="flex flex-col">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">
-                  Servicio
-                </span>
-                <div className="text-2xl font-black text-slate-900">
-                  {String(index + 1).padStart(2, '0')}{' '}
-                  <span className="text-slate-200">/ {services.length}</span>
-                </div>
+              <div className="hidden h-10 w-px bg-slate-100 sm:block" />
+
+              <div className="hidden sm:block">
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                  NoPay LegalTech
+                </p>
+                <p className="text-sm font-bold text-slate-700">
+                  Trámites online en Ecuador
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="relative order-1 flex justify-center lg:order-2 lg:justify-end">
+          {/* Columna derecha: tarjeta mágica interactiva */}
+          <div 
+            className="relative order-1 flex justify-center lg:order-2 lg:justify-end"
+            onMouseMove={handleMouseMove}
+          >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentService.id}
                 custom={direction}
-                initial={{ opacity: 0, scale: 0.86, rotateY: direction * 16 }}
-                animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                exit={{ opacity: 0, scale: 0.86, rotateY: direction * -16 }}
-                transition={{ duration: 0.6, type: 'spring', stiffness: 100, damping: 20 }}
-                className="relative aspect-[4/5] w-full max-w-[420px]"
+                initial={{ opacity: 0, scale: 0.94, y: 16, rotate: direction * 1.5 }}
+                animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: -16, rotate: direction * -1.5 }}
+                transition={{ duration: 0.5, type: 'spring', stiffness: 115, damping: 20 }}
+                className="relative w-full max-w-[360px] sm:max-w-[390px] md:max-w-[410px]"
               >
+                {/* Resplandor mágico que sigue al mouse (solo en hover) */}
+                <div
+                  className="absolute -inset-3 rounded-[3rem] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{
+                    background: `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, rgba(99,102,241,0.15), transparent 70%)`,
+                  }}
+                />
+                
+                <div
+                  className={`absolute -inset-3 rounded-[3rem] bg-gradient-to-br ${currentService.color} opacity-10 blur-2xl transition-opacity duration-700`}
+                />
+
                 <motion.div
-                  initial={{ x: 20, opacity: 0 }}
+                  initial={{ x: 16, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.25 }}
-                  className="absolute -right-4 top-32 z-30 flex min-w-[112px] flex-col items-center rounded-2xl border border-slate-50 bg-white p-4 shadow-[0_15px_45px_rgba(0,0,0,0.1)]"
+                  transition={{ delay: 0.18 }}
+                  className="absolute -right-2 top-24 z-30 flex min-w-[94px] flex-col items-center rounded-2xl bg-white/90 p-3 shadow-xl backdrop-blur-sm sm:-right-5 sm:top-28"
                 >
                   {isSpecial ? (
                     <>
-                      <span className="text-[9px] font-black uppercase tracking-tighter text-amber-500">
+                      <span className="text-[8px] font-black uppercase tracking-tight text-amber-500">
                         Próximamente
                       </span>
-                      <div className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-xl font-black text-transparent">
+                      <div className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-lg font-black text-transparent">
                         {getCurrentQuarter()}
                       </div>
-                      <div className="mt-1 h-1 w-6 rounded-full bg-amber-100" />
                     </>
                   ) : (
                     <>
-                      <span className="text-[9px] font-black uppercase tracking-tighter text-slate-400">
+                      <span className="text-[8px] font-black uppercase tracking-tight text-slate-400">
                         Desde
                       </span>
                       <div
-                        className={`bg-gradient-to-br ${currentService.color} bg-clip-text text-3xl font-[1000] text-transparent`}
+                        className={`bg-gradient-to-br ${currentService.color} bg-clip-text text-2xl font-black text-transparent`}
                       >
                         ${currentService.price}
                       </div>
-                      <div className="mt-1 h-1 w-6 rounded-full bg-slate-100" />
                     </>
                   )}
                 </motion.div>
 
-                <div
-                  className={`relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[3.5rem] border border-slate-50 bg-white p-12 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] ${
-                    isSpecial ? 'bg-gradient-to-br from-amber-50 to-white' : ''
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
+                <article className="group relative aspect-[4/5] overflow-hidden rounded-[2.6rem] bg-white/95 p-8 shadow-2xl shadow-slate-200/60 transition-all duration-500 hover:shadow-xl hover:shadow-slate-300/50 sm:p-10">
+                  {/* Fondo sutil con patrón de puntos mágicos */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(244,63,94,0.05),transparent_70%)]" />
+                  <div
+                    className={`absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br ${currentService.color} opacity-[0.06] blur-[50px] transition-opacity duration-700 group-hover:opacity-10`}
+                  />
+
+                  <div className="relative z-10 flex items-start justify-between">
                     <motion.div
                       key={currentService.id}
-                      initial={{ rotate: -45, scale: 0.5 }}
+                      initial={{ rotate: -35, scale: 0.7 }}
                       animate={{ rotate: 0, scale: 1 }}
-                      className={`rounded-[2rem] bg-gradient-to-br ${currentService.color} p-6 text-white shadow-2xl shadow-blue-200/50 ${
-                        isSpecial ? 'animate-pulse-slow' : ''
-                      }`}
+                      transition={{ duration: 0.45, type: 'spring' }}
+                      whileHover={{ scale: 1.05, rotate: 3 }}
+                      className={`rounded-[1.7rem] bg-gradient-to-br ${currentService.color} p-5 text-white shadow-2xl ${currentService.glow}`}
                     >
-                      {React.cloneElement(currentService.icon, {
-                        width: 36,
-                        height: 36,
-                        strokeWidth: 2.5,
-                        'aria-hidden': true,
-                      })}
+                      {React.cloneElement(
+                        currentService.icon as React.ReactElement<React.SVGProps<SVGSVGElement>>,
+                        {
+                          width: 32,
+                          height: 32,
+                          strokeWidth: 2.4,
+                          'aria-hidden': true,
+                        }
+                      )}
                     </motion.div>
 
-                    <span className="select-none text-7xl font-black italic text-slate-50">
+                    <span className="select-none text-6xl font-black italic leading-none text-slate-50">
                       {String(currentService.id).padStart(2, '0')}
                     </span>
                   </div>
 
-                  <div className="relative z-10 space-y-8">
-                    <div className="flex flex-wrap gap-1.5">
-                      {services.map((service, i) => (
+                  <div className="relative z-10 mt-auto flex h-full flex-col justify-end pt-12">
+                    <div className="mb-6 flex flex-wrap gap-1.5" aria-hidden="true">
+                      {services.map((_, i) => (
                         <button
-                          key={service.id}
+                          key={i}
                           type="button"
                           onClick={() => {
                             setDirection(i > index ? 1 : -1);
                             setIndex(i);
                           }}
-                          aria-label={`Ver servicio: ${service.title}`}
-                          className={`h-1 rounded-full transition-all duration-700 ${
+                          className={`h-1 rounded-full transition-all duration-500 ${
                             index === i
                               ? `w-10 bg-gradient-to-r ${currentService.color}`
-                              : 'w-2 bg-slate-100 hover:bg-slate-300'
+                              : 'w-2 bg-slate-200 hover:bg-slate-300'
                           }`}
                         />
                       ))}
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-slate-400">
-                        <Scale className="h-4 w-4" />
-                        <p className="text-[10px] font-black uppercase tracking-[0.25em]">
-                          Servicio LegalTech
-                        </p>
-                      </div>
+                    <p className="mb-2 text-[10px] font-black uppercase tracking-[0.26em] text-slate-400">
+                      {isSpecial ? 'Lanzamiento trimestral' : 'Smart Legal Experience'}
+                    </p>
 
-                      <h3 className="text-3xl font-black leading-none tracking-tight text-slate-800">
-                        {isSpecial ? 'Smart Legal Evolution' : 'Smart Legal Experience'}
-                      </h3>
-
-                      <p className="text-sm leading-relaxed text-slate-500">
-                        {currentService.desc}
-                      </p>
-                    </div>
+                    <h3 className="max-w-[270px] text-3xl font-black leading-[0.95] tracking-[-0.045em] text-slate-900 sm:text-[2.15rem]">
+                      {currentService.title}{' '}
+                      <span
+                        className={`bg-gradient-to-r ${currentService.color} bg-clip-text text-transparent`}
+                      >
+                        {currentService.subtitle}
+                      </span>
+                    </h3>
 
                     <Link
                       href={currentService.href}
-                      aria-label={`${currentService.cta}: ${currentService.title}`}
-                      className="block w-full"
+                      aria-label={`Iniciar ${currentService.title} ${currentService.subtitle}`}
+                      className="mt-8 block"
                     >
                       <motion.span
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`group flex w-full items-center justify-center gap-3 rounded-3xl py-5 text-xs font-black uppercase tracking-widest transition-all ${
+                        className={`group/btn flex w-full items-center justify-center gap-3 rounded-2xl py-4 text-xs font-black uppercase tracking-widest transition-all ${
                           isSpecial
-                            ? 'bg-amber-100 text-amber-800 hover:bg-amber-200 hover:shadow-amber-200/50'
-                            : 'bg-slate-900 text-white hover:bg-blue-600 hover:shadow-blue-200'
+                            ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                            : 'bg-slate-950 text-white hover:bg-rose-600'
                         }`}
                       >
+                        {isSpecial ? 'Recibir novedades' : 'Iniciar proceso'}
                         {isSpecial ? (
-                          <>
-                            {currentService.cta}
-                            <Bell size={20} className="transition-transform group-hover:rotate-12" />
-                          </>
+                          <Bell size={18} className="transition-transform group-hover/btn:rotate-12" />
                         ) : (
-                          <>
-                            {currentService.cta}
-                            <ArrowRight
-                              size={20}
-                              className="transition-transform group-hover:translate-x-2"
-                            />
-                          </>
+                          <ArrowRight size={18} className="transition-transform group-hover/btn:translate-x-1.5" />
                         )}
+                        {/* Estrella mágica que aparece en hover */}
+                        <motion.span
+                          initial={{ scale: 0, opacity: 0 }}
+                          whileHover={{ scale: 1, opacity: 1 }}
+                          className="absolute -top-2 -right-2"
+                        >
+                          <Star size={12} className="fill-amber-400 text-amber-400" />
+                        </motion.span>
                       </motion.span>
                     </Link>
                   </div>
-
-                  <div
-                    className={`absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-gradient-to-br ${currentService.color} opacity-[0.06] blur-[60px] transition-all duration-1000 ${
-                      isSpecial ? 'animate-pulse-slow' : ''
-                    }`}
-                    aria-hidden="true"
-                  />
-                </div>
+                </article>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes pulse-slow {
-          0%,
-          100% {
-            opacity: 0.06;
-          }
-          50% {
-            opacity: 0.18;
-          }
-        }
-
-        .animate-pulse-slow {
-          animation: pulse-slow 4s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 }
 
-
-
 function InfoPill({
   icon,
-  label,
+  text,
 }: {
   icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
-  label: string;
+  text: string;
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-600 shadow-sm">
+    <motion.span
+      whileHover={{ y: -2 }}
+      className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-slate-600 shadow-md transition-all hover:shadow-lg"
+    >
       {React.cloneElement(icon, {
-        className: 'h-4 w-4 text-rose-500',
+        className: 'h-3.5 w-3.5 text-rose-500',
         strokeWidth: 2,
         'aria-hidden': true,
       })}
-      <span>{label}</span>
-    </div>
+      {text}
+    </motion.span>
   );
 }
-
 
 function NavButton({
   onClick,
@@ -530,11 +391,11 @@ function NavButton({
   return (
     <motion.button
       type="button"
-      whileHover={{ scale: 1.1, backgroundColor: '#f8fafc' }}
-      whileTap={{ scale: 0.9 }}
-      onClick={onClick}
       aria-label={label}
-      className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-400 shadow-sm transition-colors hover:text-slate-900 active:bg-slate-100"
+      whileHover={{ scale: 1.08, backgroundColor: '#ffffff', y: -2 }}
+      whileTap={{ scale: 0.94 }}
+      onClick={onClick}
+      className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-500 shadow-md transition-colors hover:text-slate-950 active:bg-slate-50"
     >
       {icon}
     </motion.button>

@@ -1,22 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-body {
-  font-family: 'Poppins', sans-serif;
-}
-/* Personalización */
 @layer base {
+  html {
+    font-size: 90%;
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply antialiased text-gray-900;
+    font-family: 'Poppins', sans-serif;
+    @apply antialiased text-gray-900 bg-white;
+  }
+
+  * {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
 /* Efecto de "respiración" para elementos importantes */
 @keyframes breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
 }
 
 .animate-breathe {
@@ -25,7 +40,9 @@ body {
 
 /* Efecto de cursor tracking para cards */
 .card-hover-effect {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .card-hover-effect:hover {

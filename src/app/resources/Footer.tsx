@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 import { VERSION_APP } from 'config/apiConfig';
 import {
+  Scale,
   ChevronRight,
   Mail,
   MessageCircle,
@@ -19,15 +19,8 @@ import {
   Lock,
   Award,
   MapPin,
-  FileText,
-  Scale,
-  Car,
-  Landmark,
-  UserCheck,
-  Building2,
 } from 'lucide-react';
 
-const SITE_URL = 'https://nopaylegal.com';
 const WHATSAPP_URL = 'https://wa.me/593979937186';
 
 const EliteFooter = () => {
@@ -35,32 +28,38 @@ const EliteFooter = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail('');
+
+      setTimeout(() => {
+        setSubscribed(false);
+      }, 3000);
+    }
+  };
+
   const services = [
-    { name: 'Impugnar multa de tránsito', href: '/Servicios/Impugnacion', icon: Car },
-    { name: 'Permiso de salida de menores', href: '/Servicios/PermisoSalida', icon: UserCheck },
-    { name: 'Registro de marcas', href: '/Servicios/Marcas', icon: Landmark },
-    { name: 'Constitución de SAS', href: '/Novedades', icon: Building2 },
+    { name: 'Impugnación de Multas', href: '/Servicios/Impugnacion' },
+    { name: 'Permisos de Salida de Menores', href: '/Servicios/PermisoSalida' },
+    { name: 'Registro de Marcas', href: '/Servicios/Marcas' },
+    { name: 'Matriculación Vehicular', href: '/Servicios/Matriculacion' },
   ];
 
   const company = [
-    { name: 'Servicios legales online', href: '/Servicios' },
+    { name: 'Servicios', href: '/Servicios' },
+    { name: 'Guía Legal Ecuador', href: '/guia-legal-ecuador' },
     { name: 'Contacto', href: '/contacto' },
     { name: 'Seguridad de Datos', href: '/SeguridadDatos' },
     { name: 'Acceso Abogados', href: '/logInSocio' },
-	{ name: 'Guía Legal Ecuador', href: '/guia-legal-ecuador' },
   ];
 
   const legal = [
     { name: 'Términos y Condiciones', href: '/terminos-condiciones' },
     { name: 'Políticas de Privacidad', href: '/politicas-privacidad' },
     { name: 'Política de Envío', href: '/politicas-envio-entrega' },
-  ];
-
-  const localLinks = [
-    { name: 'Impugnar multa en Quito', href: '/impugnar-multa-quito' },
-    { name: 'Impugnar multa en Guayaquil', href: '/impugnar-multa-guayaquil' },
-    { name: 'Impugnar multa en Cuenca', href: '/impugnar-multa-cuenca' },
-    { name: 'Registro de marca en Ecuador', href: '/Servicios/Marcas' },
   ];
 
   const socialLinks = [
@@ -76,109 +75,68 @@ const EliteFooter = () => {
     },
   ];
 
-  const organizationSchema = useMemo(
-    () => ({
-      '@context': 'https://schema.org',
-      '@type': 'LegalService',
-      name: 'NoPay',
-      alternateName: 'NoPay LegalTech',
-      url: SITE_URL,
-      logo: `${SITE_URL}/images/logo.png`,
-      image: `${SITE_URL}/images/logo.png`,
-      description:
-        'NoPay es una plataforma LegalTech en Ecuador para iniciar trámites legales digitales como impugnación de multas de tránsito, permiso de salida de menores, registro de marcas y constitución de SAS.',
-      areaServed: {
-        '@type': 'Country',
-        name: 'Ecuador',
-      },
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Cuenca',
-        addressCountry: 'EC',
-      },
-      contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'customer support',
-        availableLanguage: ['es'],
-        areaServed: 'EC',
-        url: WHATSAPP_URL,
-      },
-      sameAs: socialLinks.filter((item) => item.href !== '#').map((item) => item.href),
-    }),
-    []
-  );
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail('');
-
-      window.setTimeout(() => {
-        setSubscribed(false);
-      }, 3000);
-    }
-  };
-
   return (
     <footer
       className="relative w-full border-t border-slate-200/80 bg-white"
       aria-labelledby="footer-nopay-title"
     >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationSchema),
-        }}
-      />
-
       <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 lg:py-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
-            <Link href="/" className="inline-flex items-center gap-3" aria-label="Inicio NoPay">
-              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                <Image
-                  src="/images/logo.png"
-                  alt="Logo de NoPay"
-                  width={42}
-                  height={42}
-                  className="h-10 w-10 object-contain"
-                />
+            <Link href="/" className="inline-flex items-center gap-3" aria-label="Ir al inicio de NoPay">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white">
+                <Scale className="h-5 w-5 text-rose-600" aria-hidden="true" />
               </div>
 
               <div className="leading-none">
                 <div className="flex items-center gap-2">
-                  <span id="footer-nopay-title" className="text-[23px] font-black tracking-tight text-slate-950">
+                  <span
+                    id="footer-nopay-title"
+                    className="text-[23px] font-black tracking-tight text-slate-950"
+                  >
                     NoPay
                   </span>
                   <span className="hidden rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 sm:inline-flex">
-                    LegalTech
+                    Legal AI
                   </span>
                 </div>
                 <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                  Asesoría legal online en Ecuador
+                  Justicia más simple
                 </p>
               </div>
             </Link>
 
             <p className="mt-5 max-w-md text-sm leading-7 text-slate-500">
-              NoPay simplifica trámites legales digitales en Ecuador con procesos guiados,
-              tecnología y acompañamiento profesional cuando el caso lo requiere.
+              Tecnología legal en Ecuador pensada para simplificar trámites, reducir errores y
+              acercar soluciones jurídicas digitales de forma clara, segura y profesional.
             </p>
+
+            <span className="sr-only">
+              NoPay es una plataforma LegalTech en Ecuador para iniciar trámites legales online como
+              impugnación de multas de tránsito, permisos de salida de menores, registro de marcas,
+              minutas legales y otros procesos digitales impulsados por inteligencia artificial y
+              validación profesional.
+            </span>
 
             <div className="mt-7 max-w-md rounded-[24px] border border-slate-200 bg-slate-50/70 p-4">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
                 Novedades legales
               </p>
 
-              <form onSubmit={handleSubscribe} className="mt-3 flex flex-col gap-3 sm:flex-row">
-                <label htmlFor="footer-newsletter-email" className="sr-only">
-                  Correo electrónico para novedades legales de NoPay
-                </label>
-
+              <form
+                onSubmit={handleSubscribe}
+                className="mt-3 flex flex-col gap-3 sm:flex-row"
+                aria-label="Suscripción a novedades legales de NoPay"
+              >
                 <div className="relative flex-1">
-                  <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <Mail
+                    className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                    aria-hidden="true"
+                  />
+
+                  <label htmlFor="footer-newsletter-email" className="sr-only">
+                    Correo electrónico para recibir novedades legales
+                  </label>
 
                   <input
                     id="footer-newsletter-email"
@@ -195,8 +153,13 @@ const EliteFooter = () => {
                 <button
                   type="submit"
                   className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 text-sm font-bold text-white transition hover:bg-slate-800"
+                  aria-label="Suscribirme a novedades legales de NoPay"
                 >
-                  {subscribed ? <CheckCircle size={17} /> : <Send size={17} />}
+                  {subscribed ? (
+                    <CheckCircle size={17} aria-hidden="true" />
+                  ) : (
+                    <Send size={17} aria-hidden="true" />
+                  )}
                   {subscribed ? 'Listo' : 'Suscribirme'}
                 </button>
               </form>
@@ -205,23 +168,22 @@ const EliteFooter = () => {
             <div className="mt-5 flex flex-wrap gap-2.5">
               <TrustPill icon={<Lock size={14} className="text-emerald-600" />} text="Datos protegidos" />
               <TrustPill icon={<ShieldCheck size={14} className="text-indigo-500" />} text="Procesos guiados" />
-              <TrustPill icon={<Award size={14} className="text-rose-500" />} text="LegalTech Ecuador" />
+              <TrustPill icon={<Award size={14} className="text-rose-500" />} text="Legaltech Ecuador" />
             </div>
           </div>
 
           <div className="lg:col-span-7">
-            <div className="grid grid-cols-1 gap-9 sm:grid-cols-4">
-              <FooterColumn title="Servicios" items={services} withIcons />
+            <div className="grid grid-cols-1 gap-9 sm:grid-cols-3">
+              <FooterColumn title="Servicios" items={services} />
               <FooterColumn title="Empresa" items={company} />
               <FooterColumn title="Legal" items={legal} />
-              <FooterColumn title="SEO Local" items={localLinks} />
             </div>
 
             <div className="mt-10 rounded-[24px] border border-slate-200 bg-white p-5">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                   <p className="text-sm font-bold text-slate-900">
-                    ¿Necesitas ayuda con un trámite legal?
+                    ¿Necesitas ayuda con un trámite?
                   </p>
                   <p className="mt-1 text-sm text-slate-500">
                     Escríbenos y te orientamos sobre el mejor camino para iniciar.
@@ -232,23 +194,12 @@ const EliteFooter = () => {
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Contactar a NoPay por WhatsApp"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-800 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                 >
-                  <MessageCircle size={17} />
+                  <MessageCircle size={17} aria-hidden="true" />
                   Contactar por WhatsApp
                 </Link>
-              </div>
-            </div>
-
-            <div className="mt-5 rounded-[24px] border border-slate-200 bg-slate-50/70 p-5">
-              <div className="flex items-start gap-3">
-                <Scale className="mt-0.5 h-5 w-5 text-rose-500" />
-                <p className="text-xs leading-6 text-slate-500">
-                  La información publicada por NoPay tiene fines informativos y de orientación. La
-                  disponibilidad, precio y tiempos de cada servicio pueden variar según la
-                  documentación, ciudad, entidad competente y complejidad del caso. NoPay no promete
-                  resultados administrativos, notariales o judiciales.
-                </p>
               </div>
             </div>
           </div>
@@ -268,13 +219,17 @@ const EliteFooter = () => {
             <span className="hidden sm:inline">•</span>
 
             <span className="inline-flex items-center gap-1.5">
-              <MapPin size={13} />
+              <MapPin size={13} aria-hidden="true" />
               Cuenca, Ecuador
             </span>
 
             <span className="hidden sm:inline">•</span>
 
-            <a href="mailto:softcorpecu@gmail.com" className="transition hover:text-slate-700">
+            <a
+              href="mailto:softcorpecu@gmail.com"
+              className="transition hover:text-slate-700"
+              aria-label="Enviar correo a NoPay"
+            >
               softcorpecu@gmail.com
             </a>
           </div>
@@ -302,17 +257,14 @@ const EliteFooter = () => {
 type FooterItem = {
   name: string;
   href: string;
-  icon?: React.ElementType;
 };
 
 const FooterColumn = ({
   title,
   items,
-  withIcons = false,
 }: {
   title: string;
   items: FooterItem[];
-  withIcons?: boolean;
 }) => {
   return (
     <nav aria-label={title}>
@@ -321,28 +273,21 @@ const FooterColumn = ({
       </h4>
 
       <ul className="space-y-3">
-        {items.map((item) => {
-          const Icon = item.icon;
-
-          return (
-            <li key={item.name}>
-              <Link
-                href={item.href}
-                className="group inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition hover:text-slate-950"
-              >
-                {withIcons && Icon ? (
-                  <Icon size={14} className="text-slate-400 transition group-hover:text-rose-500" />
-                ) : (
-                  <ChevronRight
-                    size={14}
-                    className="opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100"
-                  />
-                )}
-                {item.name}
-              </Link>
-            </li>
-          );
-        })}
+        {items.map((item) => (
+          <li key={item.name}>
+            <Link
+              href={item.href}
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition hover:text-slate-950"
+            >
+              <ChevronRight
+                size={14}
+                className="opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100"
+                aria-hidden="true"
+              />
+              {item.name}
+            </Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );
@@ -351,7 +296,11 @@ const FooterColumn = ({
 const TrustPill = ({ icon, text }: { icon: React.ReactNode; text: string }) => {
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-500">
-      {icon}
+      {React.isValidElement(icon)
+        ? React.cloneElement(icon as React.ReactElement<{ 'aria-hidden'?: boolean }>, {
+            'aria-hidden': true,
+          })
+        : icon}
       {text}
     </div>
   );
