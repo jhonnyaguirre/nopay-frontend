@@ -3,19 +3,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import {
   Scale,
   Car,
   FileText,
-  BookOpen,
   Landmark,
-  Factory,
-  Home,
   List,
-  Plane,
-  Lightbulb,
   UserCheck,
   ChevronRight,
   Menu,
@@ -31,6 +27,8 @@ import {
   Briefcase,
   LockKeyhole,
   Gavel,
+  Building2,
+  SearchCheck,
 } from 'lucide-react';
 
 import {
@@ -119,19 +117,74 @@ export const Header = () => {
   };
 
   const serviceItems = [
-    { name: 'Todos los Servicios', href: '/Servicios', icon: <List className="h-4 w-4" />, desc: 'Explora las soluciones legales disponibles.', featured: true },
-    { name: 'Apelación de Multas', href: '/Servicios/Impugnacion', icon: <Car className="h-4 w-4" />, desc: 'Impugna multas de tránsito sin demora y automático.', featured: true },
-    { name: 'Permisos de Salida', href: '/Servicios/PermisoSalida', icon: <UserCheck className="h-4 w-4" />, desc: 'Minuta para salida de menores (EN MINUTOS 24/7).', featured: true },
-    { name: 'Registro de Marcas', href: '/Servicios/Marcas', icon: <Landmark className="h-4 w-4" />, desc: 'Protege tu marca en Ecuador: pagas solo por fase aprobada. Sin arriesgar todo el proceso.', featured: true },
-     
+    {
+      name: 'Todos los Servicios',
+      href: '/Servicios',
+      icon: <List className="h-4 w-4" />,
+      desc: 'Explora todos los trámites legales digitales de NoPay.',
+      featured: true,
+    },
+    {
+      name: 'Impugnar Multa de Tránsito',
+      href: '/Servicios/Impugnacion',
+      icon: <Car className="h-4 w-4" />,
+      desc: 'Impugnación de multas de tránsito en Ecuador, con proceso guiado.',
+      featured: true,
+    },
+    {
+      name: 'Permiso de Salida de Menores',
+      href: '/Servicios/PermisoSalida',
+      icon: <UserCheck className="h-4 w-4" />,
+      desc: 'Diagnóstico digital para ruta notarial o judicial.',
+      featured: true,
+    },
+    {
+      name: 'Registro de Marca',
+      href: '/Servicios/Marcas',
+      icon: <Landmark className="h-4 w-4" />,
+      desc: 'Protege tu marca en Ecuador con una experiencia legal clara.',
+      featured: true,
+    },
+    {
+      name: 'Constitución de SAS',
+      href: '/Novedades',
+      icon: <Building2 className="h-4 w-4" />,
+      desc: 'Próximamente: creación de empresas SAS online.',
+      featured: false,
+    },
   ];
 
   const companyItems = [
-    { name: 'Políticas de Privacidad', href: '/politicas-privacidad', icon: <Shield className="h-4 w-4" />, desc: 'Tratamiento de datos personales.' },
-    { name: 'Seguridad de Datos', href: '/SeguridadDatos', icon: <LockKeyhole className="h-4 w-4" />, desc: 'Protección de tu información.' },
-    { name: 'Términos y Condiciones', href: '/terminos-condiciones', icon: <FileText className="h-4 w-4" />, desc: 'Condiciones de uso.' },
-    { name: 'Políticas de Envío', href: '/politicas-envio-entrega', icon: <Truck className="h-4 w-4" />, desc: 'Gestión documental.' },
-    { name: 'Contacto', href: '/contacto', icon: <Mail className="h-4 w-4" />, desc: 'Comunícate con nosotros.' },
+    {
+      name: 'Políticas de Privacidad',
+      href: '/politicas-privacidad',
+      icon: <Shield className="h-4 w-4" />,
+      desc: 'Tratamiento de datos personales.',
+    },
+    {
+      name: 'Seguridad de Datos',
+      href: '/SeguridadDatos',
+      icon: <LockKeyhole className="h-4 w-4" />,
+      desc: 'Protección de tu información.',
+    },
+    {
+      name: 'Términos y Condiciones',
+      href: '/terminos-condiciones',
+      icon: <FileText className="h-4 w-4" />,
+      desc: 'Condiciones de uso.',
+    },
+    {
+      name: 'Políticas de Envío',
+      href: '/politicas-envio-entrega',
+      icon: <Truck className="h-4 w-4" />,
+      desc: 'Gestión documental.',
+    },
+    {
+      name: 'Contacto',
+      href: '/contacto',
+      icon: <Mail className="h-4 w-4" />,
+      desc: 'Comunícate con NoPay.',
+    },
   ];
 
   const userMenuItems = [
@@ -158,41 +211,42 @@ export const Header = () => {
             exit={{ opacity: 0, y: 10, scale: 0.99 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
             className={`absolute top-full mt-3 overflow-hidden rounded-[24px] border border-slate-200/80 bg-white/98 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur-xl ${
-              isServices ? 'left-1/2 w-[720px] -translate-x-1/2' : 'left-0 w-[340px]'
+              isServices ? 'left-1/2 w-[760px] -translate-x-1/2' : 'left-0 w-[340px]'
             }`}
           >
             {isServices ? (
-              <div className="grid grid-cols-[240px_1fr]">
+              <div className="grid grid-cols-[260px_1fr]">
                 <div className="border-r border-slate-100 bg-slate-50/70 p-5">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
-                    Servicios
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-rose-500">
+                    Servicios legales Ecuador
                   </p>
 
                   <h3 className="mt-3 text-xl font-black leading-tight text-slate-950">
-                    Trámites legales con una experiencia más simple.
+                    Trámites legales online más simples.
                   </h3>
 
                   <p className="mt-3 text-sm leading-6 text-slate-500">
-                    Selecciona el servicio que necesitas y avanza con orientación clara.
+                    Impugna multas, registra marcas, gestiona permisos de salida y más desde una
+                    plataforma LegalTech.
                   </p>
 
                   <Link
                     href="/Servicios"
                     onClick={closeAllMenus}
-                    className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-800 transition hover:border-slate-300 hover:bg-slate-50"
+                    className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-800 transition hover:border-rose-200 hover:text-rose-600"
                   >
                     Ver todos
                     <ChevronRight className="h-4 w-4" />
                   </Link>
                 </div>
 
-                <div className="grid max-h-[480px] grid-cols-2 gap-1.5 overflow-y-auto p-3">
+                <div className="grid max-h-[500px] grid-cols-2 gap-1.5 overflow-y-auto p-3">
                   {serviceItems.map((subItem) => (
                     <Link
                       key={subItem.name}
                       href={subItem.href}
                       onClick={closeAllMenus}
-                      className="group rounded-2xl border border-transparent p-3.5 transition hover:border-slate-200 hover:bg-slate-50"
+                      className="group rounded-2xl border border-transparent p-3.5 transition hover:border-rose-100 hover:bg-rose-50/40"
                     >
                       <div className="flex items-start gap-3">
                         <span
@@ -206,9 +260,7 @@ export const Header = () => {
                         </span>
 
                         <div>
-                          <p className="text-[13px] font-bold text-slate-900">
-                            {subItem.name}
-                          </p>
+                          <p className="text-[13px] font-bold text-slate-900">{subItem.name}</p>
                           <p className="mt-1 text-[11px] leading-4 text-slate-500">
                             {subItem.desc}
                           </p>
@@ -255,29 +307,40 @@ export const Header = () => {
       initial={{ y: -72 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.45, ease: 'easeOut' }}
+      aria-label="Navegación principal de NoPay"
       className={`fixed left-0 right-0 top-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? 'border-slate-200/80 bg-white/90 shadow-[0_8px_28px_rgba(15,23,42,0.045)] backdrop-blur-xl'
-          : 'border-transparent bg-white/76 backdrop-blur-xl'
+          ? 'border-slate-200/80 bg-white/92 shadow-[0_8px_28px_rgba(15,23,42,0.045)] backdrop-blur-xl'
+          : 'border-transparent bg-white/80 backdrop-blur-xl'
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8">
-        <Link href="/" onClick={closeAllMenus} className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white">
-            <Scale className="h-5 w-5 text-rose-600" />
+        <Link
+          href="/"
+          onClick={closeAllMenus}
+          className="flex items-center gap-3"
+          aria-label="Ir al inicio de NoPay"
+        >
+          <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white">
+            <Image
+              src="/images/logo.png"
+              alt="Logo de NoPay"
+              width={40}
+              height={40}
+              priority
+              className="h-10 w-10 object-contain"
+            />
           </div>
 
           <div className="leading-none">
             <div className="flex items-center gap-2">
-              <span className="text-[23px] font-black tracking-tight text-slate-950">
-                NoPay
-              </span>
+              <span className="text-[23px] font-black tracking-tight text-slate-950">NoPay</span>
               <span className="hidden rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 sm:inline-flex">
-                Legal AI
+                LegalTech
               </span>
             </div>
             <p className="mt-1 hidden text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 sm:block">
-              Justicia más simple
+              Asesoría legal online
             </p>
           </div>
         </Link>
@@ -291,7 +354,9 @@ export const Header = () => {
               onMouseLeave={() => setOpenSubMenu(null)}
             >
               <button
+                type="button"
                 onClick={() => toggleSubMenu(item.name)}
+                aria-expanded={openSubMenu === item.name}
                 className={`flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
                   openSubMenu === item.name
                     ? 'bg-slate-100 text-slate-950'
@@ -320,6 +385,15 @@ export const Header = () => {
         </div>
 
         <div className="hidden items-center gap-2.5 md:flex">
+          <Link
+            href="/Servicios"
+            onClick={closeAllMenus}
+            className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-rose-600"
+          >
+            <SearchCheck className="h-4 w-4" />
+            Iniciar trámite
+          </Link>
+
           {userProfile.name ? (
             <div
               className="relative"
@@ -327,12 +401,14 @@ export const Header = () => {
               onMouseLeave={() => setOpenSubMenu(null)}
             >
               <button
+                type="button"
                 onClick={() => toggleSubMenu('user-menu')}
+                aria-expanded={openSubMenu === 'user-menu'}
                 className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2 py-1.5 transition hover:bg-slate-50"
               >
                 <img
                   src={userProfile.photoUrl || '/images/asdavatar (2).png'}
-                  alt="Usuario"
+                  alt="Foto del usuario"
                   className="h-8 w-8 rounded-full object-cover"
                 />
                 <span className="max-w-[120px] truncate text-xs font-bold text-slate-700">
@@ -369,6 +445,7 @@ export const Header = () => {
                           </Link>
                         ) : (
                           <button
+                            type="button"
                             key={item.name}
                             onClick={item.action}
                             className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-600 transition hover:bg-red-50 hover:text-red-600"
@@ -393,14 +470,14 @@ export const Header = () => {
               Acceso Abogados
             </Link>
           )}
-
-           
         </div>
 
         <button
+          type="button"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white md:hidden"
-          aria-label="Menú"
+          aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={isMobileMenuOpen}
         >
           {isMobileMenuOpen ? (
             <X className="h-5 w-5 text-slate-900" />
@@ -425,7 +502,7 @@ export const Header = () => {
                   <div className="flex items-center gap-3">
                     <img
                       src={userProfile.photoUrl || '/images/asdavatar (2).png'}
-                      alt="Usuario"
+                      alt="Foto del usuario"
                       className="h-10 w-10 rounded-full object-cover"
                     />
                     <div>
@@ -437,12 +514,26 @@ export const Header = () => {
               )}
 
               <div className="space-y-2">
+                <Link
+                  href="/Servicios"
+                  onClick={closeAllMenus}
+                  className="flex w-full items-center justify-between rounded-2xl bg-slate-950 px-4 py-3 text-sm font-black text-white"
+                >
+                  Iniciar trámite legal
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+
                 <button
+                  type="button"
                   onClick={() => toggleSubMenu('Servicios')}
                   className="flex w-full items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-left text-sm font-bold text-slate-900"
                 >
                   Servicios
-                  <ChevronDown className={`h-4 w-4 transition ${openSubMenu === 'Servicios' ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`h-4 w-4 transition ${
+                      openSubMenu === 'Servicios' ? 'rotate-180' : ''
+                    }`}
+                  />
                 </button>
 
                 <AnimatePresence>
@@ -460,11 +551,13 @@ export const Header = () => {
                           onClick={closeAllMenus}
                           className="flex items-start gap-3 rounded-2xl px-3 py-3 hover:bg-slate-50"
                         >
-                          <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${
-                            item.featured
-                              ? 'border-rose-100 bg-rose-50 text-rose-600'
-                              : 'border-slate-200 bg-white text-slate-500'
-                          }`}>
+                          <span
+                            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${
+                              item.featured
+                                ? 'border-rose-100 bg-rose-50 text-rose-600'
+                                : 'border-slate-200 bg-white text-slate-500'
+                            }`}
+                          >
                             {item.icon}
                           </span>
                           <span>
@@ -482,11 +575,16 @@ export const Header = () => {
                 </AnimatePresence>
 
                 <button
+                  type="button"
                   onClick={() => toggleSubMenu('Empresa')}
                   className="flex w-full items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-left text-sm font-bold text-slate-900"
                 >
                   Empresa
-                  <ChevronDown className={`h-4 w-4 transition ${openSubMenu === 'Empresa' ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`h-4 w-4 transition ${
+                      openSubMenu === 'Empresa' ? 'rotate-180' : ''
+                    }`}
+                  />
                 </button>
 
                 <AnimatePresence>
@@ -517,11 +615,16 @@ export const Header = () => {
                 {userProfile.name ? (
                   <>
                     <button
+                      type="button"
                       onClick={() => toggleSubMenu('user-menu-mobile')}
                       className="flex w-full items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-left text-sm font-bold text-slate-900"
                     >
                       Mi cuenta
-                      <ChevronDown className={`h-4 w-4 transition ${openSubMenu === 'user-menu-mobile' ? 'rotate-180' : ''}`} />
+                      <ChevronDown
+                        className={`h-4 w-4 transition ${
+                          openSubMenu === 'user-menu-mobile' ? 'rotate-180' : ''
+                        }`}
+                      />
                     </button>
 
                     <AnimatePresence>
@@ -545,6 +648,7 @@ export const Header = () => {
                               </Link>
                             ) : (
                               <button
+                                type="button"
                                 key={item.name}
                                 onClick={item.action}
                                 className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-xs font-bold text-red-600 hover:bg-red-50"
@@ -570,11 +674,14 @@ export const Header = () => {
                 )}
 
                 <Button
-                  className="mt-3 w-full rounded-2xl bg-slate-950 py-3 text-white shadow-none hover:bg-slate-800"
+                  className="mt-3 w-full rounded-2xl bg-rose-600 py-3 text-white shadow-none hover:bg-rose-700"
                   onClick={closeAllMenus}
                 >
-                  <Link href="/Servicios" className="flex w-full items-center justify-center gap-2 font-bold">
-                    Iniciar trámite
+                  <Link
+                    href="/Servicios"
+                    className="flex w-full items-center justify-center gap-2 font-bold"
+                  >
+                    Resolver mi caso
                     <ChevronRight className="h-4 w-4" />
                   </Link>
                 </Button>
