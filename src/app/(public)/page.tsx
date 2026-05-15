@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   keywords: [
     'impugnar multa Ecuador',
     'impugnación de multas Quito',
+	'impugnación de multas Cuenca',
     'registro de marca Ecuador',
     'permiso de salida menores Ecuador',
     'crear SAS Ecuador',
