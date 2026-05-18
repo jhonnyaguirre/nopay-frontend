@@ -84,9 +84,13 @@ const EliteFooter = () => {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
             <Link href="/" className="inline-flex items-center gap-3" aria-label="Ir al inicio de NoPay">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white">
-                <Scale className="h-5 w-5 text-rose-600" aria-hidden="true" />
-              </div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white overflow-hidden">
+			  <img 
+				src="/images/logo.png" 
+				alt="NoPay Logo" 
+				className="h-full w-full object-contain"
+			  />
+			</div>
 
               <div className="leading-none">
                 <div className="flex items-center gap-2">

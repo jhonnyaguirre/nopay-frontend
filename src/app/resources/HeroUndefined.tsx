@@ -1,15 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { SlideToActionButton } from 'components/SlideToActionButton';
 import {
-  Zap,
-  Gavel,
-  ShieldCheck,
-  Users,
-  BrainCircuit,
-  BotMessageSquare,
   ArrowRight,
   ArrowLeft,
   Sparkles,
@@ -17,11 +10,67 @@ import {
   Wallet,
   Shield,
   SmilePlus,
-  MousePointer2,
+  BrainCircuit,
   GaugeCircle,
+  MousePointer2,
 } from 'lucide-react';
 
-// Componente RotatingText mejorado: textos nítidos, tamaño uniforme y rebote elegante
+// --------------------------------------------------------------
+// SlideToActionButton: efecto slide y navegación suave
+// --------------------------------------------------------------
+const SlideToActionButton = ({
+  href,
+  children,
+  className = '',
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = href;
+  };
+
+  return (
+    <motion.a
+      href={href}
+      onClick={handleClick}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className={`
+        relative group overflow-hidden rounded-full
+        bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500
+        px-6 md:px-8 py-3 md:py-4 text-center text-sm md:text-base font-bold text-white shadow-lg
+        transition-all duration-300 hover:shadow-2xl
+        flex items-center justify-center gap-2
+        ${className}
+      `}
+      style={{ cursor: 'pointer' }}
+    >
+      <span className="relative z-10 flex items-center gap-2">
+        {children}
+        <motion.span
+          initial={{ x: 0 }}
+          animate={{ x: [0, 4, 0] }}
+          transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 0.8 }}
+        >
+          <ArrowRight className="h-4 w-4" />
+        </motion.span>
+      </span>
+      <motion.div
+        className="absolute inset-0 -z-0 bg-gradient-to-r from-rose-500 via-amber-500 to-orange-500"
+        initial={{ x: '-100%' }}
+        whileHover={{ x: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+      />
+    </motion.a>
+  );
+};
+
+// --------------------------------------------------------------
+// RotatingText: textos rotativos nítidos y responsivos
+// --------------------------------------------------------------
 const RotatingText = ({
   phrases,
   initialDelay = 900,
@@ -41,12 +90,15 @@ const RotatingText = ({
 
   useEffect(() => {
     if (!startRotation || phrases.length <= 1) return;
-    const interval = window.setInterval(() => setIndex((prev) => (prev + 1) % phrases.length), intervalTime);
+    const interval = window.setInterval(
+      () => setIndex((prev) => (prev + 1) % phrases.length),
+      intervalTime
+    );
     return () => window.clearInterval(interval);
   }, [startRotation, phrases.length, intervalTime]);
 
   return (
-    <span className="relative inline-flex min-h-[1.1em] items-center justify-center overflow-hidden align-baseline will-change-transform">
+    <span className="relative inline-flex min-h-[1.2em] items-center justify-center overflow-hidden align-baseline will-change-transform">
       <AnimatePresence mode="wait">
         <motion.span
           key={phrases[index]}
@@ -60,7 +112,9 @@ const RotatingText = ({
           }}
           style={{ backfaceVisibility: 'hidden' }}
           className="
-            inline-block whitespace-nowrap
+            inline-block
+            whitespace-normal sm:whitespace-nowrap
+            break-words
             bg-gradient-to-r from-[#FACC15] via-[#F59E0B] to-[#EAB308]
             bg-clip-text text-transparent
             drop-shadow-[0_8px_24px_rgba(234,179,8,0.25)]
@@ -74,24 +128,33 @@ const RotatingText = ({
   );
 };
 
+// --------------------------------------------------------------
+// Componente principal
+// --------------------------------------------------------------
 const EliteLegalHeroFusion = () => {
   const { scrollY } = useScroll();
   const [mounted, setMounted] = useState(false);
   const [activeBenefit, setActiveBenefit] = useState(2);
+  const [offsetMultiplier, setOffsetMultiplier] = useState(220);
 
   const yBg = useTransform(scrollY, [0, 1000], [0, 250]);
   const opacityHero = useTransform(scrollY, [0, 500], [1, 0]);
   const scaleHero = useTransform(scrollY, [0, 400], [1, 0.98]);
-  const yCards = useTransform(scrollY, [0, 600], [0, -40]);
 
   useEffect(() => {
     setMounted(true);
+    const handleResize = () => {
+      setOffsetMultiplier(window.innerWidth >= 768 ? 270 : 210);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveBenefit((prev) => (prev + 1) % benefitCards.length);
-    }, 3800);
+    }, 4200);
     return () => clearInterval(interval);
   }, []);
 
@@ -150,8 +213,14 @@ const EliteLegalHeroFusion = () => {
     },
   ];
 
-  const nextBenefit = () => setActiveBenefit((prev) => (prev + 1) % benefitCards.length);
-  const prevBenefit = () => setActiveBenefit((prev) => (prev - 1 + benefitCards.length) % benefitCards.length);
+  const nextBenefit = useCallback(
+    () => setActiveBenefit((prev) => (prev + 1) % benefitCards.length),
+    [benefitCards.length]
+  );
+  const prevBenefit = useCallback(
+    () => setActiveBenefit((prev) => (prev - 1 + benefitCards.length) % benefitCards.length),
+    [benefitCards.length]
+  );
 
   if (!mounted) return null;
 
@@ -167,10 +236,15 @@ const EliteLegalHeroFusion = () => {
         h1, h2, h3, .font-black, .font-bold {
           text-rendering: geometricPrecision;
         }
+        @media (max-width: 768px) {
+          button, [role="button"] {
+            touch-action: manipulation;
+          }
+        }
       `}</style>
 
-      <main className="relative w-full bg-white font-['Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] antialiased selection:bg-rose-500 selection:text-white">
-        {/* HERO SECTION CON FONDO DINÁMICO */}
+      <main className="relative w-full bg-white font-['Inter',system-ui] antialiased selection:bg-rose-500 selection:text-white">
+        {/* ==================== HERO SECTION ==================== */}
         <div className="relative w-full min-h-[90vh] md:min-h-screen flex flex-col overflow-hidden bg-[#020617]">
           <motion.div
             style={{ y: yBg, willChange: 'transform' }}
@@ -191,7 +265,7 @@ const EliteLegalHeroFusion = () => {
           </motion.div>
 
           <motion.div
-            style={{ opacity: opacityHero, scale: scaleHero, willChange: 'opacity, transform' }}
+            style={{ opacity: opacityHero, scale: scaleHero }}
             className="relative z-20 max-w-7xl px-6 pt-12 md:pt-32 pb-40 mx-auto flex flex-col items-center"
           >
             <motion.div
@@ -199,7 +273,6 @@ const EliteLegalHeroFusion = () => {
               animate="visible"
               variants={textReveal}
               whileHover={{ scale: 1.02 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               className="group cursor-default inline-flex items-center gap-2 bg-white/5 backdrop-blur-2xl border border-white/10 px-4 py-1.5 rounded-full mb-8 shadow-lg"
             >
               <motion.div
@@ -223,13 +296,12 @@ const EliteLegalHeroFusion = () => {
                   className="flex flex-col md:flex-row md:flex-wrap justify-center items-baseline gap-x-4 gap-y-2"
                 >
                   <span>Resuelve lo legal</span>
-
                   <motion.span
                     initial="hidden"
                     animate="visible"
                     variants={textReveal}
-                    transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
-                    className="relative inline-flex items-center justify-center font-black tracking-[-0.02em] text-[clamp(2rem,6vw,4rem)]"
+                    transition={{ delay: 0.4 }}
+                    className="relative inline-flex items-center justify-center font-black text-[clamp(2rem,6vw,4rem)]"
                   >
                     <RotatingText phrases={rotatingPhrases} />
                   </motion.span>
@@ -238,47 +310,34 @@ const EliteLegalHeroFusion = () => {
             </h1>
 
             <div className="text-center text-base md:text-xl text-slate-400 max-w-2xl mb-12 font-light leading-relaxed">
-              <div className="overflow-hidden">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={textReveal}
-                  transition={{ delay: 0.6 }}
-                >
-                  NoPay resuelve trámites legales{' '}
-                  <span className="text-white font-medium">sin filas y sin perder tiempo.</span>
-                </motion.div>
-              </div>
-
-              <div className="overflow-hidden mt-2">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={textReveal}
-                  transition={{ delay: 0.8 }}
-                >
-                  Convertimos leyes complejas en{' '}
-                  <span className="text-white italic">acciones claras, rápidas y definitivas</span>.
-                </motion.div>
-              </div>
+              <motion.div variants={textReveal} initial="hidden" animate="visible" transition={{ delay: 0.6 }}>
+                NoPay resuelve trámites legales{' '}
+                <span className="text-white font-medium">sin filas y sin perder tiempo.</span>
+              </motion.div>
+              <motion.div
+                variants={textReveal}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.8 }}
+                className="mt-2"
+              >
+                Convertimos leyes complejas en{' '}
+                <span className="text-white italic">acciones claras, rápidas y definitivas</span>.
+              </motion.div>
             </div>
 
             <motion.div
+              variants={textReveal}
               initial="hidden"
               animate="visible"
-              variants={textReveal}
               transition={{ delay: 1.0 }}
               className="w-full max-w-xl"
             >
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col md:flex-row items-center gap-3 p-2 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-2xl md:rounded-full shadow-2xl transition-all hover:border-white/20"
-              >
-                <SlideToActionButton href="/Servicios" className="shadow-md">
+              <div className="flex flex-col md:flex-row items-center gap-3 p-2 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-2xl md:rounded-full shadow-2xl">
+                <SlideToActionButton href="/Servicios" className="shadow-md w-full md:w-auto">
                   Resolver mi caso ahora
                 </SlideToActionButton>
-              </motion.div>
+              </div>
 
               <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 mt-8 mb-12">
                 {['Inmediatez', 'Cero Riesgos', 'Respaldo de Expertos'].map((text, i) => (
@@ -287,7 +346,7 @@ const EliteLegalHeroFusion = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 0.6, y: 0 }}
                     whileHover={{ scale: 1.08, opacity: 1, backgroundColor: 'rgba(255,255,255,0.2)' }}
-                    transition={{ delay: 1.2 + i * 0.1, type: 'spring' }}
+                    transition={{ delay: 1.2 + i * 0.1 }}
                     className="text-[10px] md:text-xs font-bold text-white uppercase tracking-widest px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 shadow-sm transition-all duration-300 cursor-default"
                   >
                     {text}
@@ -297,14 +356,13 @@ const EliteLegalHeroFusion = () => {
             </motion.div>
           </motion.div>
 
-          {/* Ola decorativa con animación de movimiento */}
+          {/* Ola decorativa inferior */}
           <div className="absolute bottom-[-1px] left-0 w-full z-30 pointer-events-none">
             <motion.svg
               viewBox="0 0 1200 120"
               preserveAspectRatio="none"
               className="relative block w-full h-[120px] md:h-[220px]"
               fill="white"
-              shapeRendering="geometricPrecision"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
@@ -314,19 +372,14 @@ const EliteLegalHeroFusion = () => {
           </div>
         </div>
 
-        {/* SECCIÓN BENEFICIOS - CARRUSEL PREMIUM CON ANIMACIONES MEJORADAS */}
+        {/* ==================== SECCIÓN BENEFICIOS ==================== */}
         <section className="relative bg-white -mt-1 pt-10 md:pt-16 pb-24 md:pb-32 px-6 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <motion.div
-              animate={{
-                x: ['-10%', '10%', '-5%'],
-                y: ['-5%', '5%', '-2%'],
-              }}
+              animate={{ x: ['-10%', '10%', '-5%'], y: ['-5%', '5%', '-2%'] }}
               transition={{ duration: 20, repeat: Infinity, repeatType: 'mirror', ease: 'linear' }}
               className="absolute -top-32 left-1/2 -translate-x-1/2 w-[680px] h-[320px] rounded-full bg-[radial-gradient(circle,rgba(244,63,94,0.035)_0%,rgba(245,158,11,0.025)_34%,transparent_72%)] blur-[90px]"
             />
-            <div className="absolute top-40 right-[-180px] w-[420px] h-[420px] rounded-full bg-violet-200/10 blur-[110px]" />
-            <div className="absolute bottom-[-180px] left-[-140px] w-[420px] h-[420px] rounded-full bg-lime-200/10 blur-[110px]" />
           </div>
 
           <div className="relative max-w-7xl mx-auto">
@@ -334,67 +387,59 @@ const EliteLegalHeroFusion = () => {
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.7 }}
               className="text-center max-w-5xl mx-auto"
             >
-            <motion.div
-  whileHover={{ scale: 1.02 }}
-  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-5 py-2 shadow-sm backdrop-blur-xl"
->
-  <MousePointer2 className="h-4 w-4 text-rose-500" strokeWidth={1.5} />
-  <span className="text-[11px] md:text-xs font-black uppercase tracking-[0.28em] text-slate-600">
-    LegalTech Ecuador
-  </span>
-</motion.div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-5 py-2 shadow-sm backdrop-blur-xl">
+                <MousePointer2 className="h-4 w-4 text-rose-500" strokeWidth={1.5} />
+                <span className="text-[11px] md:text-xs font-black uppercase tracking-[0.28em] text-slate-600">
+                  LegalTech Ecuador
+                </span>
+              </div>
 
-<h2 className="mt-7 text-[2.2rem] md:text-[3.8rem] font-black tracking-[-0.045em] leading-[0.92] text-slate-950">
-  NoPay transforma
-  <span className="block bg-gradient-to-r from-[#F46C1D] via-[#D82465] to-purple-600 bg-clip-text text-transparent">
-    lo legal en simple
-  </span>
-</h2>
+              <h2 className="mt-7 text-[2.2rem] md:text-[3.8rem] font-black tracking-[-0.045em] leading-[0.92] text-slate-950">
+                NoPay transforma
+                <span className="block bg-gradient-to-r from-[#F46C1D] via-[#D82465] to-purple-600 bg-clip-text text-transparent">
+                  lo legal en simple
+                </span>
+              </h2>
 
-<p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-slate-500 leading-relaxed">
-  IA + Abogados Expertos.  
-</p>
-<p className="mt-0 max-w-xl mx-auto text-sm md:text-base text-slate-500 leading-relaxed">
-    Más rápido. Más claro.
-</p>
+              <p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-slate-500 leading-relaxed">
+                IA + Abogados Expertos. Más rápido. Más claro.
+              </p>
             </motion.div>
 
+            {/* Carrusel de beneficios mejorado */}
             <div className="relative mt-16 md:mt-20">
-              <div className="pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-28 bg-gradient-to-r from-white to-transparent md:block" />
-              <div className="pointer-events-none absolute right-0 top-0 z-20 hidden h-full w-28 bg-gradient-to-l from-white to-transparent md:block" />
+              <div className="pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-20 bg-gradient-to-r from-white to-transparent md:block" />
+              <div className="pointer-events-none absolute right-0 top-0 z-20 hidden h-full w-20 bg-gradient-to-l from-white to-transparent md:block" />
 
               <motion.button
-                type="button"
                 onClick={prevBenefit}
                 whileHover={{ scale: 1.1, x: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="absolute left-0 md:left-2 top-1/2 z-30 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full border border-slate-200 bg-white/90 text-slate-950 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-lime-300"
-                aria-label="Anterior beneficio"
+                aria-label="Anterior"
               >
                 <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
               </motion.button>
 
               <motion.button
-                type="button"
                 onClick={nextBenefit}
                 whileHover={{ scale: 1.1, x: 2 }}
                 whileTap={{ scale: 0.95 }}
                 className="absolute right-0 md:right-2 top-1/2 z-30 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full border border-slate-200 bg-white/90 text-slate-950 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-violet-300"
-                aria-label="Siguiente beneficio"
+                aria-label="Siguiente"
               >
                 <ArrowRight className="h-5 w-5" strokeWidth={1.5} />
               </motion.button>
 
-              <div className="mx-auto flex min-h-[390px] max-w-6xl items-center justify-center gap-4 md:gap-6 overflow-hidden px-10 md:px-16">
+              <div className="mx-auto flex min-h-[390px] max-w-6xl items-center justify-center overflow-hidden px-10 md:px-16">
                 {benefitCards.map((card, index) => {
                   const total = benefitCards.length;
                   let offset = index - activeBenefit;
                   if (offset > total / 2) offset -= total;
                   if (offset < -total / 2) offset += total;
-
                   const isActive = offset === 0;
                   const isNear = Math.abs(offset) <= 2;
                   if (!isNear) return null;
@@ -403,12 +448,11 @@ const EliteLegalHeroFusion = () => {
                     <motion.div
                       key={card.title}
                       animate={{
-                        x: offset * 245,
+                        x: offset * offsetMultiplier,
                         scale: isActive ? 1.08 : 0.86,
                         rotate: offset * 2.4,
                         opacity: isActive ? 1 : 0.48,
                         zIndex: 20 - Math.abs(offset),
-                        filter: isActive ? 'blur(0px)' : 'blur(0.2px)',
                         y: isActive ? [0, -6, 0] : 0,
                       }}
                       transition={{
@@ -416,11 +460,11 @@ const EliteLegalHeroFusion = () => {
                         ease: [0.22, 1, 0.36, 1],
                         y: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
                       }}
-                      className="absolute w-[230px] md:w-[270px] will-change-transform"
+                      className="absolute w-[210px] md:w-[270px] will-change-transform"
                       style={{ backfaceVisibility: 'hidden' }}
                     >
                       <motion.div
-                        whileHover={isActive ? { scale: 1.02, transition: { duration: 0.2 } } : {}}
+                        whileHover={isActive ? { scale: 1.02 } : {}}
                         className={[
                           'group relative h-[315px] md:h-[350px] overflow-hidden rounded-[2.1rem] border bg-white p-6 md:p-7 text-center transition-all duration-500',
                           isActive
@@ -435,7 +479,6 @@ const EliteLegalHeroFusion = () => {
                             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                           />
                         )}
-
                         <div
                           className={[
                             'absolute inset-[1px] rounded-[2rem]',
@@ -444,7 +487,6 @@ const EliteLegalHeroFusion = () => {
                               : 'bg-gradient-to-br from-white via-white to-slate-50',
                           ].join(' ')}
                         />
-
                         <div className="relative z-10 flex h-full flex-col items-center justify-center">
                           <motion.div
                             animate={isActive ? { scale: [1, 1.05, 1] } : {}}
@@ -456,20 +498,14 @@ const EliteLegalHeroFusion = () => {
                                 : 'bg-slate-100 text-slate-700',
                             ].join(' ')}
                           >
-                            {React.cloneElement(card.icon, {
-                              className: 'h-11 w-11 md:h-12 md:w-12',
-                              strokeWidth: 1.5,
-                            })}
+                            {React.cloneElement(card.icon, { className: 'h-11 w-11 md:h-12 md:w-12', strokeWidth: 1.5 })}
                           </motion.div>
-
                           <h3 className="mt-7 text-2xl md:text-3xl font-black tracking-[-0.02em] text-slate-950">
                             {card.title}
                           </h3>
-
                           <p className="mt-3 max-w-[190px] text-sm md:text-base leading-relaxed text-slate-500">
                             {card.desc}
                           </p>
-
                           <motion.div
                             animate={isActive ? { width: 64 } : { width: 36 }}
                             className={`mt-7 h-1.5 rounded-full transition-all duration-500 ${
@@ -487,7 +523,6 @@ const EliteLegalHeroFusion = () => {
                 {benefitCards.map((card, index) => (
                   <motion.button
                     key={card.title}
-                    type="button"
                     onClick={() => setActiveBenefit(index)}
                     whileHover={{ scale: 1.3 }}
                     whileTap={{ scale: 0.9 }}
@@ -503,11 +538,12 @@ const EliteLegalHeroFusion = () => {
               </div>
             </div>
 
+            {/* Comparativa final */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.7, delay: 0.2 }}
               className="mt-16 md:mt-20 grid gap-5 md:grid-cols-3"
             >
               {[
@@ -520,12 +556,10 @@ const EliteLegalHeroFusion = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  whileHover={{ y: -4 }}
                   className="rounded-[1.6rem] border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur-xl"
                 >
-                  <p className="text-[11px] font-black uppercase tracking-[0.28em] text-slate-400">
-                    {item.label}
-                  </p>
+                  <p className="text-[11px] font-black uppercase tracking-[0.28em] text-slate-400">{item.label}</p>
                   <p
                     className={[
                       'mt-3 text-lg md:text-xl font-black tracking-tight',

@@ -1,16 +1,13 @@
 // app/registro/page.tsx
-// ----------------------
-// Esta versión incluye un mensaje informativo previo al envío,
-// recalcando la importancia de ingresar un correo electrónico válido.
-
 "use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
+import { Eye, EyeOff, Mail, Lock, UserPlus } from "lucide-react";
 import { API_BASE_URL } from "config/apiConfig";
 
 export default function RegistroPage() {
@@ -26,13 +23,11 @@ export default function RegistroPage() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Tu site key de reCAPTCHA v2 en .env.local:
   const siteKey = "6LfWeScrAAAAAA1_P74ST8cqqdeFfbiqIICOZCGD";
-  
-                
 
-  // Para verificar en consola que esté correctamente cargada:
-
+  // Efecto parallax para el fondo
+  const { scrollY } = useScroll();
+  const yBg = useTransform(scrollY, [0, 500], [0, 100]);
 
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
@@ -43,7 +38,6 @@ export default function RegistroPage() {
     e.preventDefault();
     setErrorMsg(null);
 
-    // Validaciones front-end
     if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
       setErrorMsg("Todos los campos son obligatorios.");
       return;
@@ -71,11 +65,8 @@ export default function RegistroPage() {
 
     try {
       const res = await fetch(`${API_BASE_URL}/creaUsuarios`, {
-        //const res = await fetch("${API_BASE_URL}/api/creaUsuarios", {
-
         method: "POST",
         headers: {
-          //'Authorization': `Bearer ${localStorage.getItem('wizardToken') || ''}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
@@ -87,27 +78,20 @@ export default function RegistroPage() {
       }
 
       const text = await res.text();
-
       try {
         const data = JSON.parse(text);
-        // continuar normalmente
-
-
         if (res.status === 400 || res.status === 409) {
           setErrorMsg(data.error || "Error en el registro.");
         } else {
           setErrorMsg(`Error inesperado: ${data.error || res.statusText}`);
         }
-
         recaptchaRef.current?.reset();
         setCaptchaToken(null);
       } catch (e) {
-        //console.error("⚠️ Respuesta no JSON:", text);
         setErrorMsg("El servidor respondió con una página no válida o HTML.");
       }
     } catch (err: any) {
       setErrorMsg("No se pudo conectar con el servidor. Intenta más tarde.");
-      //console.error(err);
       recaptchaRef.current?.reset();
       setCaptchaToken(null);
     } finally {
@@ -116,175 +100,253 @@ export default function RegistroPage() {
   };
 
   return (
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* Panel izquierdo: Información (solo en pantallas ≥ lg) */}
-      <section className="hidden lg:flex flex-col justify-between px-16 py-10 bg-gradient-to-br from-[#7F1D1D] via-[#EC4899] to-[#F59E0B] text-white">
-        <div>
-          {/* Logo en la parte superior */}
-          <div className="flex items-center mb-6">
-            <Link href="/Servicios">
-              <img src="/images/logo.png" alt="Logo NoPay" className="w-20 h-20 opacity-90" />
-            </Link>
-          </div>
+    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+      {/* PANEL INFORMATIVO IZQUIERDO - MISMO ESTILO QUE LOGIN Y HERO */}
+      <section className="hidden lg:flex flex-col items-start justify-between px-10 xl:px-16 py-10 min-h-screen bg-[#020617] text-white relative overflow-hidden">
+        {/* Gradientes radiales animados */}
+        <motion.div
+          style={{ y: yBg }}
+          className="absolute inset-0 z-0"
+          animate={{
+            background: [
+              "radial-gradient(circle at 20% 30%, #D82465 0%, #F46C1D 40%, #020617 85%)",
+              "radial-gradient(circle at 80% 70%, #D82465 0%, #F46C1D 35%, #020617 85%)",
+              "radial-gradient(circle at 40% 50%, #D82465 0%, #F46C1D 40%, #020617 85%)",
+            ],
+          }}
+          transition={{ duration: 16, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
+          className="absolute inset-0 opacity-80"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/50 to-[#020617]" />
 
-          {/* Bienvenida e información */}
+        <div className="relative z-10 w-full">
+          <Link href="/Servicios">
+            <Image
+              src="/images/logoN.png"
+              alt="Logo NoPay"
+              width={90}
+              height={90}
+              className="opacity-95 cursor-pointer transition-transform hover:scale-105 drop-shadow-lg"
+            />
+          </Link>
+        </div>
+
+        <div className="flex-grow flex flex-col justify-center z-10">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-xl"
           >
-            <h1 className="text-5xl font-extrabold tracking-tight mb-6 font-serif">
-              Únete a <span className="text-[#FCD34D]">NoPay</span>
-            </h1>
-            <p className="text-lg font-light leading-relaxed text-white/90">
-              Crea tu cuenta en segundos y comienza a automatizar tus trámites legales, impugnar multas y acceder
-              a abogados expertos. <br />
-              <span className="block mt-2 font-medium text-white">
-                ¡Sin costo adicional, sin complicaciones!
+            <h1 className="text-5xl xl:text-6xl font-black tracking-tight leading-tight mb-6">
+              Únete a{" "}
+              <span className="bg-gradient-to-r from-[#FACC15] via-[#F59E0B] to-[#EAB308] bg-clip-text text-transparent drop-shadow-[0_8px_24px_rgba(234,179,8,0.25)]">
+                NoPay
               </span>
+            </h1>
+            <p className="text-base xl:text-lg font-light leading-relaxed text-slate-300">
+              Crea tu cuenta en segundos y comienza a automatizar tus trámites legales, impugnar multas y acceder
+              a abogados expertos.
             </p>
+            <p className="mt-3 text-base xl:text-lg font-medium text-white drop-shadow-sm">
+              ¡Sin costo adicional, sin complicaciones!
+            </p>
+
+            <div className="flex flex-wrap gap-3 mt-8">
+              {["Sin vueltas", "100% digital", "Ahorro real"].map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs font-black uppercase tracking-wider bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
 
-        {/* Pie de página */}
-        <footer className="text-sm text-white/80 border-t border-white/20 pt-6 mt-6">
-          <div className="flex justify-between items-center">
-            <span>© {new Date().getFullYear()} NoPay</span>
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-white">
-                Términos
-              </a>
-              <a href="#" className="hover:text-white">
-                Privacidad
-              </a>
+        <footer className="relative z-10 w-full text-sm text-slate-400 border-t border-white/20 pt-6 mt-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+            <span>© {new Date().getFullYear()} NoPay - LegalTech Ecuador</span>
+            <div className="flex space-x-6">
+              <a href="#" className="hover:text-white transition">Términos</a>
+              <a href="#" className="hover:text-white transition">Privacidad</a>
+              <a href="#" className="hover:text-white transition">Ayuda</a>
             </div>
           </div>
         </footer>
       </section>
 
-      {/* Panel derecho: Formulario de registro */}
-      <section className="flex flex-col justify-center items-center px-8 py-12 bg-white text-gray-800 rounded-l-3xl shadow-2xl">
-        <div className="w-full max-w-md">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Crear nueva cuenta</h2>
+      {/* PANEL DERECHO: FORMULARIO DE REGISTRO - ESTILO CLARO CON ACENTOS NoPay */}
+      <section className="relative flex flex-col justify-center items-center px-5 sm:px-8 py-12 bg-[#FBFBFE] lg:rounded-l-[48px] shadow-2xl">
+        {/* Fondo decorativo con blur suave */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-[#FCE7F3] rounded-full blur-3xl opacity-60" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FED7AA] rounded-full blur-3xl opacity-60" />
+        </div>
 
-          {/* Mensaje informativo destacado */}
-          <div className="mb-6 p-4 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded-lg shadow-sm">
-            <p className="font-medium">
-              Importante: tu correo electrónico es fundamental para mantenerte al día con las actualizaciones
-              de tus procesos. Asegúrate de ingresar uno válido al que tengas acceso.
-            </p>
-          </div>
-
-          {/* Mensaje de error general */}
-          {errorMsg && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg">
-              {errorMsg}
-            </div>
-          )}
-
-          {/* Formulario */}
-          <form onSubmit={handleRegister} className="space-y-5">
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium">
-                Correo electrónico
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC4899]"
-                placeholder="ejemplo@dominio.com"
-                required
+        <div className="relative z-10 w-full max-w-md">
+          {/* Logo móvil */}
+          <div className="lg:hidden flex justify-center mb-8">
+            <Link href="/Servicios">
+              <Image
+                src="/images/logo.png"
+                alt="Logo NoPay"
+                width={70}
+                height={70}
+                className="cursor-pointer transition-transform hover:scale-105"
               />
-            </div>
-
-            {/* Contraseña */}
-            <div className="relative">
-              <label htmlFor="password" className="block text-sm font-medium">
-                Contraseña
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC4899] pr-10"
-                placeholder="Mín. 8 caracteres, 1 mayúscula, 1 número"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                tabIndex={-1}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-
-            {/* Confirmar Contraseña */}
-            <div className="relative">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium">
-                Confirmar contraseña
-              </label>
-              <input
-                type={showConfirm ? "text" : "password"}
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC4899] pr-10"
-                placeholder="Repite la contraseña"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirm((prev) => !prev)}
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                tabIndex={-1}
-              >
-                {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-
-            {/* Google reCAPTCHA v2 */}
-            <div className="flex justify-center">
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey={siteKey}
-                onChange={handleCaptchaChange}
-              />
-            </div>
-
-            {/* Botón de registro */}
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full py-2 text-white rounded-lg font-medium transition duration-200 ${loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-[#EC4899] hover:bg-[#DB2777]"
-                }`}
-            >
-              {loading ? "Creando cuenta..." : "Crear cuenta"}
-            </button>
-          </form>
-
-          {/* Separador */}
-          <div className="flex items-center my-6">
-            <div className="flex-grow border-t" />
-            <span className="mx-4 text-gray-500 text-sm">o</span>
-            <div className="flex-grow border-t" />
-          </div>
-
-          {/* Enlace a Login */}
-          <p className="text-center text-sm">
-            ¿Ya tienes cuenta?{" "}
-            <Link href="/login" className="text-[#EC4899] hover:underline">
-              Iniciar sesión
             </Link>
-          </p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="rounded-3xl border border-gray-200/80 bg-white/90 backdrop-blur-xl shadow-[0_25px_60px_rgba(0,0,0,0.08)] p-6 sm:p-8"
+          >
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center rounded-full bg-gradient-to-r from-[#FCE7F3] to-[#FED7AA] border border-[#FECDD3] px-4 py-1.5 text-[11px] font-black text-[#D82465] mb-5 shadow-sm">
+                <UserPlus size={12} className="mr-1" />
+                Regístrate en 10 segundos
+              </div>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-gray-950">
+                Crear nueva cuenta
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-gray-500 max-w-xs mx-auto">
+                Ingresa tus datos para comenzar a usar NoPay.
+              </p>
+            </div>
+
+            {/* Mensaje informativo destacado */}
+            <div className="mb-6 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-xl text-amber-800 text-sm">
+              <p className="font-medium">
+                ⚠️ Importante: tu correo electrónico es fundamental para mantenerte al día con las actualizaciones
+                de tus procesos. Asegúrate de ingresar uno válido al que tengas acceso.
+              </p>
+            </div>
+
+            {errorMsg && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-5 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm"
+              >
+                {errorMsg}
+              </motion.div>
+            )}
+
+            <form onSubmit={handleRegister} className="space-y-5">
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-1.5">
+                  Correo electrónico
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-4 focus:ring-[#FCE7F3] focus:border-[#D82465] transition-all duration-200 text-sm pr-10"
+                    placeholder="ejemplo@dominio.com"
+                    autoComplete="email"
+                    required
+                  />
+                  <Mail className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                </div>
+              </div>
+
+              {/* Contraseña */}
+              <div className="relative">
+                <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-1.5">
+                  Contraseña
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-4 focus:ring-[#FCE7F3] focus:border-[#D82465] transition-all duration-200 text-sm pr-10"
+                    placeholder="Mín. 8 caracteres, 1 mayúscula, 1 número"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 mt-1">Al menos 8 caracteres, una mayúscula, una minúscula y un número.</p>
+              </div>
+
+              {/* Confirmar contraseña */}
+              <div className="relative">
+                <label htmlFor="confirmPassword" className="block text-sm font-bold text-gray-700 mb-1.5">
+                  Confirmar contraseña
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirm ? "text" : "password"}
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-4 focus:ring-[#FCE7F3] focus:border-[#D82465] transition-all duration-200 text-sm pr-10"
+                    placeholder="Repite la contraseña"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((prev) => !prev)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    tabIndex={-1}
+                  >
+                    {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* reCAPTCHA */}
+              <div className="flex justify-center scale-90 md:scale-100">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={siteKey}
+                  onChange={handleCaptchaChange}
+                />
+              </div>
+
+              <motion.button
+                type="submit"
+                disabled={loading}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full py-3 text-white rounded-xl font-bold transition-all duration-200 shadow-md ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed shadow-none"
+                    : "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:brightness-105 active:scale-[0.98] shadow-[0_8px_20px_rgba(216,36,101,0.25)]"
+                }`}
+              >
+                {loading ? "Creando cuenta..." : "Crear cuenta"}
+              </motion.button>
+            </form>
+
+            <div className="flex items-center my-6">
+              <div className="flex-grow border-t border-gray-200" />
+              <span className="mx-4 text-gray-400 text-xs font-medium">o</span>
+              <div className="flex-grow border-t border-gray-200" />
+            </div>
+
+            <p className="text-center text-sm text-gray-600">
+              ¿Ya tienes cuenta?{" "}
+              <Link href="/login" className="font-semibold text-[#D82465] hover:underline">
+                Iniciar sesión
+              </Link>
+            </p>
+          </motion.div>
         </div>
       </section>
     </main>
