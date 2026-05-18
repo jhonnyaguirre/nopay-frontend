@@ -230,7 +230,7 @@ const EliteFooter = () => {
             <span className="hidden sm:inline">•</span>
 
             <a
-              href="mailto:softcorpecu@gmail.com"
+              href="mailto:info@nopaylegal.com"
               className="transition hover:text-slate-700"
               aria-label="Enviar correo a NoPay"
             >

@@ -5,7 +5,7 @@ import HomePageClient from './HomePageClient';
 const SITE_URL = 'https://nopaylegal.com';
 
 export const metadata: Metadata = {
-  title: 'NoPay | Impugnar multas, registrar marca y trámites legales en Ecuador',
+  title: 'NoPay | LegalTEC',
   description:
     'NoPay es una plataforma LegalTech en Ecuador para impugnar multas de tránsito, registrar marcas, gestionar permisos de salida de menores y crear SAS online. Inicia tu trámite en minutos.',
 

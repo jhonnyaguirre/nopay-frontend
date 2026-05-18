@@ -87,7 +87,7 @@ export default function ContactoPage() {
       icon: Mail,
       desc: (
         <>
-          <div className="font-semibold text-gray-800">softcorpecu@gmail.com</div>
+          <div className="font-semibold text-gray-800">info@nopaylegal.com</div>
           <div className="text-xs text-gray-600">Consultas generales o soporte técnico</div>
         </>
       ),
