@@ -99,18 +99,17 @@ export default function RecuperarPasswordPage() {
       <section className="hidden lg:flex flex-col items-start justify-between px-10 xl:px-16 py-10 min-h-screen bg-[#020617] text-white relative overflow-hidden">
         {/* Gradientes radiales animados (idénticos al Hero) */}
         <motion.div
-          style={{ y: yBg }}
-          className="absolute inset-0 z-0"
-          animate={{
-            background: [
-              "radial-gradient(circle at 20% 30%, #D82465 0%, #F46C1D 40%, #020617 85%)",
-              "radial-gradient(circle at 80% 70%, #D82465 0%, #F46C1D 35%, #020617 85%)",
-              "radial-gradient(circle at 40% 50%, #D82465 0%, #F46C1D 40%, #020617 85%)",
-            ],
-          }}
-          transition={{ duration: 16, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
-          className="absolute inset-0 opacity-80"
-        />
+			  style={{ y: yBg }}
+			  animate={{
+				background: [
+				  "radial-gradient(circle at 20% 30%, #D82465 0%, #F46C1D 40%, #020617 85%)",
+				  "radial-gradient(circle at 80% 70%, #D82465 0%, #F46C1D 35%, #020617 85%)",
+				  "radial-gradient(circle at 40% 50%, #D82465 0%, #F46C1D 40%, #020617 85%)",
+				],
+			  }}
+			  transition={{ duration: 16, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
+			  className="absolute inset-0 z-0 opacity-80"
+			/>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/50 to-[#020617]" />
 
         {/* Contenido relativo */}
