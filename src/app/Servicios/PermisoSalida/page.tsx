@@ -1,6 +1,7 @@
 'use client';
 
 import type { LucideIcon } from "lucide-react";
+import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -272,6 +273,214 @@ export default function PermisoSalidaMenoresPage() {
   }, [isMobile]);
 
   return (
+   <>
+	<Head>
+  <title>
+    Permiso de Salida de Menores Ecuador | Minuta inmediata para notaría | NoPay
+  </title>
+
+  <meta
+    name="description"
+    content="Obtén online el permiso de salida del país para menores de edad en Ecuador. NoPay genera minutas legales válidas para notaría, con IA, validación de abogados y firma electrónica cuando corresponde."
+  />
+
+  <meta
+    name="keywords"
+    content="
+    permiso salida menor Ecuador,
+    permiso de salida del país menor de edad Ecuador,
+    permiso salida menores notaría,
+    minuta permiso salida menor Ecuador,
+    autorización salida país menor Ecuador,
+    permiso viaje menor Ecuador,
+    permiso notarial salida menor,
+    permiso salida menor con un solo padre,
+    permiso salida menor padres separados,
+    permiso salida menor padre ausente,
+    permiso salida menor madre ausente,
+    permiso salida menor al exterior Ecuador,
+    autorización viaje menor al exterior Ecuador,
+    permiso salida menor Cuenca,
+    permiso salida menor Quito,
+    permiso salida menor Guayaquil,
+    abogados permiso salida menor Ecuador,
+    NoPay permiso salida menor
+    "
+  />
+
+  <link
+    rel="canonical"
+    href="https://nopaylegal.com/Servicios/PermisoSalida"
+  />
+
+  <meta
+    property="og:title"
+    content="Permiso de Salida de Menores en Ecuador | NoPay"
+  />
+
+  <meta
+    property="og:description"
+    content="Genera online minutas para permiso de salida del país de menores de edad en Ecuador. Proceso 24/7 con IA, abogados y firma electrónica cuando corresponde."
+  />
+
+  <meta
+    property="og:url"
+    content="https://nopaylegal.com/Servicios/PermisoSalida"
+  />
+
+  <meta property="og:type" content="website" />
+
+  <meta
+    property="og:image"
+    content="https://nopaylegal.com/images/logo.png"
+  />
+
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <meta
+    name="twitter:title"
+    content="Permiso de Salida de Menores Ecuador | NoPay"
+  />
+
+  <meta
+    name="twitter:description"
+    content="Minutas legales para permiso de salida de menores en Ecuador. Proceso online 24/7 con NoPay."
+  />
+
+  <meta
+    name="twitter:image"
+    content="https://nopaylegal.com/images/logo.png"
+  />
+
+  <meta
+    name="robots"
+    content="index, follow, max-snippet:-1, max-image-preview:large"
+  />
+
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'LegalService',
+        name: 'Permiso de salida del país para menores de edad en Ecuador',
+        provider: {
+          '@type': 'Organization',
+          name: 'NoPay',
+          url: 'https://nopaylegal.com',
+          logo: 'https://nopaylegal.com/images/logo.png',
+        },
+        areaServed: {
+          '@type': 'Country',
+          name: 'Ecuador',
+        },
+        serviceType: [
+          'Permiso de salida de menores',
+          'Minuta notarial para salida del país',
+          'Autorización de viaje para menor de edad',
+          'Documento legal para notaría',
+        ],
+        description:
+          'Servicio legal digital para generar o gestionar permisos de salida del país para menores de edad en Ecuador, incluyendo minutas notariales, validación profesional y firma electrónica cuando corresponde.',
+        url: 'https://nopaylegal.com/Servicios/PermisoSalida',
+        offers: {
+          '@type': 'Offer',
+          availability: 'https://schema.org/InStock',
+          priceCurrency: 'USD',
+        },
+      }),
+    }}
+  />
+
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: '¿Cómo obtener un permiso de salida del país para un menor en Ecuador?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text:
+                'Para obtener un permiso de salida del país para un menor de edad en Ecuador se debe contar con la autorización correspondiente de los representantes legales. NoPay permite iniciar el proceso online y generar una minuta legal para notaría cuando el caso cumple las condiciones.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Se puede generar una minuta para permiso de salida de menores online?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text:
+                'Sí. NoPay permite generar minutas legales para permiso de salida de menores de edad de forma online, con asistencia de IA y validación de abogados cuando corresponde.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿El permiso de salida de menores sirve para notaría?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text:
+                'La minuta generada por NoPay está estructurada para ser presentada en notaría, siempre que el caso cumpla con las condiciones legales y documentales requeridas.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Qué pasa si uno de los padres no autoriza la salida del menor?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text:
+                'Cuando uno de los padres no autoriza, no puede ser ubicado o existe conflicto, el caso puede requerir una vía judicial o una revisión legal más profunda. NoPay ayuda a identificar la ruta correspondiente.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿NoPay puede entregar el documento inmediatamente?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text:
+                'En casos compatibles con el flujo digital, NoPay puede generar la minuta inmediatamente después del pago. Algunos casos pueden requerir revisión profesional adicional en horas o días.',
+            },
+          },
+        ],
+      }),
+    }}
+  />
+
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Inicio',
+            item: 'https://nopaylegal.com',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Servicios',
+            item: 'https://nopaylegal.com/Servicios',
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: 'Permiso de salida de menores',
+            item: 'https://nopaylegal.com/Servicios/PermisoSalida',
+          },
+        ],
+      }),
+    }}
+  />
+</Head>
+  
+  
     <main className="min-h-screen bg-white text-white relative overflow-x-hidden font-sans antialiased text-[90%]">
       <Header />
 
@@ -581,5 +790,8 @@ export default function PermisoSalidaMenoresPage() {
       <NoPayChatLauncher />
       <Footer />
     </main>
+	
+	 </>
+	
   );
 }

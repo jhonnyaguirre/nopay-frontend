@@ -1,4 +1,4 @@
-// src/app/layout.tsx
+﻿// src/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    'NoPay es una plataforma LegalTech en Ecuador para iniciar trámites legales digitales: impugnación de multas, permisos de salida de menores, registro de marcas y constitución de SAS.',
+    'NoPay es una plataforma LegalTech en Ecuador para iniciar trÃ¡mites legales digitales: impugnaciÃ³n de multas, permisos de salida de menores, registro de marcas y constituciÃ³n de SAS.',
 
   applicationName: 'NoPay',
   authors: [{ name: 'NoPay LegalTech' }],
@@ -27,14 +27,14 @@ export const metadata: Metadata = {
   keywords: [
     'NoPay',
     'LegalTech Ecuador',
-    'asesoría legal online Ecuador',
+    'asesorÃ­a legal online Ecuador',
     'impugnar multa Ecuador',
-    'impugnación de multas de tránsito',
+    'impugnaciÃ³n de multas de trÃ¡nsito',
     'permiso de salida de menores Ecuador',
     'registrar marca Ecuador',
     'crear SAS Ecuador',
     'abogados online Ecuador',
-    'trámites legales Cuenca',
+    'trÃ¡mites legales Cuenca',
   ],
 
   alternates: {
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     siteName: 'NoPay',
     title: 'NoPay | Servicios legales online en Ecuador',
     description:
-      'Impugna multas, registra marcas, gestiona permisos de salida de menores y otros trámites legales en Ecuador con tecnología y respaldo profesional.',
+      'Impugna multas, registra marcas, gestiona permisos de salida de menores y otros trÃ¡mites legales en Ecuador con tecnologÃ­a y respaldo profesional.',
     images: [
       {
         url: '/images/logo.png',
@@ -63,14 +63,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'NoPay | Servicios legales online en Ecuador',
     description:
-      'Trámites legales digitales en Ecuador: multas, marcas, permisos de salida de menores y más.',
+      'TrÃ¡mites legales digitales en Ecuador: multas, marcas, permisos de salida de menores y mÃ¡s.',
     images: ['/images/logo.png'],
   },
 
   icons: {
-    icon: '/images/logo.png',
-    shortcut: '/images/logo.png',
-    apple: '/images/logo.png',
+    icon: '/images/favIcon.png',
+    shortcut: '/images/favIcon.png',
+    apple: '/images/favIcon.png',
   },
 
   robots: {
@@ -109,7 +109,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     logo: `${SITE_URL}/images/logo.png`,
     image: `${SITE_URL}/images/logo.png`,
     description:
-      'Plataforma LegalTech para iniciar trámites legales digitales en Ecuador.',
+      'Plataforma LegalTech para iniciar trÃ¡mites legales digitales en Ecuador.',
     areaServed: {
       '@type': 'Country',
       name: 'Ecuador',
@@ -158,3 +158,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+

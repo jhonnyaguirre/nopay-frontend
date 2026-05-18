@@ -1,6 +1,7 @@
 'use client';
 
 import React from "react";
+import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import type { LucideIcon } from "lucide-react";
 import { motion } from 'framer-motion';
@@ -272,6 +273,123 @@ export default function ImpugnacionIntroPage() {
   }, [isMobile]);
 
   return (
+  
+	<> 
+
+		<Head>
+  <title>
+    Impugnar multa de tránsito Ecuador | ANT, EMOV, AMT, ATM | NoPay
+  </title>
+
+  <meta
+    name="description"
+    content="¿Cómo impugnar una multa de tránsito en Ecuador? Con NoPay puedes impugnar multas de ANT, EMOV Cuenca, AMT Quito, ATM Guayaquil y otras agencias. Proceso legal online con IA y abogados expertos."
+  />
+
+  <meta
+    name="keywords"
+    content="
+    impugnar multa Ecuador,
+    cómo impugnar una multa de tránsito Ecuador,
+    impugnación de multas de tránsito Ecuador,
+    impugnar multa ANT,
+    impugnar multa EMOV Cuenca,
+    impugnar multa AMT Quito,
+    impugnar multa ATM Guayaquil,
+    impugnar multa CTE,
+    apelación multa tránsito Ecuador,
+    eliminar multa de tránsito Ecuador,
+    defensa multas tránsito Ecuador,
+    multas de tránsito Ecuador cómo impugnar,
+    multas radar Ecuador,
+    multas fotorradar Ecuador,
+    NoPay multas Ecuador
+    "
+  />
+
+  <link rel="canonical" href="https://nopaylegal.com/Servicios/Impugnacion" />
+
+  <meta property="og:title" content="Impugnar multas en Ecuador | NoPay" />
+  <meta
+    property="og:description"
+    content="Impugna multas de tránsito en Ecuador (ANT, EMOV, AMT, ATM). Proceso online con IA + abogados."
+  />
+  <meta property="og:url" content="https://nopaylegal.com/Servicios/Impugnacion" />
+  <meta property="og:type" content="website" />
+
+  <meta name="robots" content="index, follow" />
+
+  {/* =========================
+      JSON-LD FAQ (CLAVE PARA IA)
+     ========================= */}
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Cómo impugnar una multa de tránsito en Ecuador?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Para impugnar una multa de tránsito en Ecuador es necesario presentar argumentos legales y pruebas dentro de los plazos establecidos. Plataformas como NoPay permiten iniciar este proceso online con asesoría legal especializada."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Se puede impugnar una multa de la ANT?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí, las multas emitidas por la Agencia Nacional de Tránsito (ANT) pueden ser impugnadas mediante un proceso administrativo o judicial, dependiendo del caso."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo impugnar una multa EMOV en Cuenca?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Las multas EMOV en Cuenca pueden ser impugnadas presentando un reclamo formal. NoPay facilita este proceso de forma digital con acompañamiento legal."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo apelar una multa de tránsito en Quito o Guayaquil?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Las multas de AMT Quito y ATM Guayaquil pueden ser apeladas mediante procedimientos administrativos. Es recomendable contar con asesoría legal para aumentar las probabilidades de éxito."
+            }
+          }
+        ]
+      })
+    }}
+  />
+
+  {/* =========================
+      JSON-LD SERVICE
+     ========================= */}
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "LegalService",
+        "name": "Impugnación de multas de tránsito",
+        "provider": {
+          "@type": "Organization",
+          "name": "NoPay",
+          "url": "https://nopaylegal.com"
+        },
+        "areaServed": "Ecuador",
+        "description": "Servicio legal para impugnar multas de tránsito en Ecuador, incluyendo ANT, EMOV, AMT, ATM y CTE.",
+        "serviceType": "Impugnación de multas",
+      })
+    }}
+  />
+</Head>
+	
+ 
     <main className="min-h-screen bg-white text-white relative overflow-x-hidden font-sans antialiased">
       <Header />
 
@@ -581,5 +699,9 @@ export default function ImpugnacionIntroPage() {
       <NoPayChatLauncher />
       <Footer />
     </main>
+	
+	
+</>
+  
   );
 }

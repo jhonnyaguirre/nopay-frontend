@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Head from 'next/head';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Header } from 'app/resources/Header';
@@ -54,6 +55,186 @@ export default function RegistroMarcasPage() {
   };
 
   return (
+  
+	<>
+  <Head>
+    <title>
+      Registrar Marca en Ecuador | SENADI, nombre comercial y logo | NoPay
+    </title>
+
+    <meta
+      name="description"
+      content="Registra tu marca en Ecuador con NoPay. Protege tu nombre comercial, logotipo, eslogan o identidad de negocio ante SENADI. Proceso legal online con IA y revisión de expertos."
+    />
+
+    <meta
+      name="keywords"
+      content="
+      registrar marca Ecuador,
+      registro de marca Ecuador,
+      registrar marca SENADI,
+      registrar logo Ecuador,
+      registrar nombre comercial Ecuador,
+      proteger marca Ecuador,
+      propiedad intelectual Ecuador,
+      registro de marca online Ecuador,
+      registrar eslogan Ecuador,
+      búsqueda fonética marca Ecuador,
+      clases Niza Ecuador,
+      oposición de marca Ecuador,
+      abogados marcas Ecuador,
+      NoPay registro de marca
+      "
+    />
+
+    <link rel="canonical" href="https://nopaylegal.com/Servicios/Marcas" />
+
+    <meta property="og:title" content="Registrar Marca en Ecuador | NoPay" />
+    <meta
+      property="og:description"
+      content="Protege tu nombre comercial, logo o eslogan en Ecuador. Registro de marca online con NoPay, IA y expertos legales."
+    />
+    <meta property="og:url" content="https://nopaylegal.com/Servicios/Marcas" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://nopaylegal.com/images/logo.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Registrar Marca en Ecuador | NoPay" />
+    <meta
+      name="twitter:description"
+      content="Inicia el registro de tu marca en Ecuador con NoPay: nombre comercial, logo, eslogan y protección de identidad."
+    />
+    <meta name="twitter:image" content="https://nopaylegal.com/images/logo.png" />
+
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'LegalService',
+          name: 'Registro de Marcas en Ecuador',
+          provider: {
+            '@type': 'Organization',
+            name: 'NoPay',
+            url: 'https://nopaylegal.com',
+            logo: 'https://nopaylegal.com/images/logo.png',
+          },
+          areaServed: {
+            '@type': 'Country',
+            name: 'Ecuador',
+          },
+          serviceType: [
+            'Registro de marca',
+            'Protección de nombre comercial',
+            'Registro de logotipo',
+            'Registro de eslogan',
+            'Propiedad intelectual',
+          ],
+          description:
+            'Servicio legal digital para iniciar el registro de marcas en Ecuador, incluyendo nombre comercial, logotipo, eslogan, búsqueda previa y acompañamiento profesional.',
+          url: 'https://nopaylegal.com/Servicios/Marcas',
+          offers: {
+            '@type': 'Offer',
+            availability: 'https://schema.org/InStock',
+            priceCurrency: 'USD',
+          },
+        }),
+      }}
+    />
+
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: '¿Cómo registrar una marca en Ecuador?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text:
+                  'Para registrar una marca en Ecuador se debe identificar la marca, revisar su viabilidad, clasificarla según el tipo de producto o servicio y presentar la solicitud ante la autoridad competente. NoPay permite iniciar este proceso online con orientación legal y revisión profesional.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: '¿Dónde se registra una marca en Ecuador?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text:
+                  'En Ecuador, el registro de marcas se gestiona ante la autoridad nacional de propiedad intelectual. NoPay ayuda a preparar la información inicial y guiar el proceso de registro de forma digital.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: '¿Puedo registrar un logo o nombre comercial?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text:
+                  'Sí. Una marca puede proteger elementos como nombre comercial, logotipo, signo distintivo, eslogan o identidad de negocio, según el caso y la clasificación aplicable.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: '¿Qué pasa si otra persona ya usa una marca parecida?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text:
+                  'Si existe una marca igual o similar, puede haber riesgo de rechazo u oposición. Por eso es recomendable realizar una revisión previa antes de presentar la solicitud.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: '¿NoPay garantiza que la marca será aprobada?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text:
+                  'NoPay no garantiza aprobaciones administrativas. La plataforma ayuda a iniciar el proceso de forma ordenada, revisar información relevante y acompañar el trámite con criterio profesional.',
+              },
+            },
+          ],
+        }),
+      }}
+    />
+
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Inicio',
+              item: 'https://nopaylegal.com',
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Servicios',
+              item: 'https://nopaylegal.com/Servicios',
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: 'Registro de Marcas',
+              item: 'https://nopaylegal.com/Servicios/Marcas',
+            },
+          ],
+        }),
+      }}
+    />
+  </Head>
+
+   
+    
+  
     <main className="min-h-screen bg-white text-white relative overflow-x-hidden font-sans antialiased text-[90%]">
       <Header />
 
@@ -408,5 +589,7 @@ export default function RegistroMarcasPage() {
       <NoPayChatLauncher />
       <Footer />
     </main>
+	 
+</>
   );
 }

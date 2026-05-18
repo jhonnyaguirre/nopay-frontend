@@ -1,11 +1,11 @@
-// app/head.tsx
+﻿// app/head.tsx
 export default function RootHead() {
   return (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/images/favIcon.png" />
 
-      {/* Organización */}
+      {/* OrganizaciÃ³n */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -26,3 +26,4 @@ export default function RootHead() {
     </>
   )
 }
+
