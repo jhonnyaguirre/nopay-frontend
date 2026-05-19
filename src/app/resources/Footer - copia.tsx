@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
               <li className="flex items-start gap-2">
                 <Mail className="h-5 w-5 text-blue-600 mt-1" />
                 <a href="mailto:info@nopay.ec" className="hover:text-blue-700">
-                  softcorpecu@gmail.com
+                  info@nopaylegal.com
                 </a>
               </li>
               <li className="flex items-start gap-2">

@@ -93,7 +93,7 @@ export default function ContactoPage() {
       ),
       extra: (
         <a
-          href="mailto:softcorpecu@gmail.com"
+          href="mailto:info@nopaylegal.com"
           className="mt-3 inline-block text-sm bg-pink-50 text-pink-700 px-4 py-1.5 rounded-xl font-medium hover:bg-pink-100 transition"
         >
           Enviar Correo

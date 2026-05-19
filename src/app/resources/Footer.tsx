@@ -234,7 +234,7 @@ const EliteFooter = () => {
               className="transition hover:text-slate-700"
               aria-label="Enviar correo a NoPay"
             >
-              softcorpecu@gmail.com
+              info@nopaylegal.com
             </a>
           </div>
 
