@@ -621,12 +621,21 @@ const AdvancedForm = () => {
       const data = await response.json();
       if (controller.signal.aborted) return;
       if (data.meta?.error) {
-        setErrorPlaca('No se encontró información para la placa ingresada');
-        setConsultaExitosa(false);
-      } else if (!data.cabecera || Object.keys(data.cabecera).length === 0) {
-        setErrorPlaca('Placa no válida o sin información');
-        setConsultaExitosa(false);
-      } else {
+		  setErrorPlaca(
+			"Los enlaces de tránsito no están respondiendo en este momento. " +
+			"No te preocupes: si ingresaste correctamente la placa, puedes continuar el proceso sin esta consulta presionando Siguiente. " +
+			"También puedes intentar nuevamente en unos 15 minutos."
+		  );
+		  setConsultaExitosa(false);
+
+		} else if (!data.cabecera || Object.keys(data.cabecera).length === 0) {
+		  setErrorPlaca(
+			"No encontramos información asociada a esta placa. " +
+			"Verifica que esté escrita correctamente. Si la placa está bien ingresada, puedes continuar el proceso presionando Siguiente."
+		  );
+		  setConsultaExitosa(false);
+
+		} else {
         const cab = data.cabecera;
         setVehicleData(prev => ({
           ...prev, placa: placaAUsar, marca: cab.Marca || prev.marca, modelo: cab.Modelo || prev.modelo,
