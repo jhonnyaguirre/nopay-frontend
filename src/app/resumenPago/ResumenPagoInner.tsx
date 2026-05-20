@@ -1019,7 +1019,7 @@ export default function ResumenPago() {
       <div className="mt-20 border-t border-slate-200 bg-white py-10 text-center">
         <p className="text-xs font-medium text-slate-400">
           ¿Necesitas ayuda? Escríbenos a{" "}
-          <span className="text-indigo-600 font-bold">info@noopay.com</span>
+          <span className="text-indigo-600 font-bold">info@nopaylegal.com</span>
         </p>
       </div>
     </div>

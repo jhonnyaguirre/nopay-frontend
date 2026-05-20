@@ -256,7 +256,7 @@ export default function PagoInner() {
             <ShieldCheck size={16} />
           </div>
           <p className="text-[11px] text-slate-400 max-w-md mx-auto leading-relaxed">
-            Esta es una conexión segura. Los datos de su tarjeta son encriptados y procesados directamente por la entidad financiera. **NooPay** no almacena información sensible de tarjetas.
+            Esta es una conexión segura. Los datos de su tarjeta son encriptados y procesados directamente por la entidad financiera. **NoPay** no almacena información sensible de tarjetas.
           </p>
         </footer>
       </main>

@@ -611,8 +611,8 @@ export default function PermisoSalidaDiagnosticoNoPay() {
                 <div>
                   <h5 className="font-black text-slate-800">¿Caso complejo?</h5>
                   <p className="text-xs text-slate-600 mt-1">Contáctanos para una asesoría personalizada con abogados de familia.</p>
-                  <a href="mailto:legal@nopay.com" className="inline-flex items-center gap-1 mt-3 text-sm font-bold text-pink-600 hover:underline">
-                    <Mail size={14} /> legal@nopay.com
+                  <a href="mailto:info@nopaylegal.com" className="inline-flex items-center gap-1 mt-3 text-sm font-bold text-pink-600 hover:underline">
+                    <Mail size={14} /> info@nopaylegal.com
                   </a>
                 </div>
               </div>

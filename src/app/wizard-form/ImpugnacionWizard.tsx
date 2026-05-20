@@ -74,7 +74,7 @@ type MultaDetectada = {
   estado: string;
 };
 
-// ======================== FUNCIONES PURAS (FUERA DEL COMPONENTE) ========================
+// ======================== FUNCIONES PURAS ========================
 const cn = (...classes: Array<string | false | null | undefined>) =>
   classes.filter(Boolean).join(" ");
 
@@ -464,7 +464,7 @@ const Stepper = memo(({ step, completedSteps }: { step: number; completedSteps: 
 ));
 Stepper.displayName = "Stepper";
 
-// ======================== SUBCOMPONENTES DE PASOS (MEMOIZADOS) ========================
+// ======================== SUBCOMPONENTES DE PASOS ========================
 const Step1 = memo(({ formData, errors, setFormData }: any) => (
   <SectionCard title="Ubicación de la infracción" description="Ingresa la dirección donde ocurrió el hecho." icon={<MapPin className="h-7 w-7" />}>
     <div className="space-y-6">
@@ -535,10 +535,6 @@ const Step3 = memo(({ errors }: any) => (
   </SectionCard>
 ));
 Step3.displayName = "Step3";
-
-// El Step4 es más complejo, se define dentro del componente principal para acceder a funciones y estados específicos, pero se memoizará con useCallback y se usará React.memo.
-// Debido a la alta dependencia de handlers y estado, lo mantendremos como un componente interno memoizado definido dentro del padre con useMemo? No, es mejor mantenerlo como una función renderizada condicionalmente, pero ya está envuelto en AnimatePresence.
-// Dado que las props son estables (formData, errors, handlers memoizados), no habrá re-renderizados innecesarios.
 
 // ======================== COMPONENTE PRINCIPAL ========================
 const ImpugnacionWizard = () => {
@@ -921,7 +917,6 @@ const ImpugnacionWizard = () => {
   if (loading) {
     return (
       <>
-        <NoPayBackground />
         <Header />
         <main className="mx-auto flex min-h-[70vh] max-w-7xl items-center justify-center px-4 py-10">
           <div className="rounded-[28px] border border-slate-200/80 bg-white/90 px-8 py-10 text-center shadow-[0_20px_80px_-30px_rgba(15,23,42,0.35)] backdrop-blur-xl">
@@ -935,9 +930,71 @@ const ImpugnacionWizard = () => {
     );
   }
 
+  if (step === 7) {
+    const currentSecurityMessage =
+      securityMessages[Math.max(0, Math.min(securityStage, securityMessages.length - 1))] || securityMessages[0];
+    const CurrentSecurityIcon = currentSecurityMessage.icon;
+    const currentProgress = Math.min(100, Math.max(20, ((Math.max(securityStage, 0) + 1) / securityMessages.length) * 100));
+
+    return (
+      <div className="fixed inset-0 z-[9999] overflow-hidden bg-slate-950 text-white">
+        <NoPayBackground />
+
+        <div className="absolute inset-0 bg-slate-950/35 backdrop-blur-[2px]" />
+
+        <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            className="w-full max-w-lg overflow-hidden rounded-[34px] border border-white/15 bg-white/[0.08] p-6 text-center shadow-[0_30px_120px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:p-8"
+          >
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[28px] border border-white/15 bg-white/10 shadow-2xl">
+              <CurrentSecurityIcon className="h-10 w-10 text-cyan-200" />
+            </div>
+
+            <p className="text-xs font-bold uppercase tracking-[0.28em] text-cyan-200">Pago seguro NoPay</p>
+            <h1 className="mt-3 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
+              Preparando tu redirección
+            </h1>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-slate-200 sm:text-base">
+              Estamos protegiendo tu información y creando el canal seguro para continuar con el pago.
+            </p>
+
+            <div className="mt-8 rounded-3xl border border-white/10 bg-black/20 p-4 text-left">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-cyan-400/15 text-cyan-100">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold text-white">{currentSecurityMessage.text}</p>
+                  <p className="mt-1 text-xs text-slate-300">No cierres esta ventana durante el proceso.</p>
+                </div>
+              </div>
+
+              <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-400 to-emerald-300"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${currentProgress}%` }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <AnimatePresence>
+          {showNotification && (
+            <Notification message={notificationMessage} onClose={() => setShowNotification(false)} />
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
   return (
     <>
-      <NoPayBackground />
       <Header />
       <main className="relative z-10 px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-6">

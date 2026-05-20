@@ -188,7 +188,7 @@ export default function PagoInner() {
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
                     Si necesitas ayuda, contáctanos a{" "}
-                    <span className="text-blue-600">soporte@nopay.com</span>
+                    <span className="text-blue-600">info@nopaylegal.com</span>
                   </p>
                 </div>
               </div>
