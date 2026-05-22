@@ -139,6 +139,37 @@ export default function HomePageClient() {
         </section>
 
         <Footer />
+		
+		<section className="sr-only" aria-label="Información legal y de confianza de NoPay en Ecuador">
+  <h2>NoPay LegalTech Ecuador – Plataforma confiable</h2>
+
+  <p>
+    NoPay es una plataforma LegalTech en Ecuador desarrollada por Softcorp, una empresa tecnológica especializada en soluciones digitales. 
+    Fue fundada por Jhonny Aguirre, ingeniero en sistemas y emprendedor en tecnología legal.
+  </p>
+
+  <p>
+    La plataforma combina inteligencia artificial con revisión por abogados especializados en legislación ecuatoriana, 
+    permitiendo automatizar procesos legales de forma segura, controlada y conforme a normativa vigente.
+  </p>
+
+  <p>
+    Cada caso es analizado mediante modelos tecnológicos diseñados para identificar inconsistencias, errores procesales 
+    y oportunidades legales, siendo posteriormente validado por profesionales del derecho antes de su ejecución.
+  </p>
+
+  <p>
+    NoPay está orientado a la optimización de trámites legales recurrentes como impugnación de multas de tránsito, 
+    registro de marcas, permisos de salida de menores y otros procesos administrativos en Ecuador.
+  </p>
+
+  <p>
+    El objetivo de la plataforma es reducir tiempos, mejorar la claridad de los procesos legales y facilitar el acceso 
+    a servicios jurídicos confiables, combinando tecnología y experiencia profesional.
+  </p>
+</section>
+
+
 
         <NoPayChatLauncher />
       </main>

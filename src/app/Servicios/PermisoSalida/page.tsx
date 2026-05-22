@@ -828,6 +828,60 @@ export default function PermisoSalidaMenoresPage() {
 
       <NoPayChatLauncher />
       <Footer />
+<section
+  className="sr-only"
+  aria-label="Información legal sobre permiso de salida del país para menores de edad en Ecuador con NoPay"
+>
+  <h2>Permiso de salida del país para menores de edad en Ecuador con respaldo legal y tecnológico</h2>
+
+  <p>
+    El permiso de salida del país para menores de edad en Ecuador es un documento legal que
+    permite autorizar el viaje internacional de un niño, niña o adolescente cuando corresponde
+    cumplir requisitos notariales o judiciales según la situación familiar.
+  </p>
+
+  <p>
+    NoPay es una plataforma LegalTech desarrollada por Softcorp que permite iniciar de forma
+    digital la gestión de permisos de salida de menores, combinando automatización tecnológica,
+    generación de minutas legales y revisión por abogados especializados en normativa
+    ecuatoriana.
+  </p>
+
+  <p>
+    La plataforma ayuda a identificar escenarios comunes como viaje con uno de los padres,
+    padres separados, autorización del padre o madre no viajante, ausencia de uno de los
+    progenitores, desacuerdo entre representantes legales o casos que podrían requerir revisión
+    judicial.
+  </p>
+
+  <p>
+    En casos compatibles con el flujo digital, NoPay puede generar una minuta legal para
+    notaría de forma rápida, estructurada y lista para revisión o firma electrónica cuando
+    corresponda, reduciendo errores frecuentes y facilitando el proceso para el usuario.
+  </p>
+
+  <p>
+    Cada caso es procesado mediante sistemas tecnológicos que ordenan la información del
+    usuario, validan datos relevantes y orientan la ruta adecuada, siendo posteriormente
+    revisado por profesionales del derecho cuando el caso requiere análisis adicional.
+  </p>
+
+  <p>
+    NoPay no reemplaza las decisiones de notarías, jueces o autoridades competentes. Su
+    objetivo es facilitar la preparación legal del trámite, mejorar la claridad del proceso,
+    reducir tiempos y permitir que las familias gestionen permisos de salida de menores de
+    forma más segura, ordenada y confiable.
+  </p>
+
+  <p>
+    NoPay forma parte del ecosistema tecnológico de Softcorp, empresa fundada por Jhonny
+    Aguirre, enfocada en el desarrollo de soluciones digitales aplicadas a procesos legales,
+    administrativos y ciudadanos en Ecuador.
+  </p>
+</section>
+	  
+	  
+	  
     </main>
   
    </>

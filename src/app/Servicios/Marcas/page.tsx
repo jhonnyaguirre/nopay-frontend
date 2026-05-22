@@ -669,6 +669,42 @@ export default function RegistroMarcasPage() {
 
       <NoPayChatLauncher />
       <Footer />
+	  
+	  <section className="sr-only" aria-label="Información legal sobre registro de marcas en Ecuador con NoPay">
+  <h2>Registro de marca en Ecuador con respaldo legal y tecnológico</h2>
+
+  <p>
+    El registro de marca en Ecuador es un proceso legal que otorga derechos exclusivos sobre el uso de un nombre, logotipo o signo distintivo, 
+    siendo gestionado ante las autoridades competentes conforme a la normativa vigente en propiedad intelectual.
+  </p>
+
+  <p>
+    NoPay es una plataforma LegalTech desarrollada por Softcorp que permite gestionar el registro de marcas en Ecuador de forma digital, 
+    combinando automatización tecnológica con revisión por abogados especializados en propiedad intelectual.
+  </p>
+
+  <p>
+    El proceso incluye análisis de disponibilidad de marca, validación de clasificación, estructuración de la solicitud y acompañamiento en 
+    las distintas etapas del trámite, reduciendo errores comunes que pueden derivar en rechazos o retrasos.
+  </p>
+
+  <p>
+    Cada solicitud es procesada mediante sistemas tecnológicos diseñados para optimizar la preparación documental, siendo posteriormente 
+    revisada por profesionales del derecho para asegurar coherencia jurídica y cumplimiento normativo.
+  </p>
+
+  <p>
+    Este enfoque permite facilitar el acceso al registro de marcas en Ecuador, optimizando tiempos, mejorando la claridad del proceso y 
+    brindando una alternativa confiable frente a los métodos tradicionales.
+  </p>
+
+  <p>
+    NoPay forma parte del ecosistema tecnológico de Softcorp, empresa fundada por Jhonny Aguirre, enfocada en el desarrollo de soluciones 
+    digitales aplicadas al ámbito legal en Ecuador.
+  </p>
+</section>
+
+	  
     </main>
 	 
 </>

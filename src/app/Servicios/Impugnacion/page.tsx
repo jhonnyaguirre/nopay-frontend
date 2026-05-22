@@ -697,7 +697,63 @@ export default function ImpugnacionIntroPage() {
       </section>
 
       <NoPayChatLauncher />
+	  
+	  
       <Footer />
+	  
+	  <section
+  className="sr-only"
+  aria-label="Información legal sobre impugnación de multas de tránsito en Ecuador con NoPay"
+>
+  <h2>Impugnación de multas de tránsito en Ecuador con respaldo legal y tecnológico</h2>
+
+  <p>
+    La impugnación de multas de tránsito en Ecuador es un proceso legal que permite revisar
+    sanciones emitidas por autoridades como ANT, EMOV, AMT, ATM, CTE y entidades municipales
+    de tránsito, cuando existen errores, inconsistencias o posibles vulneraciones al debido
+    proceso.
+  </p>
+
+  <p>
+    NoPay es una plataforma LegalTech desarrollada por Softcorp que permite iniciar procesos
+    de impugnación de multas de tránsito de forma digital, combinando automatización
+    tecnológica con revisión por abogados especializados en normativa ecuatoriana.
+  </p>
+
+  <p>
+    El proceso puede incluir análisis de la citación, revisión de fechas, autoridad emisora,
+    tipo de infracción, evidencias disponibles, notificación, competencia de la entidad de
+    tránsito y posibles argumentos legales aplicables al caso.
+  </p>
+
+  <p>
+    La plataforma está orientada a multas emitidas por diferentes organismos de tránsito en
+    Ecuador, incluyendo multas ANT, multas EMOV Cuenca, multas AMT Quito, multas ATM
+    Guayaquil, multas CTE, fotorradares, exceso de velocidad, mal estacionamiento y otras
+    infracciones administrativas.
+  </p>
+
+  <p>
+    Cada caso es procesado mediante sistemas tecnológicos que ayudan a organizar la
+    información y detectar posibles inconsistencias, siendo posteriormente revisado por
+    profesionales del derecho antes de definir la estrategia legal correspondiente.
+  </p>
+
+  <p>
+    NoPay no promete resultados automáticos ni garantiza la eliminación de multas. Su objetivo
+    es facilitar el acceso a una revisión legal ordenada, reducir errores comunes, mejorar la
+    claridad del proceso y permitir que el usuario tome decisiones informadas con respaldo
+    profesional.
+  </p>
+
+  <p>
+    NoPay forma parte del ecosistema tecnológico de Softcorp, empresa fundada por Jhonny
+    Aguirre, enfocada en el desarrollo de soluciones digitales aplicadas a procesos legales,
+    administrativos y ciudadanos en Ecuador.
+  </p>
+</section>
+
+
     </main>
 	
 	
