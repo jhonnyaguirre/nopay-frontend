@@ -23,6 +23,7 @@ import {
   AlertTriangle,
   HeartHandshake,
   Globe,
+  Info,
 } from 'lucide-react';
 import NoPayChatLauncher from 'app/resources/NoPayChatLauncher';
 import PermisoMenoresPhoneOverlay from 'app/resources/animaciones/PermisoSalida/page';
@@ -123,6 +124,7 @@ type FeatureCardProps = {
   description: string;
   icon: React.ReactNode;
   delay?: number;
+  extraNote?: string;
 };
 
 const FeatureCard = ({
@@ -131,6 +133,7 @@ const FeatureCard = ({
   description,
   icon,
   delay = 0,
+  extraNote,
 }: FeatureCardProps) => (
   <motion.div
     variants={fadeUp}
@@ -145,6 +148,12 @@ const FeatureCard = ({
     </div>
     <h3 className="text-lg font-black text-slate-950 mb-3">{title}</h3>
     <p className="text-sm text-slate-500 leading-relaxed">{description}</p>
+    {extraNote && (
+      <div className="mt-4 flex items-start gap-2 text-xs text-amber-600 bg-amber-50/60 p-2 rounded-lg border border-amber-100">
+        <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+        <span>{extraNote}</span>
+      </div>
+    )}
   </motion.div>
 );
 
@@ -274,7 +283,7 @@ export default function PermisoSalidaMenoresPage() {
 
   return (
    <>
-	<Head>
+  <Head>
   <title>
     Permiso de Salida de Menores Ecuador | Minuta inmediata para notaría | NoPay
   </title>
@@ -551,12 +560,26 @@ export default function PermisoSalidaMenoresPage() {
                 </CTAButton>
               </motion.div>
 
+              {/* NUEVA AYUDA: aviso importante justo debajo de los botones */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+                transition={{ delay: 0.36 }}
+                className="mt-5 flex items-start gap-2.5 bg-amber-400/10 border border-amber-400/30 backdrop-blur-sm rounded-xl p-3 max-w-md"
+              >
+                <AlertTriangle className="h-5 w-5 text-amber-300 flex-shrink-0 mt-0.5" />
+                <div className="text-xs text-amber-100/90 leading-relaxed">
+                  <span className="font-bold">Selecciona según tu caso real:</span> responder al azar o con datos incorrectos puede hacer que el proceso <strong className="text-white">no sea viable en NoPay</strong>. Tómate un minuto para elegir con honestidad.
+                </div>
+              </motion.div>
+
               <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={fadeUp}
                 transition={{ delay: 0.42 }}
-                className="mt-8 flex flex-wrap gap-3"
+                className="mt-6 flex flex-wrap gap-3"
               >
                 {[
                   { icon: <FileText className="h-4 w-4" />, text: 'Documento' },
@@ -613,6 +636,7 @@ export default function PermisoSalidaMenoresPage() {
               description="Indica si el menor viaja con un padre, con terceros o solo. Determinamos el tipo de autorización que necesitas."
               icon={<Plane className="h-7 w-7 text-rose-500" />}
               delay={0}
+              extraNote="Elige la opción que refleje fielmente tu situación familiar. Una selección incorrecta podría derivar en un documento no apto para notaría."
             />
             <FeatureCard
               step="02"
@@ -769,6 +793,21 @@ export default function PermisoSalidaMenoresPage() {
           >
             Realiza un diagnóstico inicial y conoce qué tipo de autorización corresponde según tu caso. Sin compromiso.
           </motion.p>
+
+          {/* Aviso adicional justo antes del botón final */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.18, duration: 0.55 }}
+            className="flex justify-center mb-5"
+          >
+            <div className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/30 rounded-xl px-4 py-2 text-xs text-amber-100/90">
+              <Info className="h-4 w-4 text-amber-300" />
+              <span>Selecciona con cuidado: datos incorrectos pueden invalidar el permiso en NoPay.</span>
+            </div>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -790,8 +829,8 @@ export default function PermisoSalidaMenoresPage() {
       <NoPayChatLauncher />
       <Footer />
     </main>
-	
-	 </>
-	
+  
+   </>
+  
   );
 }

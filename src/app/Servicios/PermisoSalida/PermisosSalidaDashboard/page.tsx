@@ -964,7 +964,7 @@ export default function PermisosSalidaDashboard() {
     }
   };
 
-  const handleClick = () => router.push("/Servicios/PermisoSalida/PermisoSalidaDiagnostico");
+  const handleClick = () => router.push("/Servicios/PermisoSalida/PermisoSalidaProceso");
 
   const handleOpenEdit = (codigo: string) => {
     router.push(`/Servicios/PermisoSalida/EditarPermisoDialog?codigo=${codigo}`);
@@ -1226,7 +1226,7 @@ export default function PermisosSalidaDashboard() {
   useEffect(() => {
     if (!loading && !error && permisos.length === 0 && !initialRedirectDone) {
       setInitialRedirectDone(true);
-      router.push("/Servicios/PermisoSalida/PermisoSalidaDiagnostico");
+      router.push("/Servicios/PermisoSalida/PermisoSalidaProceso");
     }
   }, [loading, error, permisos, router, initialRedirectDone]);
 

@@ -776,14 +776,37 @@ const emailFinal =
         result = { mensaje: rawText };
       }
 
-      if (!response.ok) {
-        throw new Error(
-          result?.error ||
-            result?.mensaje ||
-            `No se pudo registrar el usuario. HTTP ${response.status}`
-        );
-      }
+     
+	 if (!response.ok) {
+  if (response.status === 409 && result?.codigo) {
+    const emailParcial = result?.emailParcial || 'el correo registrado';
 
+    if (result.codigo === 'CEDULA_CON_OTRO_EMAIL') {
+      throw new Error(
+        `Esta cédula ya está registrada con el correo ${emailParcial}. Ingresa con ese correo para continuar.`
+      );
+    }
+	
+	if (result.codigo === 'EMAIL_YA_REGISTRADO') {
+	  throw new Error(
+		`Este correo ya existe en NoPay (${emailParcial}). Ingresa con ese correo para continuar.`
+	  );
+	}
+
+    if (result.codigo === 'EMAIL_CON_OTRA_CEDULA') {
+      throw new Error(
+        `Este correo ya está asociado a otra cédula. Verifica tus datos o inicia sesión con la cuenta correcta.`
+      );
+    }
+  }
+
+  throw new Error(
+    result?.error ||
+      result?.mensaje ||
+      `No se pudo registrar el usuario. HTTP ${response.status}`
+  );
+}
+	 
       const usuarioPersistido = await consultarUsuario(cedula.trim());
       if (!usuarioPersistido?.cedula) {
         throw new Error(
@@ -804,10 +827,19 @@ const emailFinal =
       setNotificationMessage(result?.mensaje || 'Tu perfil quedó registrado correctamente. ¡Servicios habilitados!');
       setShowNotification(true);
     } catch (error: any) {
-      setNotificationTone('error');
-      setNotificationMessage(error?.message || 'Ocurrió un problema al guardar tus datos.');
-      setShowNotification(true);
-    } finally {
+	  setNotificationTone('error');
+	  setNotificationMessage(error?.message || 'Ocurrió un problema al guardar tus datos.');
+	  setShowNotification(true);
+
+	  // 🔥 CLAVE: liberar la cédula para que el usuario pueda corregir
+	  setCedulaBloqueada(false);
+
+	  // opcional pero recomendado: marcar perfil como no listo
+	  setProfileReady(false);
+	  setTimeout(() => {
+	  document.querySelector<HTMLInputElement>('input[type="text"]')?.focus();
+	}, 200);
+	} finally {
       setSavingProfile(false);
     }
   };

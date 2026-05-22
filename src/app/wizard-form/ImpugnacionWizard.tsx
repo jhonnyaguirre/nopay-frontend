@@ -517,8 +517,8 @@ const Step2 = memo(({ formData, errors, setFormData }: any) => (
       <Field label="Agencia emisora" error={errors.agencia} icon={<Shield className="h-4 w-4" />}>
         <SelectInput value={formData.agencia} onChange={(value: string) => setFormData((prev: any) => ({ ...prev, agencia: value }))} error={errors.agencia}>
           <option value="">Seleccione la agencia</option>
-          <option value="ANT">ANT</option>
-          <option value="Agencia Municipal">Municipal</option>
+          <option value="ANT">ANT (Agencia Nacional de Tránsito)</option>
+          <option value="Agencia Municipal">Municipal (EMOV, AMT, ATM, etc)</option>
         </SelectInput>
       </Field>
     </div>
