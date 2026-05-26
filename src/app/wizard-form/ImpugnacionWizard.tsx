@@ -886,20 +886,52 @@ const ImpugnacionWizard = () => {
     }
   }, [step, nombreParam, cedula, formData, vehiculoDescripcion]);
 
-  useEffect(() => {
-  if (respuestaIA) {
-    const parseMarkdown = async () => {
-      try {
-        const result = await marked.parse(respuestaIA);
-        setHtmlIA(result);
-      } catch (err) {
-        console.error('Error parsing markdown:', err);
-        setHtmlIA('<p>Error al formatear la respuesta de la IA.</p>');
-      }
-    };
-    parseMarkdown();
-  }
-}, [respuestaIA]);
+   const limpiarRespuestaIA = (texto: string): string => {
+  if (!texto) return "";
+
+  let limpio = texto.trim();
+
+  // Quita bloques tipo ```html ... ```
+  limpio = limpio
+    .replace(/^```html\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/```$/i, "")
+    .trim();
+
+  // Decodifica HTML escapado: &lt;p&gt; → <p>
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = limpio;
+  limpio = textarea.value;
+
+  return limpio;
+};
+
+		useEffect(() => {
+		  if (!respuestaIA) {
+			setHtmlIA("");
+			return;
+		  }
+
+		  const parseRespuestaIA = async () => {
+			try {
+			  const limpio = limpiarRespuestaIA(respuestaIA);
+
+			  const pareceHTML = /<\/?[a-z][\s\S]*>/i.test(limpio);
+
+			  if (pareceHTML) {
+				setHtmlIA(limpio);
+			  } else {
+				const result = await marked.parse(limpio);
+				setHtmlIA(result as string);
+			  }
+			} catch (err) {
+			  console.error("Error formateando respuesta IA:", err);
+			  setHtmlIA("<p>Error al formatear la respuesta de la IA.</p>");
+			}
+		  };
+
+		  parseRespuestaIA();
+		}, [respuestaIA]);
 
   useEffect(() => {
     if (step === 7 && securityStage === -1) setSecurityStage(0);
