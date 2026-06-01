@@ -178,16 +178,38 @@ export default function AliadosLegalesNoPayPage() {
               Aliados legales NoPay
             </div>
 
-            <h1 className="max-w-3xl text-5xl font-black leading-[1.05] tracking-[-0.05em] text-slate-900 md:text-7xl">
-              Recibe más casos <br />
-              <span className="bg-gradient-to-r from-rose-600 via-pink-500 to-orange-500 bg-clip-text text-transparent drop-shadow-sm">
-                sin buscar clientes.
-              </span>
-            </h1>
+           
+		   <h1 className="max-w-3xl text-5xl font-black leading-[1.05] tracking-[-0.05em] text-slate-900 md:text-7xl">
+			  La transformación digital
+			  <br />
+			  <span className="bg-gradient-to-r from-[#111827] via-[#B68D40] to-[#E7C873] bg-clip-text text-transparent">
+				del sector legal.
+			  </span>
+			</h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-500 font-normal">
-              Automatizamos la captación digital para que te enfoques en litigar. Únete a la red inteligente de abogados en Ecuador.
-            </p>
+			<p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
+			  En <span className="font-bold text-slate-900">NoPay</span> estamos construyendo una{" "}
+			  <span className="font-semibold text-slate-800">
+				plataforma tecnológica
+			  </span>{" "}
+			  que moderniza la forma en que las personas acceden a{" "}
+			  <span className="font-semibold text-slate-800">
+				servicios legales
+			  </span>{" "}
+			  en <span className="font-semibold text-slate-800">Ecuador</span>.
+			  <br />
+			  <br />
+			  Buscamos{" "}
+			  <span className="font-semibold text-slate-800">
+				abogados y estudios jurídicos
+			  </span>{" "}
+			  que compartan esta{" "}
+			  <span className="font-semibold text-[#B68D40]">
+				visión de innovación
+			  </span>.
+			</p>
+
+		   
 
             {/* Tarjetas de Beneficios Mejoradas */}
             <div className="mt-10 grid max-w-xl grid-cols-1 gap-4 sm:grid-cols-3">
