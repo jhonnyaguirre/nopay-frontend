@@ -273,7 +273,7 @@ const EliteLegalHeroFusion = () => {
               <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 shadow-sm">
                 <MousePointer2 className="h-3.5 w-3.5 text-orange-600" />
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                  Beneficios del ecosistema
+                  NOPAY - LEGALTECH
                 </span>
               </div>
               <h2 className="mt-6 text-3xl md:text-[3.2rem] font-bold tracking-tight text-slate-950 leading-tight">
