@@ -154,6 +154,18 @@ const contactoVacio = (
   observacion: ''
 });
 
+const esCedulaSesionValida = (valor: any): boolean => {
+  if (!valor) return false;
+
+  const cedula = String(valor).trim();
+
+  if (cedula.includes('@')) return false;
+  if (!/^\d+$/.test(cedula)) return false;
+  if (cedula.length !== 10) return false;
+
+  return true;
+};
+
 export default function WizardSalidaPais() {
   const router = useRouter();
   const logout = useLogout();
@@ -261,7 +273,7 @@ useEffect(() => {
       }
     };
 
-    const validate = async () => {
+  /*  const validate = async () => {
       const token = getWizardToken();
       if (!token || !(await isJWTValid(token))) {
         logout();
@@ -277,6 +289,47 @@ useEffect(() => {
       }
       setLoading(false);
     };
+*/
+
+
+const validate = async () => {
+  const token = getWizardToken();
+
+  if (!token || !(await isJWTValid(token))) {
+    logout();
+    router.replace('/login');
+    return;
+  }
+
+  try {
+    const wizardData = SessionWizardData.obtener();
+    const cedulaSesion = wizardData?.cedula || '';
+
+    if (!esCedulaSesionValida(cedulaSesion)) {
+      setGeneralError('Completa algunos datos para continuar. Redirigiendo...');
+
+      setTimeout(() => {
+        router.replace('/Servicios/landingActivos');
+      }, 1000);
+
+      setLoading(false);
+      return;
+    }
+
+    setUsuarioId(Number(wizardData?.secuencial || 1));
+  } catch {
+    setGeneralError('Completa algunos datos para continuar. Redirigiendo...');
+
+    setTimeout(() => {
+      router.replace('/Servicios/landingActivos');
+    }, 1000);
+
+    setLoading(false);
+    return;
+  }
+
+  setLoading(false);
+};
 
     cargarPaises();
     validate();
@@ -947,6 +1000,33 @@ const onCedulaChange = (
   
 
   if (loading) return null;
+  
+  if (generalError) {
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-[#FBFBFE] px-6">
+      <div className="max-w-md w-full rounded-[32px] border border-amber-200 bg-white p-8 text-center shadow-2xl">
+
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-50">
+          <Info className="h-8 w-8 text-amber-600" />
+        </div>
+
+        <h2 className="text-2xl font-black text-slate-900">
+          Completa algunos datos
+        </h2>
+
+        <p className="mt-3 text-sm leading-relaxed text-slate-500">
+          Necesitamos validar tu información antes de continuar con este trámite.
+        </p>
+
+        <p className="mt-2 text-sm font-semibold text-slate-700">
+          Serás redirigido automáticamente...
+        </p>
+
+        <Loader2 className="mx-auto mt-6 h-6 w-6 animate-spin text-pink-500" />
+      </div>
+    </main>
+  );
+}
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] pb-20">

@@ -1,4 +1,5 @@
 'use client';
+'use client';
 
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -149,6 +150,8 @@ export default function RegistroMarcaDiagnosticoNoPay() {
 
   const [diagnostic, setDiagnostic] = useState<DiagnosticPayload | null>(null);
   const [createdCase, setCreatedCase] = useState<{ secuencial?: number; codigo_tramite?: string } | null>(null);
+  
+   
 
   const categoryMeta = {
     TECNOLOGIA: {
@@ -210,7 +213,7 @@ export default function RegistroMarcaDiagnosticoNoPay() {
     return () => window.removeEventListener('resize', detectSize);
   }, []);
 
-  useEffect(() => {
+ /* useEffect(() => {
     const validate = async () => {
       const token = getWizardToken();
       if (!token || !(await isJWTValid(token))) {
@@ -223,7 +226,7 @@ export default function RegistroMarcaDiagnosticoNoPay() {
         const data = SessionWizardData.obtener();
 		setUsuarioId(Number(data?.secuencial || 1));
       } catch {
-        setUsuarioId(100);
+        router.replace('/Servicios/landingActivos');
       }
 
        
@@ -232,7 +235,66 @@ export default function RegistroMarcaDiagnosticoNoPay() {
     };
 
     validate();
-  }, [logout, router]);
+  }, [logout, router]);*/
+   
+   useEffect(() => {
+  const esCedulaValida = (valor: any): boolean => {
+    if (!valor) return false;
+
+    const cedula = String(valor).trim();
+
+    // Si parece email, no sirve como cédula
+    if (cedula.includes('@')) return false;
+
+    // Solo números
+    if (!/^\d+$/.test(cedula)) return false;
+
+    // Cédula ecuatoriana básica: 10 dígitos
+    if (cedula.length !== 10) return false;
+
+    return true;
+  };
+
+  const redirigirPorDatosIncompletos = () => {
+    setGeneralError('Completa algunos datos para continuar.');
+
+    setTimeout(() => {
+      router.replace('/Servicios/landingActivos');
+    }, 1000);
+  };
+
+  const validate = async () => {
+    const token = getWizardToken();
+
+    if (!token || !(await isJWTValid(token))) {
+      logout();
+      router.replace('/login');
+      return;
+    }
+
+    try {
+      const data = SessionWizardData.obtener();
+
+      const cedulaUsuario = data?.cedula || '';
+
+      if (!esCedulaValida(cedulaUsuario)) {
+        setLoading(false);
+        redirigirPorDatosIncompletos();
+        return;
+      }
+
+      setUsuarioId(Number(data?.secuencial || 1));
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      redirigirPorDatosIncompletos();
+      return;
+    }
+  };
+
+  validate();
+}, [logout, router]);
+   
 
   useEffect(() => {
     if (step === 4 && diagnostic && (diagnostic.result === 'ALTO' || diagnostic.result === 'MEDIO')) {
@@ -544,7 +606,33 @@ const continueToResumenPago = async () => {
 };
 
 
-  if (loading) return null;
+
+if (loading) return null;
+
+if (generalError) {
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-[#FBFBFE] px-6">
+      <div className="max-w-md rounded-[32px] border border-amber-200 bg-white p-8 text-center shadow-2xl">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+          <Info size={28} />
+        </div>
+
+        <h2 className="text-2xl font-black text-slate-900">
+          Completa algunos datos
+        </h2>
+
+        <p className="mt-3 text-sm font-semibold leading-relaxed text-slate-500">
+          Necesitamos tu información inicial para continuar con este servicio.
+          Serás redirigido automáticamente.
+        </p>
+
+        <Loader2 className="mx-auto mt-6 h-6 w-6 animate-spin text-pink-500" />
+      </div>
+    </main>
+  );
+}
+
+
 
   const resultMeta = getResultMeta(diagnostic?.result || 'INDETERMINADO');
 

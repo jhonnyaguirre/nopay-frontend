@@ -227,7 +227,7 @@ const EliteLegalHeroFusion = () => {
             >
               <Sparkles className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
               <span className="text-[10px] font-bold text-white/90 uppercase tracking-[0.25em]">
-                Sin trámites. Sin vueltas. Sin estrés.
+                NoPay significa menos trámites, menos vueltas y menos estrés.
               </span>
             </motion.div>
 

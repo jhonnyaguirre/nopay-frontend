@@ -393,6 +393,20 @@ const MultasModal = ({ isOpen, onClose, multas, placa }: { isOpen: boolean; onCl
   );
 };
 
+const esCedulaSesionValida = (valor: any): boolean => {
+  if (!valor) return false;
+
+  const cedula = String(valor).trim();
+
+  if (cedula.includes('@')) return false;
+
+  if (!/^\d+$/.test(cedula)) return false;
+
+  if (cedula.length !== 10) return false;
+
+  return true;
+};
+
 // -------------------- COMPONENTE PRINCIPAL OPTIMIZADO --------------------
 const AdvancedForm = () => {
   const router = useRouter();
@@ -503,9 +517,28 @@ const AdvancedForm = () => {
 
   // Fetch user data
   const fetchUserData = useCallback(async () => {
-    const token = getWizardToken();
+    
+	const wizardDataNow = SessionWizardData.obtener();
+
+	const cedulaSesion = wizardDataNow?.cedula || '';
+
+	if (!esCedulaSesionValida(cedulaSesion)) {
+
+	  setAuthError(
+		'Completa algunos datos para continuar.'
+	  );
+
+	  setTimeout(() => {
+		router.replace('/Servicios/landingActivos');
+	  }, 1000);
+
+	  return;
+	}
+	
+	
+	const token = getWizardToken();
     if (!token) { router.replace('/login'); return; }
-    const wizardDataNow = SessionWizardData.obtener();
+    //const wizardDataNow = SessionWizardData.obtener();
     const cedulaObjetivo = cedula ? cedula.trim() : wizardDataNow?.cedula?.trim();
     const debeConsultar = omitValidacionInicial || (cedula.length === 10 && cedulaValida);
     if (!debeConsultar || !cedulaObjetivo) {
@@ -585,7 +618,7 @@ const AdvancedForm = () => {
 
   useEffect(() => { fetchVehiculos(); }, [fetchVehiculos]);
 
-  useEffect(() => {
+ /* useEffect(() => {
     const wData = SessionWizardData.obtener();
     if (wData) {
       setCedula('');
@@ -594,7 +627,43 @@ const AdvancedForm = () => {
       setEmail(wData.email || wData.cedula);
       setOmitValidacionInicial(true);
     }
-  }, []);
+  }, []);*/
+  
+   useEffect(() => {
+			  const wData = SessionWizardData.obtener();
+
+			  const cedulaSesion = wData?.cedula || '';
+
+			  if (!esCedulaSesionValida(cedulaSesion)) {
+
+				setAuthError(
+				  'Completa algunos datos para continuar. Redirigiendo...'
+				);
+
+				setTimeout(() => {
+				  router.replace('/Servicios/landingActivos');
+				}, 1000);
+
+				return;
+			  }
+
+			  setCedula(cedulaSesion);
+
+			  setSecuencialUser(
+				wData?.secuencial?.toString() || ''
+			  );
+
+			  setNombreParam(
+				`${wData?.nombres || ''} ${wData?.apellidos || ''}`
+			  );
+
+			  setEmail(
+				wData?.email || cedulaSesion
+			  );
+
+			  setOmitValidacionInicial(true);
+
+			}, [router]);
 
   // Buscar placa
   const buscarPlaca = useCallback(async (placaConsultar?: string) => {
@@ -702,7 +771,7 @@ const AdvancedForm = () => {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-cyan-50 to-blue-100 p-4">
       <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-full max-w-md rounded-[28px] border border-slate-200/80 bg-white/95 p-8 text-center shadow-2xl">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50"><AlertCircle className="h-8 w-8 text-red-500" /></div>
-        <h3 className="text-xl font-semibold text-slate-900">No pudimos procesar tu solicitud</h3>
+        <h3 className="text-xl font-semibold text-slate-900">Completa unos datos porfavor</h3>
         <p className="mt-2 text-slate-600">{authError.includes('token') ? 'Tu sesión expiró. Por favor, inicia sesión nuevamente.' : authError}</p>
         <button onClick={() => window.location.reload()} className="mt-6 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-700 px-6 py-3 font-semibold text-white shadow-lg transition hover:translate-y-[-1px] hover:shadow-xl">Reintentar</button>
       </motion.div>
