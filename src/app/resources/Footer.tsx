@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Twitter,
   Linkedin,
+  Facebook,
   Github,
   Instagram,
   Send,
@@ -61,19 +62,32 @@ const EliteFooter = () => {
     { name: 'Políticas de Privacidad', href: '/politicas-privacidad' },
     { name: 'Política de Envío', href: '/politicas-envio-entrega' },
   ];
-
-  const socialLinks = [
-    { name: 'Twitter', href: '#', icon: <Twitter size={17} /> },
-    { name: 'LinkedIn', href: '#', icon: <Linkedin size={17} /> },
-    { name: 'Instagram', href: '#', icon: <Instagram size={17} /> },
-    { name: 'GitHub', href: '#', icon: <Github size={17} /> },
-    {
-      name: 'WhatsApp',
-      href: WHATSAPP_URL,
-      icon: <MessageCircle size={17} />,
-      external: true,
-    },
-  ];
+		const socialLinks = [
+		  {
+			name: 'LinkedIn',
+			href: 'https://www.linkedin.com/company/nopay-legaltech-ecuador/',
+			icon: <Linkedin size={17} />,
+			external: true,
+		  },
+		  {
+			name: 'Facebook',
+			href: 'https://www.facebook.com/profile.php?id=61590484204919',
+			icon: <Facebook size={17} />,
+			external: true,
+		  },
+		  {
+			name: 'GitHub',
+			href: '#',
+			icon: <Github size={17} />,
+			external: true,
+		  },
+		  {
+			name: 'WhatsApp',
+			href: WHATSAPP_URL,
+			icon: <MessageCircle size={17} />,
+			external: true,
+		  },
+		];
 
   return (
     <footer
@@ -239,18 +253,17 @@ const EliteFooter = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            {socialLinks.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                target={item.external ? '_blank' : undefined}
-                rel={item.external ? 'noopener noreferrer' : undefined}
-                aria-label={item.name}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700"
-              >
-                {item.icon}
-              </Link>
-            ))}
+              {socialLinks.map((item) => (
+				  <a
+					key={item.name}
+					href={item.href}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="..."
+				  >
+					{item.icon}
+				  </a>
+				))}
           </div>
         </div>
       </div>
