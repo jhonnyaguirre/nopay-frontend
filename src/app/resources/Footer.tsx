@@ -62,32 +62,33 @@ const EliteFooter = () => {
     { name: 'Políticas de Privacidad', href: '/politicas-privacidad' },
     { name: 'Política de Envío', href: '/politicas-envio-entrega' },
   ];
-		const socialLinks = [
-		  {
-			name: 'LinkedIn',
-			href: 'https://www.linkedin.com/company/nopay-legaltech-ecuador/',
-			icon: <Linkedin size={17} />,
-			external: true,
-		  },
-		  {
-			name: 'Facebook',
-			href: 'https://www.facebook.com/profile.php?id=61590484204919',
-			icon: <Facebook size={17} />,
-			external: true,
-		  },
-		  {
-			name: 'GitHub',
-			href: '#',
-			icon: <Github size={17} />,
-			external: true,
-		  },
-		  {
-			name: 'WhatsApp',
-			href: WHATSAPP_URL,
-			icon: <MessageCircle size={17} />,
-			external: true,
-		  },
-		];
+
+  const socialLinks = [
+    {
+      name: 'LinkedIn',
+      href: 'https://www.linkedin.com/company/nopay-legaltech-ecuador/',
+      icon: <Linkedin size={17} />,
+      external: true,
+    },
+    {
+      name: 'Facebook',
+      href: 'https://www.facebook.com/profile.php?id=61590484204919',
+      icon: <Facebook size={17} />,
+      external: true,
+    },
+    {
+      name: 'GitHub',
+      href: '#',
+      icon: <Github size={17} />,
+      external: true,
+    },
+    {
+      name: 'WhatsApp',
+      href: WHATSAPP_URL,
+      icon: <MessageCircle size={17} />,
+      external: true,
+    },
+  ];
 
   return (
     <footer
@@ -99,12 +100,12 @@ const EliteFooter = () => {
           <div className="lg:col-span-5">
             <Link href="/" className="inline-flex items-center gap-3" aria-label="Ir al inicio de NoPay">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white overflow-hidden">
-			  <img 
-				src="/images/logo.png" 
-				alt="NoPay Logo" 
-				className="h-full w-full object-contain"
-			  />
-			</div>
+                <img
+                  src="/images/logo.png"
+                  alt="NoPay Logo"
+                  className="h-full w-full object-contain"
+                />
+              </div>
 
               <div className="leading-none">
                 <div className="flex items-center gap-2">
@@ -228,7 +229,16 @@ const EliteFooter = () => {
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-2 text-xs text-slate-400 sm:flex-row sm:items-center sm:gap-3">
             <span>
-              © {currentYear} NoPay — Softcorp EC
+              © {currentYear} NoPay —{' '}
+              <a
+                href="https://www.softcorpai.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-b border-transparent transition hover:border-slate-300 hover:text-slate-700"
+                aria-label="Plataforma desarrollada por Softcorp (abre en nueva ventana)"
+              >
+                Plataforma desarrollada por Softcorp
+              </a>
               <span className="ml-2 rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-slate-500">
                 {VERSION_APP}
               </span>
@@ -252,18 +262,19 @@ const EliteFooter = () => {
             </a>
           </div>
 
-          <div className="flex items-center gap-2">
-              {socialLinks.map((item) => (
-				  <a
-					key={item.name}
-					href={item.href}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="..."
-				  >
-					{item.icon}
-				  </a>
-				))}
+          <div className="flex items-center gap-3">
+            {socialLinks.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-400 transition-colors hover:text-slate-700"
+                aria-label={`Síguenos en ${item.name}`}
+              >
+                {React.cloneElement(item.icon, { 'aria-hidden': true })}
+              </a>
+            ))}
           </div>
         </div>
       </div>

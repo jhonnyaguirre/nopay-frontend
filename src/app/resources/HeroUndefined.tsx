@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-  
 import {
   ArrowRight,
   ArrowLeft,
@@ -21,12 +20,12 @@ import {
 } from 'lucide-react';
 
 // --------------------------------------------------------------
-// CONSTANTES (Evita recreación en cada render)
+// CONSTANTES
 // --------------------------------------------------------------
 const ROTATING_PHRASES = [
-  'Impugna tu MULTA de tránsito hoy.',
-  'Protege y registra tu MARCA.',
-  'Permiso de SALIDA del país en minutos.',
+  'Impugna tu multa de tránsito',
+  'Registra y protege tu marca',
+  'Permiso de salida del país',
 ];
 
 const BENEFIT_CARDS = [
@@ -42,17 +41,11 @@ const SERVICE_TAGS = [
   { icon: Car, label: 'Multas de tránsito', color: 'from-amber-500 to-orange-500' },
   { icon: FileText, label: 'Registro de marcas', color: 'from-rose-500 to-pink-500' },
   { icon: Plane, label: 'Permisos de salida', color: 'from-violet-500 to-purple-500' },
- 
-
-{ 
-  icon: Sparkles,
-  label: 'Nuevos servicios',
-  color: 'from-violet-500 to-purple-500'
-}
+  { icon: Sparkles, label: 'Nuevos servicios', color: 'from-violet-500 to-purple-500' },
 ];
 
 // --------------------------------------------------------------
-// SUBCOMPONENTES (Limpieza y reutilización)
+// SUBCOMPONENTES
 // --------------------------------------------------------------
 const SlideToActionButton = ({ href, children, className = '' }: { href: string; children: React.ReactNode; className?: string }) => {
   const handleClick = (e: React.MouseEvent) => {
@@ -96,7 +89,7 @@ const SlideToActionButton = ({ href, children, className = '' }: { href: string;
   );
 };
 
-const RotatingText = ({ phrases, initialDelay = 900, intervalTime = 2300 }: { phrases: string[]; initialDelay?: number; intervalTime?: number }) => {
+const RotatingText = ({ phrases, initialDelay = 900, intervalTime = 2500 }: { phrases: string[]; initialDelay?: number; intervalTime?: number }) => {
   const [index, setIndex] = useState(0);
   const [startRotation, setStartRotation] = useState(false);
 
@@ -116,12 +109,14 @@ const RotatingText = ({ phrases, initialDelay = 900, intervalTime = 2300 }: { ph
       <AnimatePresence mode="wait">
         <motion.span
           key={phrases[index]}
-          initial={{ opacity: 0, y: 24, scale: 0.92, filter: 'blur(6px)' }}
-          animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -24, scale: 0.96, filter: 'blur(6px)' }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], scale: { type: 'spring', stiffness: 300, damping: 25 } }}
-          style={{ backfaceVisibility: 'hidden' }}
-          className="inline-block whitespace-normal sm:whitespace-nowrap break-words bg-gradient-to-r from-[#FACC15] via-[#F59E0B] to-[#EAB308] bg-clip-text text-transparent drop-shadow-[0_8px_24px_rgba(234,179,8,0.25)] font-black tracking-[-0.02em]"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{
+            duration: 0.45,
+            ease: [0.2, 0.9, 0.4, 1],
+          }}
+          className="bg-gradient-to-r from-[#4B5563] via-[#F8FAFC] via-[#E5E7EB] to-[#BFA46F] bg-clip-text text-transparent"
         >
           {phrases[index]}
         </motion.span>
@@ -137,31 +132,27 @@ const EliteLegalHeroFusion = () => {
   const { scrollY } = useScroll();
   const [mounted, setMounted] = useState(false);
   const [activeBenefit, setActiveBenefit] = useState(2);
-  const [offsetMultiplier, setOffsetMultiplier] = useState(320);
-
-  // Refs para mejorar performance del carrusel
+  const [offsetMultiplier, setOffsetMultiplier] = useState(250);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
 
   const yBg = useTransform(scrollY, [0, 1000], [0, 250]);
   const opacityHero = useTransform(scrollY, [0, 500], [1, 0]);
   const scaleHero = useTransform(scrollY, [0, 400], [1, 0.98]);
 
-  // Ajuste responsive del espaciado del carrusel
   useEffect(() => {
     setMounted(true);
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width >= 1536) setOffsetMultiplier(380);
-      else if (width >= 1280) setOffsetMultiplier(340);
-      else if (width >= 768) setOffsetMultiplier(280);
-      else setOffsetMultiplier(240);
+      if (width >= 1536) setOffsetMultiplier(270);
+      else if (width >= 1280) setOffsetMultiplier(240);
+      else if (width >= 768) setOffsetMultiplier(210);
+      else setOffsetMultiplier(175);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Rotación automática del carrusel de beneficios
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveBenefit((prev) => (prev + 1) % BENEFIT_CARDS.length);
@@ -183,14 +174,22 @@ const EliteLegalHeroFusion = () => {
     <>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
-        * { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        h1, h2, h3, .font-black, .font-bold { text-rendering: geometricPrecision; }
+        * {
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3, .font-black, .font-bold {
+          text-rendering: geometricPrecision;
+        }
+        body {
+          font-family: 'Inter', system-ui, sans-serif;
+        }
       `}</style>
 
-      <main className="relative w-full bg-white font-['Inter',system-ui] antialiased selection:bg-rose-500 selection:text-white">
+      <main className="relative w-full bg-white antialiased selection:bg-rose-500 selection:text-white">
         {/* ==================== HERO SECTION ==================== */}
         <div className="relative w-full min-h-[90vh] md:min-h-screen flex flex-col overflow-hidden bg-[#020617]">
-          {/* Fondo animado */}
           <motion.div style={{ y: yBg, willChange: 'transform' }} className="absolute top-[-25%] left-0 w-full h-[150%] z-0">
             <motion.div
               animate={{
@@ -206,16 +205,13 @@ const EliteLegalHeroFusion = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/50 to-[#020617]" />
           </motion.div>
 
-          {/* Contenido Hero */}
           <motion.div style={{ opacity: opacityHero, scale: scaleHero }} className="relative z-20 max-w-7xl px-6 pt-12 md:pt-32 pb-40 mx-auto flex flex-col items-center">
-            {/* Badge */}
             <motion.div initial="hidden" animate="visible" variants={textReveal} className="group cursor-default inline-flex items-center gap-2 bg-white/5 backdrop-blur-2xl border border-white/10 px-4 py-1.5 rounded-full mb-8 shadow-lg">
               <Sparkles className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
               <span className="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-[0.3em]">Sin trámites. Sin vueltas. Sin estrés.</span>
             </motion.div>
 
-            {/* Título principal con rotación de servicios */}
-            <h1 className="text-center text-5xl md:text-[5.0rem] font-black text-white leading-[1.05] mb-8 tracking-[-0.02em]">
+            <h1 className="text-center text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 tracking-[-0.02em]">
               <div className="overflow-hidden">
                 <motion.div initial="hidden" animate="visible" variants={textReveal} transition={{ delay: 0.2 }} className="flex flex-col md:flex-row md:flex-wrap justify-center items-center gap-x-4 gap-y-2">
                   <span>Resuelve lo legal</span>
@@ -226,7 +222,6 @@ const EliteLegalHeroFusion = () => {
               </div>
             </h1>
 
-            {/* Descripción */}
             <div className="text-center text-base md:text-xl text-slate-400 max-w-2xl mb-8 font-light leading-relaxed">
               <motion.div variants={textReveal} initial="hidden" animate="visible" transition={{ delay: 0.6 }}>
                 NoPay resuelve trámites legales <span className="text-white font-medium">sin filas y sin perder tiempo.</span>
@@ -236,36 +231,30 @@ const EliteLegalHeroFusion = () => {
               </motion.div>
             </div>
 
-            {/* CTA Principal */}
             <motion.div variants={textReveal} initial="hidden" animate="visible" transition={{ delay: 1.0 }} className="w-full flex justify-center mb-10">
               <div className="p-1 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-full shadow-2xl flex items-center justify-center">
                 <SlideToActionButton href="/Servicios">Resolver mi caso ahora</SlideToActionButton>
               </div>
             </motion.div>
 
-            {/* Servicios destacados en formato pill (comunicación clara) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 }}
               className="flex flex-wrap justify-center gap-3 mb-10"
             >
-              {SERVICE_TAGS.map((service, idx) => (
+              {SERVICE_TAGS.map((service) => (
                 <div
                   key={service.label}
-                  className="group flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 transition-all duration-300 hover:bg-white/20 hover:scale-105"
+                  className="group relative overflow-hidden flex items-center gap-2 rounded-full border border-white/15 bg-white/8 backdrop-blur-md px-4 py-2 transition-all duration-500 hover:scale-[1.04] hover:bg-white/15 hover:border-white/30 hover:shadow-[0_0_25px_rgba(255,255,255,0.08)] "
                 >
                   <service.icon className="h-4 w-4 text-amber-400" />
                   <span className="text-xs font-semibold text-white tracking-wide">{service.label}</span>
                 </div>
               ))}
             </motion.div>
-
-            {/* Badges de confianza */}
-            
           </motion.div>
 
-          {/* Ola decorativa */}
           <div className="absolute bottom-[-1px] left-0 w-full z-30 pointer-events-none">
             <motion.svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[120px] md:h-[220px]" fill="white" initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ duration: 1.2, ease: 'easeOut' }}>
               <path d="M0,0 C300,120 400,-20 600,60 C800,140 900,20 1200,80 L1200,120 L0,120 Z" />
@@ -300,18 +289,15 @@ const EliteLegalHeroFusion = () => {
               </p>
             </div>
 
-            {/* Carrusel de beneficios (con corrección de centrado absoluto) */}
             <div className="relative mt-16 md:mt-20" ref={carouselContainerRef}>
-              {/* Degradados laterales */}
               <div className="pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-24 bg-gradient-to-r from-white to-transparent xl:block" />
               <div className="pointer-events-none absolute right-0 top-0 z-20 hidden h-full w-24 bg-gradient-to-l from-white to-transparent xl:block" />
 
-              {/* Botones navegación */}
               <motion.button
                 onClick={prevBenefit}
                 whileHover={{ scale: 1.1, x: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="absolute left-0 md:left-4 top-1/2 z-30 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full border border-slate-200 bg-white/90 text-slate-950 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-orange-300 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="absolute left-0 md:left-4 top-1/2 z-40 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full border border-slate-200 bg-white/90 text-slate-950 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-orange-300 focus:outline-none focus:ring-2 focus:ring-amber-400"
                 aria-label="Beneficio anterior"
               >
                 <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
@@ -321,13 +307,12 @@ const EliteLegalHeroFusion = () => {
                 onClick={nextBenefit}
                 whileHover={{ scale: 1.1, x: 2 }}
                 whileTap={{ scale: 0.95 }}
-                className="absolute right-0 md:right-4 top-1/2 z-30 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full border border-slate-200 bg-white/90 text-slate-950 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="absolute right-0 md:right-4 top-1/2 z-40 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full border border-slate-200 bg-white/90 text-slate-950 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-amber-400"
                 aria-label="Siguiente beneficio"
               >
                 <ArrowRight className="h-5 w-5" strokeWidth={1.5} />
               </motion.button>
 
-              {/* Contenedor de tarjetas */}
               <div className="relative flex min-h-[440px] items-center justify-center overflow-visible px-4 md:px-16">
                 {BENEFIT_CARDS.map((card, index) => {
                   const total = BENEFIT_CARDS.length;
@@ -335,44 +320,44 @@ const EliteLegalHeroFusion = () => {
                   if (offset > total / 2) offset -= total;
                   if (offset < -total / 2) offset += total;
                   const isActive = offset === 0;
+                  
                   const isNear = Math.abs(offset) <= 2;
                   if (!isNear) return null;
 
-                  // Cálculo preciso para centrar la tarjeta activa y desplazar las laterales
                   const xOffset = offset * offsetMultiplier;
 
                   return (
                     <motion.div
                       key={card.title}
                       animate={{
-                        x: xOffset,
-                        scale: isActive ? 1.1 : 0.85,
-                        rotate: offset * 2.5,
-                        opacity: isActive ? 1 : 0.5,
-                        zIndex: 20 - Math.abs(offset),
-                        y: isActive ? [0, -8, 0] : 0,
+                        x: `calc(-50% + ${xOffset}px)`,
+                        scale: isActive ? 1.08 : 0.82,
+                        rotate: offset * 2.2,
+                        opacity: isActive ? 1 : Math.abs(offset) === 1 ? 0.65 : 0.25,
+                        zIndex: 30 - Math.abs(offset),
+                        y: isActive ? [0, -6, 0] : 0,
                       }}
                       transition={{
-                        duration: 0.65,
-                        ease: [0.22, 1, 0.36, 1],
-                        y: isActive ? { duration: 2.5, repeat: Infinity, ease: 'easeInOut' } : {},
+                        duration: 0.55,
+                        ease: [0.25, 1, 0.5, 1],
+                        y: isActive ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : {},
                       }}
-                      className="absolute left-1/2 w-[240px] md:w-[300px] will-change-transform"
-                      style={{ x: '-50%', backfaceVisibility: 'hidden' }}
+                      className="absolute left-1/2 w-[240px] md:w-[290px] will-change-transform"
+                      style={{ backfaceVisibility: 'hidden' }}
                     >
                       <div
                         className={[
-                          'group relative h-[350px] md:h-[380px] overflow-hidden rounded-[2rem] border bg-white p-6 md:p-7 text-center transition-all duration-500',
+                          'group relative h-[350px] md:h-[370px] overflow-hidden rounded-[2rem] border bg-white p-6 md:p-7 text-center transition-all duration-500',
                           isActive
-                            ? 'border-transparent shadow-[0_30px_60px_rgba(244,63,94,0.2)]'
-                            : 'border-slate-200/80 shadow-[0_20px_40px_rgba(15,23,42,0.06)]',
+                            ? 'border-transparent shadow-[0_25px_50px_rgba(244,63,94,0.18)]'
+                            : 'border-slate-200/60 shadow-[0_15px_30px_rgba(15,23,42,0.04)]',
                         ].join(' ')}
                       >
                         {isActive && (
                           <motion.div
                             layoutId="activeGradient"
                             className={`absolute inset-0 rounded-[2rem] bg-gradient-to-br ${card.accent} opacity-100`}
-                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                            transition={{ type: 'spring', stiffness: 260, damping: 28 }}
                           />
                         )}
                         <div
@@ -381,26 +366,46 @@ const EliteLegalHeroFusion = () => {
                             isActive ? 'bg-white/95 backdrop-blur-md' : 'bg-gradient-to-br from-white via-white to-slate-50',
                           ].join(' ')}
                         />
+
+                        {/* UI/UX CRITICAL FIX: Capa de luz horizontal DORADA en cámara lenta (Efecto Escáner Premium) */}
+                        {isActive && (
+                          <motion.div
+                            initial={{ y: '140%', opacity: 0 }}
+                            animate={{ 
+                              y: '-140%', 
+                              opacity: [0, 0.45, 0.45, 0] // Alta opacidad visible pero elegante
+                            }}
+                            transition={{
+                              duration: 4.8, // Barrido suave en cámara lenta
+                              repeat: Infinity,
+                              repeatDelay: 1.2,
+                              ease: [0.25, 1, 0.5, 1] // Easing amortiguado fluido
+                            }}
+                            className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-transparent via-amber-400/40 via-yellow-300/50 to-transparent h-[40%] w-full filter blur-[2px]"
+                            style={{ mixBlendMode: 'color-burn' }}
+                          />
+                        )}
+
                         <div className="relative z-10 flex h-full flex-col items-center justify-center">
                           <div
                             className={[
-                              'grid h-24 w-24 md:h-28 md:w-28 place-items-center rounded-full transition-all duration-500',
+                              'grid h-22 w-22 md:h-26 md:w-26 place-items-center rounded-full transition-all duration-500',
                               isActive
-                                ? `bg-gradient-to-br ${card.accent} text-white shadow-xl`
-                                : 'bg-slate-100 text-slate-600',
+                                ? `bg-gradient-to-br ${card.accent} text-white shadow-lg`
+                                : 'bg-slate-100 text-slate-500',
                             ].join(' ')}
                           >
-                            {React.cloneElement(card.icon, { className: 'h-10 w-10 md:h-12 md:w-12' })}
+                            {React.cloneElement(card.icon, { className: 'h-9 w-9 md:h-11 md:w-11' })}
                           </div>
-                          <h3 className="mt-6 text-xl md:text-2xl font-black tracking-[-0.02em] text-slate-950">
+                          <h3 className="mt-5 text-lg md:text-xl font-black tracking-[-0.02em] text-slate-950">
                             {card.title}
                           </h3>
-                          <p className="mt-3 max-w-[200px] text-sm md:text-base leading-relaxed text-slate-600">
+                          <p className="mt-2.5 max-w-[190px] text-xs md:text-sm leading-relaxed text-slate-500">
                             {card.desc}
                           </p>
                           <div
-                            className={`mt-6 h-1 w-12 rounded-full transition-all duration-500 ${
-                              isActive ? `bg-gradient-to-r ${card.accent}` : 'bg-slate-200'
+                            className={`mt-5 h-1 w-10 rounded-full transition-all duration-500 ${
+                              isActive ? `bg-gradient-to-r ${card.accent}` : 'bg-slate-100'
                             }`}
                           />
                         </div>
@@ -410,7 +415,6 @@ const EliteLegalHeroFusion = () => {
                 })}
               </div>
 
-              {/* Indicadores */}
               <div className="mt-12 flex items-center justify-center gap-3">
                 {BENEFIT_CARDS.map((card, index) => (
                   <button
@@ -428,7 +432,6 @@ const EliteLegalHeroFusion = () => {
               </div>
             </div>
 
-            {/* Comparativa final (Antes / Ahora / Resultado) */}
             <div className="mt-20 md:mt-28 grid gap-5 md:grid-cols-3">
               {[
                 { label: 'Antes', value: 'Filas · Papeleo · Incertidumbre', muted: true },
@@ -457,7 +460,6 @@ const EliteLegalHeroFusion = () => {
               ))}
             </div>
 
-            {/* Mensaje final de confianza */}
             <div className="mt-16 text-center">
               <p className="text-sm text-slate-400 border-t border-slate-200 pt-8">
                 🚀 Más de 1,000+ personas ya resolvieron sus trámites con NoPay. <br className="md:hidden" />
