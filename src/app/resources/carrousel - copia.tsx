@@ -1,427 +1,410 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  valorRegistroMarcaPhase1,
+  valorImpugnacionGl,
+  valorPermisoSalida,
+} from 'config/apiConfig';
 import {
   ChevronLeft,
   ChevronRight,
   BadgeCheck,
   ArrowRight,
   Car,
-  FileText,
-  Scale,
-  BookOpen,
   Landmark,
-  Factory,
-  Home,
-  Plane,
+  UserCheck,
+  Sparkles,
+  Bell,
+  ShieldCheck,
+  Clock3,
+  Star,
 } from 'lucide-react';
 import Link from 'next/link';
 
-type Service = {
-  title: string;
-  description: string;
-  href: string;
-  enabled: boolean;
-  color: string;
-  icon: React.ReactNode;
-  features: string[];
-};
-
-const services: Service[] = [
+const services = [
   {
-    title: 'Apelación de Multas de Tránsito',
-    description: 'Impugna multas injustas con nuestro apoyo legal especializado',
+    id: 1,
+    title: 'Impugnación de Multas',
+    subtitle: 'de Tránsito',
+    price: valorImpugnacionGl,
+    desc: 'Impugna tu multa con un proceso claro, rápido y guiado.',
+    color: 'from-blue-600 to-indigo-600',
+    glow: 'shadow-blue-500/20',
+    icon: <Car />,
     href: '/Servicios/Impugnacion',
-    enabled: true,
-    color: 'from-[#0A1D3E] to-[#4F46E5]',
-    icon: <Car className="w-8 h-8 text-[#0A1D3E]" />,
-    features: ['92% de éxito', 'Respuesta en 24h', 'Sin costo inicial'],
   },
   {
-    title: 'Matriculación vehicular',
-    description: 'Gestión completa de trámites de matriculación vehicular',
-    href: '/Servicios/Matriculacion',
-    enabled: true,
-    color: 'from-[#D97706] to-[#FBBF24]',
-    icon: <FileText className="w-8 h-8 text-[#D97706]" />,
-    features: ['Gestión integral', 'Ahorro de tiempo', 'Seguimiento paso a paso'],
-  },
-  {
-    title: 'Asesoría Legal Automatizada',
-    description: 'Respuestas inmediatas a tus consultas legales',
-    href: '/Servicios/AsesoriaLegal',
-    enabled: true,
-    color: 'from-[#059669] to-[#10B981]',
-    icon: <Scale className="w-8 h-8 text-[#059669]" />,
-    features: ['Respuesta inmediata', 'Abogados certificados', 'Cobertura 24/7'],
-  },
-  {
-    title: 'Redacción de Documentos Legales',
-    description: 'Documentos profesionales adaptados a tus necesidades',
-    href: '/Servicios/DocumentosLegales',
-    enabled: true,
-    color: 'from-[#1E40AF] to-[#6366F1]',
-    icon: <BookOpen className="w-8 h-8 text-[#1E40AF]" />,
-    features: ['Plantillas legales', 'Revisión profesional', 'Garantía de validez'],
-  },
-  {
-    title: 'Registro de Marcas',
-    description: 'Protege tu marca con nuestro servicio especializado',
+    id: 2,
+    title: 'Registro',
+    subtitle: 'de Marcas',
+    price: valorRegistroMarcaPhase1,
+    desc: 'Protege tu marca con una experiencia legal simple y segura.',
+    color: 'from-pink-600 to-purple-600',
+    glow: 'shadow-pink-500/20',
+    icon: <Landmark />,
     href: '/Servicios/Marcas',
-    enabled: true,
-    color: 'from-[#BE123C] to-[#E11D48]',
-    icon: <Landmark className="w-8 h-8 text-[#BE123C]" />,
-    features: ['Búsqueda previa', 'Gestión completa', 'Seguimiento continuo'],
   },
   {
-    title: 'Propiedad Intelectual',
-    description: 'Protección legal para tus creaciones e invenciones',
-    href: '/Servicios/PropiedadIntelectual',
-    enabled: true,
-    color: 'from-[#4C1D95] to-[#8B5CF6]',
-    icon: <span className="text-2xl text-[#4C1D95]">💡</span>,
-    features: ['Asesoramiento experto', 'Registro completo', 'Protección internacional'],
-  },
-  {
-    title: 'Constitución de Empresas',
-    description: 'Crea tu empresa con todos los requisitos legales',
-    href: '/Servicios/ConstitucionEmpresasPage',
-    enabled: true,
-    color: 'from-[#0F766E] to-[#14B8A6]',
-    icon: <Factory className="w-8 h-8 text-[#0F766E]" />,
-    features: ['Asesoría fiscal', 'Optimización legal', 'Compliance regulatorio'],
-  },
-  {
-    title: 'Permisos de Salida de Menores',
-    description: 'Tramita los permisos necesarios para viajes de menores',
+    id: 3,
+    title: 'Permisos de Salida',
+    subtitle: 'para Menores',
+    price: valorPermisoSalida,
+    desc: 'Genera documentos y minutas para permisos de salida del país.',
+    color: 'from-purple-500 to-pink-500',
+    glow: 'shadow-purple-500/20',
+    icon: <UserCheck />,
     href: '/Servicios/PermisoSalida',
-    enabled: true,
-    color: 'from-[#7C3AED] to-[#C084FC]',
-    icon: <span className="text-2xl text-[#7C3AED]">🧒</span>,
-    features: ['Gestión rápida', 'Requisitos claros', 'Aprobación garantizada'],
   },
   {
-    title: 'Regularización de Propiedades',
-    description: 'Soluciones legales para regularizar tu propiedad',
-    href: '/Servicios/Inmuebles',
-    enabled: true,
-    color: 'from-[#F43F5E] to-[#FB7185]',
-    icon: <Home className="w-8 h-8 text-[#F43F5E]" />,
-    features: ['Análisis jurídico', 'Solución de conflictos', 'Tramitación completa'],
-  },
-  {
-    title: 'Trámites Migratorios',
-    description: 'Asesoría completa para tus procesos migratorios',
-    href: '/Servicios/TramitesMigratorios',
-    enabled: true,
-    color: 'from-[#0C4A6E] to-[#38BDF8]',
-    icon: <Plane className="w-8 h-8 text-[#0C4A6E]" />,
-    features: ['Visas y permisos', 'Reunificación familiar', 'Residencia permanente'],
+    id: 4,
+    title: 'Nuevos',
+    subtitle: 'Servicios',
+    price: null,
+    desc: 'Cada trimestre lanzamos nuevas soluciones legales digitales.',
+    color: 'from-amber-400 to-orange-600',
+    glow: 'shadow-amber-500/20',
+    icon: <Sparkles />,
+    href: '/Novedades',
+    special: true,
   },
 ];
 
-export default function ServicesCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
-  const [visibleCards, setVisibleCards] = useState(3); // Estado para controlar cuántas tarjetas se muestran
+export default function ServicesPureLightAuto() {
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Efecto para determinar el número de tarjetas visibles según el tamaño de pantalla
-  useEffect(() => {
-    const updateVisibleCards = () => {
-      if (window.innerWidth < 768) {
-        setVisibleCards(1);
-      } else if (window.innerWidth < 1024) {
-        setVisibleCards(2);
-      } else {
-        setVisibleCards(3);
-      }
-    };
+  const currentService = services[index];
+  const isSpecial = currentService.special === true;
 
-    // Ejecutar al montar y al cambiar el tamaño de la ventana
-    updateVisibleCards();
-    window.addEventListener('resize', updateVisibleCards);
-
-    return () => window.removeEventListener('resize', updateVisibleCards);
+  const next = useCallback(() => {
+    setDirection(1);
+    setIndex((prev) => (prev + 1) % services.length);
   }, []);
 
-  // Activar animación al montar
-  useEffect(() => {
-    setIsMounted(true);
+  const prev = useCallback(() => {
+    setDirection(-1);
+    setIndex((prev) => (prev - 1 + services.length) % services.length);
   }, []);
 
-  // Auto-rotación cada 5 segundos
   useEffect(() => {
-    if (!autoPlay) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) =>
-        prev === services.length - 1 ? 0 : prev + 1
-      );
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [autoPlay, visibleCards]);
+    const timer = window.setInterval(next, 4800);
+    return () => window.clearInterval(timer);
+  }, [next]);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => {
-      if (visibleCards === 1) {
-        return prev === services.length - 1 ? 0 : prev + 1;
-      } else if (visibleCards === 2) {
-        return prev >= services.length - 2 ? 0 : prev + 1;
-      } else {
-        return prev === services.length - 1 ? 0 : prev + 1;
-      }
+  const getCurrentQuarter = () => {
+    const now = new Date();
+    const quarter = Math.floor(now.getMonth() / 3) + 1;
+    return `Q${quarter} ${now.getFullYear()}`;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
     });
-    setAutoPlay(false);
-    setTimeout(() => setAutoPlay(true), 10000);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => {
-      if (visibleCards === 1) {
-        return prev === 0 ? services.length - 1 : prev - 1;
-      } else if (visibleCards === 2) {
-        return prev <= 0 ? services.length - 2 : prev - 1;
-      } else {
-        return prev === 0 ? services.length - 1 : prev - 1;
-      }
-    });
-    setAutoPlay(false);
-    setTimeout(() => setAutoPlay(true), 10000);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-    setAutoPlay(false);
-    setTimeout(() => setAutoPlay(true), 10000);
-  };
-
-  // Función para obtener los índices de las tarjetas visibles
-  const getVisibleIndices = () => {
-    if (visibleCards === 1) {
-      return [currentIndex];
-    } else if (visibleCards === 2) {
-      return [
-        currentIndex,
-        currentIndex === services.length - 1 ? 0 : currentIndex + 1,
-      ];
-    } else {
-      return [
-        currentIndex === 0 ? services.length - 1 : currentIndex - 1,
-        currentIndex,
-        currentIndex === services.length - 1 ? 0 : currentIndex + 1,
-      ];
-    }
   };
 
   return (
-    <main className="relative w-full bg-white text-gray-800 overflow-hidden">
-      {/* SVG decorativo al lado derecho */}
-      <svg
-        className="absolute right-0 top-0 w-full md:w-[55%] h-full object-cover z-0 opacity-20"
-        viewBox="0 0 600 800"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="shapeGradientLight" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#FBBF24" />
-            <stop offset="50%" stopColor="#EC4899" />
-            <stop offset="100%" stopColor="#7F1D1D" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M600,0 C520,120 580,240 480,320 C370,400 440,540 340,640 C240,740 360,840 200,900 C100,940 0,960 0,1080 L600,1080 Z"
-          fill="url(#shapeGradientLight)"
-        />
-      </svg>
-
-      {/* Cierre inferior blanco */}
-      <div className="absolute bottom-0 left-0 w-full h-16 bg-white z-10" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        {/* Encabezado del carrusel */}
-        <motion.div
-          className="text-center mb-8 sm:mb-12 md:mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isMounted ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#EC4899] to-[#FBBF24] px-4 py-2 rounded-full mb-3 sm:mb-4 text-[11px] sm:text-xs font-medium text-white"
-            initial={{ opacity: 0 }}
-            animate={isMounted ? { opacity: 1 } : {}}
-            transition={{ delay: 0.2 }}
-          >
-            <BadgeCheck className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span>Servicios Legales NoPay</span>
-          </motion.div>
-
-          <motion.h2
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 sm:mb-4"
-            initial={{ opacity: 0, y: 10 }}
-            animate={isMounted ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3 }}
-          >
-            Conoce todo lo que puedes{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EC4899] to-[#FBBF24]">
-              automatizar
-            </span>
-          </motion.h2>
-
-          <motion.p
-            className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto px-4"
-            initial={{ opacity: 0 }}
-            animate={isMounted ? { opacity: 1 } : {}}
-            transition={{ delay: 0.4 }}
-          >
-            Elige entre nuestras soluciones legales inteligentes y comienza a
-            resolver tu caso hoy mismo.
-          </motion.p>
-        </motion.div>
-
-        {/* Controles del carrusel */}
-        <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8 px-4 sm:px-0">
-          <button
-            onClick={prevSlide}
-            className="p-1 sm:p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 transition-all"
-            aria-label="Anterior"
-          >
-            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
-          </button>
-
-          <div className="flex gap-1 sm:gap-2">
-            {services.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`rounded-full transition-all ${
-                  currentIndex === index
-                    ? 'bg-gradient-to-r from-[#EC4899] to-[#FBBF24] h-2 w-4 sm:h-3 sm:w-6'
-                    : 'bg-gray-300 h-1.5 w-1.5 sm:h-2 sm:w-2'
-                }`}
-                aria-label={`Ir al servicio ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={nextSlide}
-            className="p-1 sm:p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 transition-all"
-            aria-label="Siguiente"
-          >
-            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
-          </button>
-        </div>
-
-        {/* Carrusel */}
-        <div className="relative px-2 sm:px-0">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-              className="w-full"
-            >
-              <div className={`grid grid-cols-1 ${visibleCards >= 2 ? 'md:grid-cols-2' : ''} ${visibleCards >= 3 ? 'lg:grid-cols-3' : ''} gap-4 sm:gap-6 md:gap-8`}>
-                {/* Mostrar las tarjetas visibles según el tamaño de pantalla */}
-                {getVisibleIndices().map((idx) => {
-                  const service = services[idx];
-                  return (
-                    <motion.div
-                      key={service.title}
-                      className={`rounded-xl sm:rounded-2xl overflow-hidden border transition-all ${
-                        idx === currentIndex
-                          ? 'border-transparent shadow-md sm:shadow-lg scale-[1.02] sm:scale-105 z-10'
-                          : 'border-gray-200 opacity-80 scale-95'
-                      }`}
-                      whileHover={{
-                        scale: idx === currentIndex ? (visibleCards === 1 ? 1.05 : 1.08) : (visibleCards === 1 ? 1.02 : 1.02),
-                      }}
-                    >
-                      <div className={`h-1.5 sm:h-2 bg-gradient-to-r ${service.color}`}></div>
-
-                      <div className="p-4 sm:p-6 md:p-8 bg-white h-full flex flex-col">
-                        <div
-                          className={`bg-gradient-to-r ${service.color} p-2 sm:p-3 rounded-lg sm:rounded-xl w-max mb-4 sm:mb-6 text-white`}
-                        >
-                          {service.icon}
-                        </div>
-
-                        <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-2 sm:mb-3">
-                          {service.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
-                          {service.description}
-                        </p>
-
-                        <ul className="space-y-1 sm:space-y-2 mb-4 sm:mb-8 flex-1">
-                          {service.features.map((feature, i) => (
-                            <li
-                              key={i}
-                              className="flex items-center text-[11px] sm:text-xs text-gray-600"
-                            >
-                              <div
-                                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-2 sm:mr-3 bg-gradient-to-r ${service.color}`}
-                              ></div>
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-
-                        <Link
-                          href={service.href}
-                          className="mt-auto inline-flex items-center gap-1 sm:gap-2 text-[11px] sm:text-xs md:text-sm text-gray-800 hover:text-[#EC4899] transition-colors font-medium"
-                        >
-                          Ver detalles <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
-                        </Link>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Indicador de progreso */}
-        <div className="mt-6 sm:mt-8 flex justify-center">
-          <div className="w-20 sm:w-24 h-1 bg-gray-200 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-r from-[#EC4899] to-[#FBBF24]"
-              animate={{
-                width: `${((currentIndex + 1) / services.length) * 100}%`,
-              }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-        </div>
-
-        {/* CTA final */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isMounted ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.6 }}
-          className="mt-8 sm:mt-12 md:mt-16 bg-gray-100 text-gray-800 rounded-xl sm:rounded-2xl shadow-sm sm:shadow-md p-6 sm:p-8 md:p-10 text-center max-w-3xl mx-auto"
-        >
-          <h2 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">
-            ¿No encuentras lo que necesitas?
-          </h2>
-          <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 mb-4 sm:mb-6">
-            Contáctanos para una asesoría legal personalizada y encuentra una
-            solución a tu medida.
-          </p>
-          <motion.button
-            className="bg-gradient-to-r from-[#EC4899] to-[#FBBF24] text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-xs sm:text-sm font-semibold"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-          >
-            Solicitar Consulta
-          </motion.button>
-        </motion.div>
+    <section
+      id="servicios-legales-nopay"
+      aria-labelledby="servicios-nopay-title"
+      className="relative overflow-hidden bg-white px-4 py-12 md:px-8 md:py-20 lg:py-24"
+    >
+      {/* Elementos mágicos sutiles: partículas brillantes flotantes */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute left-[10%] top-[20%] h-1 w-1 rounded-full bg-amber-300/30 blur-[1px] animate-pulse" />
+        <div className="absolute right-[15%] top-[40%] h-1.5 w-1.5 rounded-full bg-rose-300/20 blur-[1px] animate-pulse [animation-delay:1s]" />
+        <div className="absolute bottom-[25%] left-[20%] h-2 w-2 rounded-full bg-indigo-300/20 blur-[1px] animate-pulse [animation-delay:2s]" />
+        <div className="absolute bottom-[15%] right-[25%] h-1 w-1 rounded-full bg-purple-300/30 blur-[1px] animate-pulse [animation-delay:0.5s]" />
       </div>
-    </main>
+
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+          
+          {/* Columna Izquierda: Texto y Controles */}
+          <div className="order-2 lg:order-1 flex flex-col justify-center">
+            <div className="flex justify-center lg:justify-start">
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mb-6 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-md border border-slate-100"
+              >
+                <BadgeCheck className="h-4 w-4 text-rose-500" aria-hidden="true" />
+                <span className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
+                  Servicios legales digitales
+                </span>
+              </motion.div>
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentService.id}
+                initial={{ opacity: 0, x: direction >= 0 ? -18 : 18, filter: 'blur(5px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: direction >= 0 ? 18 : -18, filter: 'blur(5px)' }}
+                transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                className="space-y-4 text-center lg:text-left"
+              >
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-slate-400">
+                  Servicio {String(index + 1).padStart(2, '0')} / {services.length}
+                </p>
+
+                <h2
+                  id="servicios-nopay-title"
+                  className="mx-auto lg:mx-0 max-w-xl text-[2.2rem] sm:text-[2.8rem] md:text-[3.4rem] lg:text-[4rem] font-black leading-[1.02] lg:leading-[0.96] tracking-[-0.055em] text-slate-950"
+                >
+                  {currentService.title}
+                  <span
+                    className={`block bg-gradient-to-r ${currentService.color} bg-clip-text text-transparent mt-1`}
+                  >
+                    {currentService.subtitle}
+                  </span>
+                </h2>
+
+                <p className="mx-auto lg:mx-0 max-w-md text-sm sm:text-base md:text-lg font-medium leading-relaxed text-slate-500">
+                  {currentService.desc}
+                </p>
+
+                <div className="flex flex-wrap justify-center lg:justify-start gap-2 pt-2">
+                  <InfoPill icon={<Clock3 />} text={isSpecial ? 'Próximamente' : 'Inicio rápido'} />
+                  <InfoPill icon={<ShieldCheck />} text="Proceso guiado" />
+                  <InfoPill icon={<Sparkles />} text="IA + expertos" />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
+              <div className="flex gap-3">
+                <NavButton onClick={prev} icon={<ChevronLeft size={22} />} label="Servicio anterior" />
+                <NavButton onClick={next} icon={<ChevronRight size={22} />} label="Siguiente servicio" />
+              </div>
+
+              <div className="hidden h-10 w-px bg-slate-100 sm:block" />
+
+              <div className="text-center sm:text-left hidden sm:block">
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                  NoPay LegalTech
+                </p>
+                <p className="text-sm font-bold text-slate-700">
+                  Trámites online en Ecuador
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Columna Derecha: Tarjeta Interactiva con Corrección de Altura */}
+          <div 
+            className="relative order-1 flex justify-center lg:order-2 lg:justify-end w-full px-2 sm:px-0"
+            onMouseMove={handleMouseMove}
+          >
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentService.id}
+                custom={direction}
+                initial={{ opacity: 0, scale: 0.94, y: 16, rotate: direction * 1.5 }}
+                animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: -16, rotate: direction * -1.5 }}
+                transition={{ duration: 0.5, type: 'spring', stiffness: 115, damping: 20 }}
+                className="relative w-full max-w-[340px] sm:max-w-[380px] md:max-w-[400px]"
+              >
+                {/* Resplandor mágico de fondo */}
+                <div
+                  className={`absolute -inset-2 rounded-[2.5rem] bg-gradient-to-br ${currentService.color} opacity-10 blur-2xl transition-opacity duration-700`}
+                />
+
+                {/* Badge de Precio / Fecha Flotante Responsivo */}
+                <motion.div
+                  initial={{ x: 12, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.18 }}
+                  className="absolute right-2 top-6 sm:top-8 z-30 flex min-w-[90px] flex-col items-center rounded-2xl bg-white/95 border border-slate-100 p-2.5 shadow-xl backdrop-blur-sm sm:-right-4"
+                >
+                  {isSpecial ? (
+                    <>
+                      <span className="text-[8px] font-black uppercase tracking-tight text-amber-500">
+                        Próximamente
+                      </span>
+                      <div className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-base font-black text-transparent">
+                        {getCurrentQuarter()}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-[8px] font-black uppercase tracking-tight text-slate-400">
+                        Desde
+                      </span>
+                      <div
+                        className={`bg-gradient-to-br ${currentService.color} bg-clip-text text-xl sm:text-2xl font-black text-transparent`}
+                      >
+                        ${currentService.price}
+                      </div>
+                    </>
+                  )}
+                </motion.div>
+
+                {/* Contenedor de la Tarjeta con Corrección de Layout */}
+                <article className="group relative min-h-[450px] sm:min-h-[480px] flex flex-col justify-between overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-8 sm:p-10 shadow-2xl shadow-slate-200/80 transition-all duration-500 hover:shadow-xl hover:shadow-slate-300/60">
+                  
+                  {/* Decoraciones internas */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(244,63,94,0.04),transparent_70%)] pointer-events-none" />
+                  <div
+                    className={`absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br ${currentService.color} opacity-[0.05] blur-[50px] transition-opacity duration-700 group-hover:opacity-8 pointer-events-none`}
+                  />
+
+                  {/* PARTE SUPERIOR: Icono y Número */}
+                  <div className="relative z-10 flex items-start justify-between w-full">
+                    <motion.div
+                      key={currentService.id}
+                      initial={{ rotate: -35, scale: 0.7 }}
+                      animate={{ rotate: 0, scale: 1 }}
+                      transition={{ duration: 0.45, type: 'spring' }}
+                      whileHover={{ scale: 1.05, rotate: 3 }}
+                      className={`rounded-2xl bg-gradient-to-br ${currentService.color} p-4 text-white shadow-2xl ${currentService.glow}`}
+                    >
+                      {React.cloneElement(
+                        currentService.icon as React.ReactElement<React.SVGProps<SVGSVGElement>>,
+                        {
+                          width: 28,
+                          height: 28,
+                          strokeWidth: 2.2,
+                          'aria-hidden': true,
+                        }
+                      )}
+                    </motion.div>
+
+                    <span className="select-none text-5xl sm:text-6xl font-black italic leading-none text-slate-100/70">
+                      {String(currentService.id).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  {/* PARTE INFERIOR: Títulos, Paginación y Botón de Acción */}
+                  <div className="relative z-10 mt-8 w-full flex flex-col">
+                    
+                    {/* Indicadores / Paginación en Barra */}
+                    <div className="mb-4 flex flex-wrap gap-1.5" aria-hidden="true">
+                      {services.map((_, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => {
+                            setDirection(i > index ? 1 : -1);
+                            setIndex(i);
+                          }}
+                          className={`h-1 rounded-full transition-all duration-500 ${
+                            index === i
+                              ? `w-8 bg-gradient-to-r ${currentService.color}`
+                              : 'w-2 bg-slate-200 hover:bg-slate-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <p className="mb-1 text-[9px] font-black uppercase tracking-[0.26em] text-slate-400">
+                      {isSpecial ? 'Lanzamiento trimestral' : 'Smart Legal Experience'}
+                    </p>
+
+                    <h3 className="max-w-[260px] text-2xl sm:text-3xl font-black leading-[1.05] tracking-[-0.045em] text-slate-900">
+                      {currentService.title}{' '}
+                      <span
+                        className={`block sm:inline bg-gradient-to-r ${currentService.color} bg-clip-text text-transparent`}
+                      >
+                        {currentService.subtitle}
+                      </span>
+                    </h3>
+
+                    {/* Contenedor del Botón con espacio garantizado */}
+                    <div className="mt-6 sm:mt-8 w-full">
+                      <Link
+                        href={currentService.href}
+                        aria-label={`Iniciar ${currentService.title} ${currentService.subtitle}`}
+                        className="block w-full"
+                      >
+                        <motion.span
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          className={`group/btn relative flex w-full items-center justify-center gap-3 rounded-xl py-3.5 text-xs font-black uppercase tracking-widest transition-all ${
+                            isSpecial
+                              ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                              : 'bg-slate-950 text-white hover:bg-rose-600 shadow-md'
+                          }`}
+                        >
+                          {isSpecial ? 'Recibir novedades' : 'Iniciar proceso'}
+                          {isSpecial ? (
+                            <Bell size={16} className="transition-transform group-hover/btn:rotate-12" />
+                          ) : (
+                            <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
+                          )}
+                          
+                          {/* Estrella decorativa en hover */}
+                          <motion.span
+                            initial={{ scale: 0, opacity: 0 }}
+                            whileHover={{ scale: 1, opacity: 1 }}
+                            className="absolute -top-1.5 -right-1.5"
+                          >
+                            <Star size={11} className="fill-amber-400 text-amber-400" />
+                          </motion.span>
+                        </motion.span>
+                      </Link>
+                    </div>
+
+                  </div>
+                </article>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InfoPill({
+  icon,
+  text,
+}: {
+  icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
+  text: string;
+}) {
+  return (
+    <motion.span
+      whileHover={{ y: -1 }}
+      className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-bold text-slate-600 shadow-sm border border-slate-100 transition-all hover:shadow-md"
+    >
+      {React.cloneElement(icon, {
+        className: 'h-3.5 w-3.5 text-rose-500',
+        strokeWidth: 2,
+        'aria-hidden': true,
+      })}
+      {text}
+    </motion.span>
+  );
+}
+
+function NavButton({
+  onClick,
+  icon,
+  label,
+}: {
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <motion.button
+      type="button"
+      aria-label={label}
+      whileHover={{ scale: 1.06, backgroundColor: '#ffffff', y: -1 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={onClick}
+      className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-slate-400 shadow-sm border border-slate-100 transition-colors hover:text-slate-950 active:bg-slate-50"
+    >
+      {icon}
+    </motion.button>
   );
 }
