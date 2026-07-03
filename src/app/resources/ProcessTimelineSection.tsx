@@ -360,20 +360,19 @@ export const ProcessTimelineSection: React.FC = () => {
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-rose-300/20 via-transparent to-orange-300/20 pointer-events-none" />
             <div className="relative overflow-hidden rounded-xl bg-black/5">
               <video
-                ref={videoRef}
-                src="/images/proceso.mp4"
-                controls
-                playsInline
-                preload="metadata"
-                loading="lazy"
-                poster="/images/portadaV.png"
-                className="block w-full h-auto rounded-xl"
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onEnded={() => setIsPlaying(false)}
-              >
-                Tu navegador no soporta la reproducción de vídeos.
-              </video>
+				  ref={videoRef}
+				  src="/images/proceso.mp4"
+				  controls
+				  playsInline
+				  preload="metadata"
+				  poster="/images/portadaV.png"
+				  className="block w-full h-auto rounded-xl"
+				  onPlay={() => setIsPlaying(true)}
+				  onPause={() => setIsPlaying(false)}
+				  onEnded={() => setIsPlaying(false)}
+				>
+				  Tu navegador no soporta la reproducción de vídeos.
+				</video>
 
              
 
